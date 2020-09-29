@@ -46,7 +46,7 @@ class ProductionConfig(BaseConfig):
     DEBUG = environ.get("DEBUG", False)
     DB_HOST = environ.get("DB_HOST", "localhost")
     DB_USER = environ.get("DB_USER", "grupo3")
-    DB_PASS = environ.get("DB_PASS", "ZWY2MzhjYWIyNGI5)
+    DB_PASS = environ.get("DB_PASS", "ZWY2MzhjYWIyNGI5")
     DB_NAME = environ.get("DB_NAME", "grupo3")
 
 
