@@ -16,4 +16,10 @@ def unauthorized_error(e):
     }
     return render_template("error.html", **kwargs), 401
 
+def internal_server_error(e):
+    kwargs = {
+        "error_name": "500 Internal Server Error",
+        "error_description": "Ha ocurrido un error en el servidor",
+    }
+    return render_template("error.html", **kwargs), 500    
 
