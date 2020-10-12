@@ -1,4 +1,6 @@
 from app.db_sqlalchemy import db_sqlalchemy
+from flask import Flask, request, jsonify
+from datetime import datetime
 
 db = db_sqlalchemy
 
@@ -17,10 +19,10 @@ class User(db.Model):
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
     update_at = db.Column(db.DateTime, nullable=True)
-    create_at = db.Column(db.DateTime, nullable=False)
-    roles = db.relationship('Rol', secondary=roles, lazy='subquery',
-        backref=db.backref('users', lazy=True)
-    )
+    created_at = db.Column(db.DateTime, nullable=False)
+    #roles = db.relationship('Rol', secondary=roles, lazy='subquery',
+     #   backref=db.backref('users', lazy=True)
+    #)
 
     #@classmethod
     #def all(cls):
@@ -28,30 +30,27 @@ class User(db.Model):
         #cursor = conn.cursor()
         #cursor.execute(sql)
         
-        
-
-    @classmethod
-    def create(cls, conn, data):
-        sql = """
-            INSERT INTO users (email, password, first_name, last_name)
-            VALUES (%s, %s, %s, %s)
-        """
+    def __init__(self, data):
+        self.email = data['email']
+        self.username = data['username']
+        self.password = data['password']
+        self.activo = data['activo']
+        self.first_name = data['first_name']
+        self.last_name = data['last_name']
+        hoy = datetime.now()
+        #.strftime("%m/%d/%Y, %H:%M:%S")
+        self.created_at = hoy
+        self.update_at = hoy
+   
+    #@classmethod
+    #def find_by_email_and_pass(cls, conn, email, password):
+     #   sql = """
+      #      SELECT * FROM users AS u
+       #     WHERE u.email = %s AND u.password = %s
+        #"""
 
         #cursor = conn.cursor()
-        #cursor.execute(sql, list(data.values()))
-        #conn.commit()
+        #cursor.execute(sql, (email, password))
 
-        #return True
-
-    @classmethod
-    def find_by_email_and_pass(cls, conn, email, password):
-        sql = """
-            SELECT * FROM users AS u
-            WHERE u.email = %s AND u.password = %s
-        """
-
-        cursor = conn.cursor()
-        cursor.execute(sql, (email, password))
-
-        return cursor.fetchone()
+        #return cursor.fetchone()
 

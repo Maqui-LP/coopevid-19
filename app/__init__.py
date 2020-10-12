@@ -66,13 +66,15 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
 
+    
+
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():
         return render_template("home.html")
 
     # Rutas de API-rest
-    app.add_url_rule("/api/consultas", "api_issue_index", api_issue.index)
+    #app.add_url_rule("/api/consultas", "api_issue_index", api_issue.index)
 
     # Handlers
     app.register_error_handler(404, handler.not_found_error)
