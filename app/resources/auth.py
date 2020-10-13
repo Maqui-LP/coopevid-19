@@ -11,7 +11,7 @@ def authenticate():
     
     params = request.form
     password =  generate_password_hash(params['password'], method='sha256')
-    user = User.query.filter(User.email == params["email"] and User.password == password ).first()
+    user = User.query.filter(User.email == params["email"], User.password == password ).first()
     
     if not user:
         flash("Usuario o clave incorrecto.")
