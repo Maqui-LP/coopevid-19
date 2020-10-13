@@ -18,7 +18,7 @@ class User(db.Model):
     activo = db.Column(db.Boolean, nullable=False)
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
-    update_at = db.Column(db.DateTime, nullable=True)
+    updated_at = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False)
     #roles = db.relationship('Rol', secondary=roles, lazy='subquery',
      #   backref=db.backref('users', lazy=True)
@@ -40,7 +40,7 @@ class User(db.Model):
         hoy = datetime.now()
         #.strftime("%m/%d/%Y, %H:%M:%S")
         self.created_at = hoy
-        self.update_at = hoy
+        self.updated_at = hoy
    
     #@classmethod
     #def find_by_email_and_pass(cls, conn, email, password):
