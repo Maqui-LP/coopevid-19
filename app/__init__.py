@@ -7,15 +7,20 @@ from app import db
 from app.resources import issue
 from app.resources import user
 from app.resources import auth
+from app.resources import rol
 from app.resources.api import issue as api_issue
 from app.helpers import handler
 from app.helpers import auth as helper_auth
+from flask_bootstrap import Bootstrap
 
 
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
-
+    
+    #Bootstrap
+    #Bootstrap(app)
+    
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
     app.config.from_object(config[env])
@@ -69,7 +74,11 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/update", "user_update", user.update, methods=["POST"])
     app.add_url_rule("/usuarios/editar", "user_edit", user.edit)
 
-    
+    # Rutas de Roles
+    app.add_url_rule("/roles", "roles_index", rol.index)
+    app.add_url_rule("/roles", "roles_create", rol.create, methods=["POST"])
+    app.add_url_rule("/roles/nuevo", "roles_new", rol.new)
+
 
     # Ruta para el Home (usando decorator)
     @app.route("/")

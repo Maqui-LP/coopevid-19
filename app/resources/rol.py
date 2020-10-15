@@ -15,7 +15,7 @@ def new():
     if not authenticated(session):
         abort(401)
     
-    return render_template("rol/new.html")
+    return render_template("roles/new.html")
 
 def create():
     
@@ -24,7 +24,7 @@ def create():
     rol = Rol.query.filter(Rol.nombre == data.get("nombre")).first()
     if (rol is not None):
         flash("El rol ya existe")
-        return
+        return redirect(url_for("roles_new"))
 
     new_rol = Rol(data)
 
