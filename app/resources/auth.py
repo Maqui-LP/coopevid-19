@@ -9,13 +9,17 @@ def login():
 
 def authenticate():
     
-    params = request.form
-    password =  generate_password_hash(params['password'], method='sha256')
-    user = User.query.filter(User.email == params["email"], User.password == password ).first()
+    params = request.form.to_dict()
+    user = User.query.filter(User.email == params["email"]).first()
     
     if not user:
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))
+    
+    if not (check_password_hash(user.password, params.get('password'))):
+        flash("Usuario o clave incorrecto.")
+        return redirect(url_for("auth_login"))
+    
 
     session["user"] = user.email
 
