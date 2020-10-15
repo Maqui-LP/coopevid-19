@@ -42,10 +42,11 @@ def create():
 def update():
     if not authenticated(session):
         abort(401)
+
     user_id = request.args.get("user_id")
     data = request.form.to_dict()
-    print(data)
     user2 = User.query.filter(User.email == data.get("email"), User.id != user_id).first()
+    
     if (user2 is not None):
         flash("Ya existe un usuario con ese email")
         return
