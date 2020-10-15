@@ -36,11 +36,12 @@ def create():
     user = User.query.filter(User.username == data.get("username")).first()
     if(user is not None):
         flash("Ya existe un usuario con ese username")
-        return
-    user = User.query.filter(User.email == data.get("email").first())
+        return redirect(url_for("user_new"))
+
+    user = User.query.filter(User.email == data.get("email")).first()
     if(user is not None):
         flash("Ya existe un usuario con ese email")
-        return
+        return redirect(url_for("user_new"))
 
     new_user = User(data)
     
