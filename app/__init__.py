@@ -1,20 +1,26 @@
 from os import path, environ
 from flask import Flask, render_template, g
 from flask_session import Session
+from app.db_sqlalchemy import db_sqlalchemy
 from config import config
 from app import db
 from app.resources import issue
 from app.resources import user
 from app.resources import auth
+from app.resources import rol
 from app.resources.api import issue as api_issue
 from app.helpers import handler
 from app.helpers import auth as helper_auth
+from flask_bootstrap import Bootstrap
 
 
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
-
+    
+    #Bootstrap
+    #Bootstrap(app)
+    
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
     app.config.from_object(config[env])
@@ -24,7 +30,26 @@ def create_app(environment="development"):
     Session(app)
 
     # Configure db
-    db.init_app(app)
+    #SQLAlchemy
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://"+app.config["DB_USER"]+":"+app.config["DB_PASS"]+"@"+app.config["DB_HOST"]+"/"+app.config["DB_NAME"]
+    app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db_sqlalchemy.init_app(app)
+
+    #db_sqlalchemy.create_all();
+    #db = SQLAlchemy()
+    #db.init_app(app)
+    #db_sqlalchemy.init_app(app)
+    # db_sqlalchemy.create_all()
+    with app.app_context():
+        db_sqlalchemy.create_all()
+    db_sqlalchemy.session.configure(autoflush=False)
+
+
+
+    #with app.app_context():
+     #   db.create_all()
 
     # Funciones que se exportan al contexto de Jinja2
     app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated)
@@ -45,6 +70,15 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios", "user_index", user.index)
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
+    app.add_url_rule("/usuarios", "user_delete", user.delete, methods=["DELETE"])
+    app.add_url_rule("/usuarios/update", "user_update", user.update, methods=["POST"])
+    app.add_url_rule("/usuarios/editar", "user_edit", user.edit)
+
+    # Rutas de Roles
+    app.add_url_rule("/roles", "roles_index", rol.index)
+    app.add_url_rule("/roles", "roles_create", rol.create, methods=["POST"])
+    app.add_url_rule("/roles/nuevo", "roles_new", rol.new)
+
 
     # Ruta para el Home (usando decorator)
     @app.route("/")
@@ -52,7 +86,7 @@ def create_app(environment="development"):
         return render_template("home.html")
 
     # Rutas de API-rest
-    app.add_url_rule("/api/consultas", "api_issue_index", api_issue.index)
+    #app.add_url_rule("/api/consultas", "api_issue_index", api_issue.index)
 
     # Handlers
     app.register_error_handler(404, handler.not_found_error)

@@ -1,4 +1,6 @@
 from os import environ
+from flask_sqlalchemy import SQLAlchemy
+
 
 class BaseConfig(object):
     """Base configuration."""
@@ -13,6 +15,8 @@ class BaseConfig(object):
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
+       
+        
         pass
 
 
