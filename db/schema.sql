@@ -148,7 +148,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `first_name`, `last_name`, `activo`, `updated_at`, `created_at`) VALUES
-(1, '', 'admin', '123123', 'Cosme', 'Fulanito', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, '', 'admin', 'sha256$xNZpjEnz$2d7e5b9f933820cecbed0e94bc7a85e1743514f328fa266908b956a0a46144ef', 'Cosme', 'Fulanito', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -213,9 +213,6 @@ ALTER TABLE `statuses`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `password` (`password`),
-  ADD UNIQUE KEY `first_name` (`first_name`),
-  ADD UNIQUE KEY `last_name` (`last_name`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
