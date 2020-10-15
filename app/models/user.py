@@ -20,16 +20,9 @@ class User(db.Model):
     last_name = db.Column(db.String(255), nullable=False)
     updated_at = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False)
-    #roles = db.relationship('Rol', secondary=roles, lazy='subquery',
-     #   backref=db.backref('users', lazy=True)
-    #)
+    roles = db.relationship('Rol', secondary=roles, lazy='subquery', backref=db.backref('users', lazy=True))
 
-    #@classmethod
-    #def all(cls):
-        #sql = "SELECT * FROM users"
-        #cursor = conn.cursor()
-        #cursor.execute(sql)
-        
+
     def __init__(self, data):
         self.email = data['email']
         self.username = data['username']
@@ -38,19 +31,5 @@ class User(db.Model):
         self.first_name = data['first_name']
         self.last_name = data['last_name']
         hoy = datetime.now()
-        #.strftime("%m/%d/%Y, %H:%M:%S")
         self.created_at = hoy
         self.updated_at = hoy
-   
-    #@classmethod
-    #def find_by_email_and_pass(cls, conn, email, password):
-     #   sql = """
-      #      SELECT * FROM users AS u
-       #     WHERE u.email = %s AND u.password = %s
-        #"""
-
-        #cursor = conn.cursor()
-        #cursor.execute(sql, (email, password))
-
-        #return cursor.fetchone()
-
