@@ -32,6 +32,15 @@ def create():
     hashed_pass = generate_password_hash(data['password'], method='sha256')
     data['password'] = hashed_pass
     data['activo'] = True
+    
+    user = User.query.filter(User.username == data.get("username")).first()
+    if(user is not None):
+        flash("Ya existe un usuario con ese username")
+        return
+    user = User.query.filter(User.email == data.get("email").first())
+    if(user is not None):
+        flash("Ya existe un usuario con ese email")
+        return
 
     new_user = User(data)
     
@@ -46,7 +55,7 @@ def update():
     user_id = request.args.get("user_id")
     data = request.form.to_dict()
     user2 = User.query.filter(User.email == data.get("email"), User.id != user_id).first()
-    
+
     if (user2 is not None):
         flash("Ya existe un usuario con ese email")
         return
