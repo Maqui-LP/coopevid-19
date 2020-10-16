@@ -2,6 +2,7 @@ from flask import redirect, render_template, request, url_for, session, abort, j
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.user import User
 from app.helpers.auth import authenticated
+from app.helpers.granted import granted
 from app.db_sqlalchemy import db_sqlalchemy
 from datetime import datetime
 
@@ -9,6 +10,12 @@ db = db_sqlalchemy
 
 # Protected resources
 def index():
+    if not authenticated(session):
+        abort(401)
+
+    if not granted("usuario_index"):
+        abort(403)
+
     users = User.query.all()
     return render_template("user/index.html", users=users)
 

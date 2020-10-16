@@ -11,7 +11,7 @@ from app.resources import rol
 from app.resources.api import issue as api_issue
 from app.helpers import handler
 from app.helpers import auth as helper_auth
-from flask_bootstrap import Bootstrap
+#from flask_bootstrap import Bootstrap
 
 
 def create_app(environment="development"):
@@ -91,7 +91,9 @@ def create_app(environment="development"):
     # Handlers
     app.register_error_handler(404, handler.not_found_error)
     app.register_error_handler(401, handler.unauthorized_error)
+    app.register_error_handler(403, handler.forbbiden_error)
     app.register_error_handler(500, handler.internal_server_error)
+
 
     # Retornar la instancia de app configurada
     return app
