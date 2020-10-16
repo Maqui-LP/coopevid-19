@@ -1,12 +1,13 @@
 from app.db_sqlalchemy import db_sqlalchemy
 from flask import Flask, request, jsonify
 from datetime import datetime
+from app.models.rol import Rol
 
 db = db_sqlalchemy
 
-roles = db.Table('usuario_tiene_rol',
-    db.Column('usuario_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-    db.Column('rol_id', db.Integer, db.ForeignKey('roles.id'), primary_key=True)
+usuario_tiene_rol = db.Table('usuario_tiene_rol',
+    db.Column('usuario_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('rol_id', db.Integer, db.ForeignKey('rol.id'))
 )
 
 class User(db.Model):
@@ -20,7 +21,8 @@ class User(db.Model):
     last_name = db.Column(db.String(255), nullable=False)
     updated_at = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False)
-    roles = db.relationship('Rol', secondary=roles, lazy='subquery', backref=db.backref('users', lazy=True))
+    roles = db.relationship('Rol',
+                            secondary=usuario_tiene_rol)
 
 
     def __init__(self, data):
@@ -33,3 +35,12 @@ class User(db.Model):
         hoy = datetime.now()
         self.created_at = hoy
         self.updated_at = hoy
+
+    def getPermisos(self):
+        permisos = set()
+
+        for rol in self.roles:
+            for perm in rol.permisos:
+                permisos.add(perm.nombre)
+
+        return permisos

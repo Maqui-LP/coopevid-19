@@ -7,6 +7,9 @@
   <h1>usuarios</h1>
   {% for user in users %}
   <li>{{ user.email }} - {{ user.first_name }} - {{ user.last_name }} - {{ user.password }} - {{ user.id }}</li>
+    {% for perm in user.getPermisos() %}
+      <p>{{perm}}</p>
+    {% endfor %}
   {% endfor %}
   <a href="{{ url_for('home') }}" class="link">Volver</a>
   
