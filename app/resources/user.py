@@ -26,13 +26,6 @@ def new():
     return render_template("user/new.html")
 
 
-#def create():
- #   if not authenticated(session):
-  #      abort(401)
-
-   # conn = connection()
-    #User.create(conn, request.form)    
-
 def create():
     
     data = request.form.to_dict()
