@@ -69,9 +69,14 @@ class User(db.Model):
     @staticmethod
     def toogleUsrActivity(user_id):
         estado = User.query.filter(User.id == user_id).first().activo
-        #if(user.activo):
-        #    user.activo = False
-        #else:
-        #    user.activo = True
         User.query.filter(User.id == user_id).update({'activo':not estado}, synchronize_session = False)
         
+    @staticmethod
+    def setRoles(user_id, data):
+        user = User.getUserById(user_id)
+        user.roles = list()
+        for each in data:
+            rol = Rol.query.filter(Rol.nombre == str(each)).first()
+            if rol not in user.roles:
+                user.roles.append(rol)
+

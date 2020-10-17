@@ -27,6 +27,7 @@
         <th scope="col">Editar</th>
         <th scope="col">Eliminar</th>
         <th scope="col">Activar/Desactivar</th>
+        <th scope="col">Roles</th>
       </tr>
     </thead>
     <tbody>
@@ -63,11 +64,10 @@
           <input class="btn btn-danger" type=submit value="Activar"/> </form>
         {% endif %}
       </td>
-      
-    </tr>
-    
-    <!-- <input action="{{url_for('user_delete', user_id=user.id)}}" method="DELETE" class="btn btn-danger" value="Borrar"></input> -->
-      
+      <td>
+        <a href="{{ url_for('user_roles', user_id=user.id)}}" class="btn btn-danger">Administrar</a>
+      </td>
+    </tr>      
     {% endfor %}
   </div>  
   <!--  
