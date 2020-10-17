@@ -11,7 +11,7 @@ from app.resources import rol
 from app.resources.api import issue as api_issue
 from app.helpers import handler
 from app.helpers import auth as helper_auth
-from flask_bootstrap import Bootstrap
+#from flask_bootstrap import Bootstrap
 
 
 def create_app(environment="development"):
@@ -70,7 +70,7 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios", "user_index", user.index)
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
-    app.add_url_rule("/usuarios", "user_delete", user.delete, methods=["DELETE"])
+    app.add_url_rule("/usuarios/delete", "user_delete", user.delete, methods=["POST"])
     app.add_url_rule("/usuarios/update", "user_update", user.update, methods=["POST"])
     app.add_url_rule("/usuarios/editar", "user_edit", user.edit)
 

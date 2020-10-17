@@ -44,3 +44,24 @@ class User(db.Model):
                 permisos.add(perm.nombre)
 
         return permisos
+    @staticmethod
+    def getAll():
+        users = User.query.all()
+
+        return users
+
+    @staticmethod
+    def getUserByUsername( data):
+        return User.query.filter(User.username == data.get("username")).first()
+    
+    @staticmethod
+    def getUserByEmail( data):
+        return User.query.filter(User.email == data.get("email")).first()
+    
+    @staticmethod
+    def getUserById( user_id):
+        return User.query.filter(User.id == user_id).first()
+
+    @staticmethod
+    def updateUser(user_id, data):
+        User.query.filter(User.id == user_id).update(data)
