@@ -26,6 +26,12 @@ def new():
 
     return render_template("user/new.html")
 
+def roles():
+    if not authenticated(session):
+        abort(401)
+
+    return render_template("user/roles.html")
+
 
 def create():
     
