@@ -109,3 +109,11 @@ def perfil():
     user = User.getUserById(session.get("user"))
 
     return render_template("user/perfil.html", user=user)
+
+def toogleUserActivity():
+    user_id = request.form.to_dict()
+    User.toogleUsrActivity(user_id["user_id"])
+
+    db.session.commit()
+
+    return redirect(url_for("user_index"))

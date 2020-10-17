@@ -65,3 +65,13 @@ class User(db.Model):
     @staticmethod
     def updateUser(user_id, data):
         User.query.filter(User.id == user_id).update(data)
+
+    @staticmethod
+    def toogleUsrActivity(user_id):
+        estado = User.query.filter(User.id == user_id).first().activo
+        #if(user.activo):
+        #    user.activo = False
+        #else:
+        #    user.activo = True
+        User.query.filter(User.id == user_id).update({'activo':not estado}, synchronize_session = False)
+        

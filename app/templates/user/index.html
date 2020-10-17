@@ -22,6 +22,7 @@
         <th scope="col">Roles</th>
         <th scope="col">Permisos</th>
         <th scope="col">Acciones</th>
+        <th scope="col">Activar/Desactivar</th>
       </tr>
     </thead>
     <tbody>
@@ -38,9 +39,24 @@
       <td>{% for perm in user.getPermisos() %}
         <p>{{perm}}</p>
       {% endfor %}</td>
-      <td><form action="{{url_for('user_delete')}}" method=post>   
+      <td>
+        <form action="{{url_for('user_delete')}}" method=post>   
         <input type=hidden value="{{ user.id }}" name="user_id"/>   
-        <input class="btn btn-danger" type=submit value="Eliminar"/> </form></td>
+        <input class="btn btn-danger" type=submit value="Eliminar"/> </form>
+      </td>
+      <td>{{ user.activo}}
+        {% if user.activo %}
+          <form action="{{url_for('toogle_user_activity')}}" method=post>   
+          <input type=hidden value="{{ user.id }}" name="user_id"/>   
+          <input class="btn btn-danger" type=submit value="Desactivar"/> </form>       
+          
+        {% else %}
+          <form action="{{url_for('toogle_user_activity')}}" method=post>   
+          <input type=hidden value="{{ user.id }}" name="user_id"/>   
+          <input class="btn btn-danger" type=submit value="Activar"/> </form>
+        {% endif %}
+      </td>
+      
     </tr>
     
     <!-- <input action="{{url_for('user_delete', user_id=user.id)}}" method="DELETE" class="btn btn-danger" value="Borrar"></input> -->
