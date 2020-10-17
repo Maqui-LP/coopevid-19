@@ -3,46 +3,38 @@
 {% block head %}
   {{ super() }}
 {% endblock %}
+{% block navbar %}
+  {% include "navbar.html" %}
+{% endblock %}
 {% block content %}
-<div class="container bootstrap snippet"></div>
-<div class="row">
-  <div class="col-sm-10"><h1>Modificar el usuario {{user.username}}</h1></div>
-</div>
-<div class="row">
-  <div class="col-sm-3">
-  <form action="{{ url_for('user_update', user_id=user.id) }}" method="POST">
-    <div class="form-group">                    
-      <div class="col-xs-6">
-          <label for="username"><h4>Nombre de Usuario</h4></label>
-          <input type="text" class="form-control" name="username" id="username" value="{{user.username}}" placeholder="Nombre de Usuario" required="true">
-      </div>
+<div class="container bootstrap snippet">
+  <div class="justify-content-center">
+      <h1>Modificar el usuario {{user.username}}</h1>
+      <form action="{{ url_for('user_update', user_id=user.id) }}" method="POST">
+        <div class="form-group">                    
+              <label for="username"><h4>Nombre de Usuario</h4></label>
+              <input type="text" class="form-control" name="username" id="username" value="{{user.username}}" placeholder="Nombre de Usuario" required="true"> 
+        </div>
+        <div class="form-group">                    
+              <label for="email"><h4>Correo</h4></label>
+              <input type="text" class="form-control" name="email" id="email" value="{{user.email}}" placeholder="email" required="true"> 
+        </div>
+        <div class="form-group">                    
+          
+              <label for="email"><h4>Nombre</h4></label>
+              <input type="text" class="form-control" name="first_name" id="first_name" value="{{user.first_name}}" placeholder="Nombre" required="true">        
+        </div>
+        <div class="form-group">     
+              <label for="email"><h4>Apellido</h4></label>
+              <input type="text" class="form-control" name="last_name" id="last_name" value="{{user.last_name}}" placeholder="Apellido" required="true"> 
+        </div>
+        <div class="form-group">
+                <br>
+                <button  href="{{ url_for('user_perfil') }}"  class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+                <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Limpiar</button>
+        </div>
+      </form>
+      <a  href="{{ url_for('user_index') }}"  class="btn btn-secondary"> Volver</a>
     </div>
-    <div class="form-group">                    
-      <div class="col-xs-6">
-          <label for="email"><h4>Correo</h4></label>
-          <input type="text" class="form-control" name="email" id="email" value="{{user.email}}" placeholder="email" required="true">
-      </div>
-    </div>
-    <div class="form-group">                    
-      <div class="col-xs-6">
-          <label for="email"><h4>Nombre</h4></label>
-          <input type="text" class="form-control" name="first_name" id="first_name" value="{{user.first_name}}" placeholder="Nombre" required="true">
-      </div>
-    </div>
-    <div class="form-group">                    
-      <div class="col-xs-6">
-          <label for="email"><h4>Apellido</h4></label>
-          <input type="text" class="form-control" name="last_name" id="last_name" value="{{user.last_name}}" placeholder="Apellido" required="true">
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-xs-12">
-           <br>
-           <button  href="{{ url_for('user_perfil') }}"  class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
-            <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Limpiar</button>
-       </div>
-      </div>
-  </form>
-  <a  href="{{ url_for('user_index') }}"  class="btn btn-secondary"> Volver</a>
 </div>
 {% endblock %}
