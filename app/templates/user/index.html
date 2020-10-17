@@ -3,11 +3,47 @@
 {% block head %}
   {{ super() }}
 {% endblock %}
+<h1>Usuarios</h1>
 {% block content %}
-  <h1>usuarios</h1>
-  {% for user in users %}
-  <li>{{ user.email }} - {{ user.first_name }} - {{ user.last_name }} - {{ user.password }} - {{ user.id }}</li>
-  {% endfor %}
-  <a href="{{ url_for('home') }}" class="link">Volver</a>
-  
-{% endblock %}
+<div class="container mt-5">
+
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Nombre de usuario</th>
+        <th scope="col">Email</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">ID</th>
+        <th scope="col">Roles</th>
+        <th scope="col">Permisos</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.first_name }}</td>
+      <td>{{ user.last_name }}</td>
+      <td>{{ user.id }}</td>
+      <td>{% for rol in user.roles %}
+        <p>{{rol.nombre}}</p>
+      {% endfor %}</td>
+      <td>{% for perm in user.getPermisos() %}
+        <p>{{perm}}</p>
+      {% endfor %}</td>
+      <td><form action="{{url_for('user_delete')}}" method=post>   
+        <input type=hidden value="{{ user.id }}" name="user_id"/>   
+        <input class="btn btn-danger" type=submit value="Eliminar"/> </form></td>
+    </tr>
+    
+    <!-- <input action="{{url_for('user_delete', user_id=user.id)}}" method="DELETE" class="btn btn-danger" value="Borrar"></input> -->
+      
+    {% endfor %}
+  </div>  
+  <!--  
+    <a href="{{ url_for('home') }}" class="link">Volver</a>
+  -->
+  {% endblock %}
