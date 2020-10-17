@@ -7,6 +7,10 @@
   <h1>usuarios</h1>
   {% for user in users %}
   <li>{{ user.email }} - {{ user.first_name }} - {{ user.last_name }} - {{ user.password }} - {{ user.id }}</li>
+  <form action="{{url_for('user_delete')}}" method=post>   
+    <input type=hidden value="{{ user.id }}" name="user_id"/>   
+    <input class="btn btn-danger" type=submit value="Eliminar"/> </form>
+  <!-- <input action="{{url_for('user_delete', user_id=user.id)}}" method="DELETE" class="btn btn-danger" value="Borrar"></input> -->
     {% for perm in user.getPermisos() %}
       <p>{{perm}}</p>
     {% endfor %}

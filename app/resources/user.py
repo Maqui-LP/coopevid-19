@@ -16,7 +16,8 @@ def index():
     if not granted("usuario_index"):
         abort(403)
 
-    users = User.query.all()
+    #users = User.query.all()
+    users = User.getAll()
     return render_template("user/index.html", users=users)
 
 def new():
@@ -40,12 +41,14 @@ def create():
     data['password'] = hashed_pass
     data['activo'] = True
     
-    user = User.query.filter(User.username == data.get("username")).first()
+    #user = User.query.filter(User.username == data.get("username")).first()
+    user = User.getUserByUsername(data)
     if(user is not None):
         flash("Ya existe un usuario con ese username")
         return redirect(url_for("user_new"))
 
-    user = User.query.filter(User.email == data.get("email")).first()
+    #user = User.query.filter(User.email == data.get("email")).first()
+    user = User.getUserByEmail(data)
     if(user is not None):
         flash("Ya existe un usuario con ese email")
         return redirect(url_for("user_new"))
@@ -60,21 +63,23 @@ def update():
     if not authenticated(session):
         abort(401)
 
-    user_id = request.args.get("user_id")
+    user_id = int(request.args.get("user_id"))
     data = request.form.to_dict()
-    user2 = User.query.filter(User.email == data.get("email"), User.id != user_id).first()
+    #user2 = User.query.filter(User.email == data.get("email"), User.id != user_id).first()
+    user2 = User.getUserByEmail(data)
 
-    if (user2 is not None):
+    if(user2 is not None and user2.id != user_id):
         flash("Ya existe un usuario con ese email")
-        return
+        return redirect(url_for("user_index"))
     
-    user2 = User.query.filter(User.username == data.get("username"), User.id != user_id).first()
-    if(user2 is not None):
+    #user2 = User.query.filter(User.username == data.get("username"), User.id != user_id).first()
+    user2 = User.getUserByUsername(data)
+    if(user2 is not None and user2.id != user_id):
         flash("Ya existe un usuario con ese username")
-        return
+        return redirect(url_for("user_index"))
 
     data["updated_at"] = datetime.now()
-    user = User.query.filter(User.id == user_id).update(data)
+    User.updateUser(user_id, data)
 
     db.session.commit()
     
@@ -85,17 +90,17 @@ def edit():
         abort(401)
     
     user_id = request.args.get("user_id")
-    user = User.query.filter(User.id == user_id).first()
+    user = User.getUserById(user_id)
 
     return render_template("user/update.html", user=user)
 
 
 def delete():
-    user_id = request.args.get("user_id")
-    user = User.query.filter(User.id == user_id).first()
+    user_id = request.form.to_dict()
+    user = User.getUserById(user_id["user_id"])
     if(user is None):
         flash("El usuario no existe")
-        return
+        return redirect(url_for("user_index"))
 
     db.session.delete(user)
     db.session.commit()
