@@ -17,9 +17,9 @@
     <div id="content">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
-          <ul class=flashes>
+          <ul class="list-group flashes">
           {% for message in messages %}
-            <li>{{ message }}</li>
+            <li class="list-group-item list-group-item-info">{{ message }}</li>
           {% endfor %}
           </ul>
         {% endif %}

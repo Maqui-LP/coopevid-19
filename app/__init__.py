@@ -85,6 +85,7 @@ def create_app(environment="development"):
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():
+        #agarrar de la tabla de configuracion y verificar el estado en base a eso mostrar una u otra vista
         return render_template("home.html")
 
     # Rutas de API-rest

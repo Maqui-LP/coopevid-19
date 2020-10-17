@@ -19,7 +19,9 @@ def authenticate():
     if not (check_password_hash(user.password, params.get('password'))):
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))
-    
+    if not user.activo == 1:
+        flash("Tu usuario se encuentra desactivado comunicate para mas información")
+        return redirect(url_for("auth_login"))
 
     session["user"] = user.id
 
