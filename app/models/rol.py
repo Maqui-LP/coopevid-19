@@ -14,3 +14,10 @@ class Rol(db.Model):
     nombre = db.Column(db.String(255), unique=True, nullable=False)
     permisos = db.relationship('Permiso', 
                                 secondary=rol_tiene_permiso)
+
+
+    @staticmethod
+    def getAll():
+        return Rol.query.filter()
+
+    
