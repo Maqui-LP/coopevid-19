@@ -5,6 +5,8 @@ from app.helpers.auth import authenticated
 from app.helpers.granted import granted
 from app.db_sqlalchemy import db_sqlalchemy
 from datetime import datetime
+from app.models.rol import Rol
+
 
 db = db_sqlalchemy
 
@@ -25,6 +27,25 @@ def new():
         abort(401)
 
     return render_template("user/new.html")
+
+def roles():
+    if not authenticated(session):
+        abort(401)
+
+    user_id = request.args.get("user_id")
+    user = User.getUserById(user_id)
+    roles = Rol.getAll()
+    return render_template("user/roles.html", user=user, roles=roles)
+
+def modificarRoles():
+    data = request.form.to_dict()
+    
+    user_id = request.args.get('user_id')
+    
+    User.setRoles(user_id, data)
+    
+    db.session.commit()
+    return redirect(url_for("user_index"))
 
 
 def create():

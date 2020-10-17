@@ -32,3 +32,4 @@ def create():
     db.session.commit()
     return redirect(url_for("rol_index"))
 
+
