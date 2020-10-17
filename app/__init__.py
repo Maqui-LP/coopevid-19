@@ -1,5 +1,5 @@
 from os import path, environ
-from flask import Flask, render_template, g
+from flask import Flask, render_template, g, session
 from flask_session import Session
 from app.db_sqlalchemy import db_sqlalchemy
 from config import config
@@ -11,6 +11,7 @@ from app.resources import rol
 from app.resources.api import issue as api_issue
 from app.helpers import handler
 from app.helpers import auth as helper_auth
+from app.helpers import granted
 #from flask_bootstrap import Bootstrap
 
 
@@ -52,7 +53,8 @@ def create_app(environment="development"):
      #   db.create_all()
 
     # Funciones que se exportan al contexto de Jinja2
-    app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated)
+    app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated, is_granted=granted.granted)
+    app.config["TEMPLATES_AUTO_RELOAD"]=True
 
     # Autenticación
     app.add_url_rule("/iniciar_sesion", "auth_login", auth.login)
@@ -85,6 +87,7 @@ def create_app(environment="development"):
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():
+
         return render_template("home.html")
 
     # Rutas de API-rest
