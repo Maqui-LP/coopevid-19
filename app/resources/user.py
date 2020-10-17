@@ -35,13 +35,14 @@ def create():
     data['activo'] = True
     
     #user = User.query.filter(User.username == data.get("username")).first()
-    user = User.getUserByUsername(data)
+    user = User.getUserByUsername(data.get("username"))
+
     if(user is not None):
         flash("Ya existe un usuario con ese username")
         return redirect(url_for("user_new"))
 
     #user = User.query.filter(User.email == data.get("email")).first()
-    user = User.getUserByEmail(data)
+    user = User.getUserByEmail(data.get("email"))
     if(user is not None):
         flash("Ya existe un usuario con ese email")
         return redirect(url_for("user_new"))
@@ -59,14 +60,14 @@ def update():
     user_id = int(request.args.get("user_id"))
     data = request.form.to_dict()
     #user2 = User.query.filter(User.email == data.get("email"), User.id != user_id).first()
-    user2 = User.getUserByEmail(data)
+    user2 = User.getUserByEmail(data.get("email"))
 
     if(user2 is not None and user2.id != user_id):
         flash("Ya existe un usuario con ese email")
         return redirect(url_for("user_index"))
     
     #user2 = User.query.filter(User.username == data.get("username"), User.id != user_id).first()
-    user2 = User.getUserByUsername(data)
+    user2 = User.getUserByUsername(data.get("username"))
     if(user2 is not None and user2.id != user_id):
         flash("Ya existe un usuario con ese username")
         return redirect(url_for("user_index"))
@@ -74,8 +75,9 @@ def update():
     data["updated_at"] = datetime.now()
     User.updateUser(user_id, data)
 
-    db.session.commit()
     
+    db.session.commit()
+
     return redirect(url_for("user_index"))
 
 def edit():
@@ -99,3 +101,11 @@ def delete():
     db.session.commit()
     
     return redirect(url_for("user_index"))
+
+def perfil():
+    #otra forma seria-> data = dict(email=session.get("user"))
+    #data = {"email": session.get("user")}
+
+    user = User.getUserById(session.get("user"))
+
+    return render_template("user/perfil.html", user=user)

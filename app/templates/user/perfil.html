@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container bootstrap snippet">
+    <div class="row">
+  		<div class="col-sm-10"><h1>{{user.username}}</h1></div>
+    </div>
+    <div class="row">
+  		<div class="col-sm-3"><!--left col-->
+                   
+          <div class="panel panel-default">
+            <div class="panel-body">
+            	<i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
+            </div>
+          </div>
+          
+        </div><!--/col-3-->
+    	<div class="col-sm-9">
+              
+          <div class="tab-content">
+            <div class="tab-pane active" id="home">
+                <hr>
+                  <form action="{{ url_for('user_update', user_id=user.id) }}" method="POST"  class="form"  id="registrationForm">
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="first_name"><h4>Nombre</h4></label>
+                              <input type="text" class="form-control" name="first_name" id="first_name" value="{{user.first_name}}" placeholder="first name" title="enter your first name if any.">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                            <label for="last_name"><h4>Last name</h4></label>
+                              <input type="text" class="form-control" value="{{user.last_name}}" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
+                          </div>
+                      </div>
+          
+                    <div class="col-xs-6">
+                        <label for="email"><h4>Email</h4></label>
+                            <input type="email" class="form-control" value="{{user.email}}" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <label for="roles"><h4>Roles</h4></label>
+                    {% for rol in user.roles %}
+                        <input type="text" class="form-control" value="{{rol.nombre}}"  id="rol" placeholder="roles">
+                    {% endfor %}
+                    </div>
+                      <div class="form-group">
+                           <div class="col-xs-12">
+                                <br>
+                              	<button  href="{{ url_for('user_perfil') }}"  class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                               	<button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                            </div>
+                      </div>
+              	</form>
+               
+              </div><!--/tab-pane-->
+          </div><!--/tab-content-->
+
+        </div><!--/col-9-->
+    </div><!--/row-->
+{% endblock %}

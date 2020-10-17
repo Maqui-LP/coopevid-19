@@ -51,12 +51,12 @@ class User(db.Model):
         return users
 
     @staticmethod
-    def getUserByUsername( data):
-        return User.query.filter(User.username == data.get("username")).first()
+    def getUserByUsername( username):
+        return User.query.filter(User.username == username).first()
     
     @staticmethod
-    def getUserByEmail( data):
-        return User.query.filter(User.email == data.get("email")).first()
+    def getUserByEmail( email):
+        return User.query.filter(User.email == email).first()
     
     @staticmethod
     def getUserById( user_id):
