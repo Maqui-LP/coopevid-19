@@ -12,7 +12,6 @@ class Configuracion(db.Model):
     paginacion = db.Column(db.Integer, nullable=False)
 
     def __init__(self, data):
-        self.id = data["id"]
         self.titulo = data["titulo"]
         self.descripcion = data["descripcion"]
         self.contacto = data["contacto"]
