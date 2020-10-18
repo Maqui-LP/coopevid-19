@@ -20,10 +20,17 @@ class Configuracion(db.Model):
     
     @staticmethod
     def getConfiguracion():
-        return Configuracion.query.filter().first()
+        return Configuracion.query.filter().order_by(Configuracion.id.desc()).first()
 
     @staticmethod
     def updateConfiguracion(data):
         config = Configuracion(data)
         db.session.add(config)
         db.session.commit()
+
+    @staticmethod
+    def getStateOfSite():
+        
+        return Configuracion.getConfiguracion().mantenimiento
+        
+        

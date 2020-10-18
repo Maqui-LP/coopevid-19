@@ -8,6 +8,8 @@ from app.resources import issue
 from app.resources import user
 from app.resources import auth
 from app.resources import rol
+from app.resources import configuracion
+from app.models.configuracion import Configuracion
 from app.resources.api import issue as api_issue
 from app.helpers import handler
 from app.helpers import auth as helper_auth
@@ -85,12 +87,20 @@ def create_app(environment="development"):
     app.add_url_rule("/roles", "roles_create", rol.create, methods=["POST"])
     app.add_url_rule("/roles/nuevo", "roles_new", rol.new)
 
+    # Rutas para administrar el sistema
+    
+    app.add_url_rule("/configuracion", "configuracion_form", configuracion.form )
+    app.add_url_rule("/configuracion", "configuracion_update", configuracion.update , methods=["POST"])
 
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():
+        print(f'######################configuracion del sitio: {Configuracion.getConfiguracion().id}')
+        if Configuracion.getStateOfSite():
+            return render_template("mantenimiento.html")
+        else:    
+            return render_template("home.html")
 
-        return render_template("home.html")
 
     # Rutas de API-rest
     #app.add_url_rule("/api/consultas", "api_issue_index", api_issue.index)
