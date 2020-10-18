@@ -27,3 +27,7 @@ class Configuracion(db.Model):
         config = Configuracion(data)
         db.session.add(config)
         db.session.commit()
+
+    @staticmethod
+    def getStateOfSite():
+        return Configuracion.query.filter().first().mantenimiento

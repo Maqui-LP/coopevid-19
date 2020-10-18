@@ -15,11 +15,8 @@ def form():
 
 def update():
     data = request.form.to_dict()
-    print("*************************************************")
-    print("*************************************************")
-    print(type(data["mantenimiento"]))
-    print(data["mantenimiento"])
     data["mantenimiento"] = int(data["mantenimiento"])
     Configuracion.updateConfiguracion(data)
 
     return render_template("/home.html")
+
