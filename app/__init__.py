@@ -95,7 +95,8 @@ def create_app(environment="development"):
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():
-        if Configuracion.getStateOfSite()==1:
+        print(f'######################configuracion del sitio: {Configuracion.getConfiguracion().id}')
+        if Configuracion.getStateOfSite():
             return render_template("mantenimiento.html")
         else:    
             return render_template("home.html")

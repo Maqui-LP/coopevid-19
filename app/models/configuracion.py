@@ -20,7 +20,7 @@ class Configuracion(db.Model):
     
     @staticmethod
     def getConfiguracion():
-        return Configuracion.query.filter().first()
+        return Configuracion.query.filter().order_by(Configuracion.id.desc()).first()
 
     @staticmethod
     def updateConfiguracion(data):
@@ -30,4 +30,7 @@ class Configuracion(db.Model):
 
     @staticmethod
     def getStateOfSite():
-        return Configuracion.query.filter().first().mantenimiento
+        
+        return Configuracion.getConfiguracion().mantenimiento
+        
+        
