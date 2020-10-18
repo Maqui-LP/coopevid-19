@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 12-10-2020 a las 00:07:40
+-- Tiempo de generación: 18-10-2020 a las 00:30:10
 -- Versión del servidor: 10.5.6-MariaDB-1:10.5.6+maria~focal
 -- Versión de PHP: 7.4.11
 
@@ -46,6 +46,21 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `configuracion`
+--
+
+DROP TABLE IF EXISTS `configuracion`;
+CREATE TABLE `configuracion` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `mantenimiento` tinyint(1) NOT NULL,
+  `descripcion` varchar(255) NOT NULL,
+  `contacto` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `issues`
 --
 
@@ -79,6 +94,34 @@ CREATE TABLE `permiso` (
   `nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `permiso`
+--
+
+INSERT INTO `permiso` (`id`, `nombre`) VALUES
+(1, 'usuario_index'),
+(2, 'usuario_new'),
+(3, 'usuario_destroy'),
+(4, 'usuario_update'),
+(5, 'usuario_show'),
+(6, 'rol_index'),
+(7, 'rol_new'),
+(8, 'rol_destroy'),
+(9, 'rol_update'),
+(10, 'rol_show'),
+(11, 'categoria_index'),
+(12, 'categoria_new'),
+(13, 'categoria_destroy'),
+(14, 'categoria_update'),
+(15, 'categoria_show'),
+(16, 'issue_index'),
+(17, 'issue_new'),
+(18, 'issue_destroy'),
+(19, 'issue_update'),
+(20, 'issue_show'),
+(21, 'configuracion_update');
+
+
 -- --------------------------------------------------------
 
 --
@@ -91,6 +134,14 @@ CREATE TABLE `rol` (
   `nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`id`, `nombre`) VALUES
+(1, 'Administrador'),
+(2, 'Operador');
+
 -- --------------------------------------------------------
 
 --
@@ -102,6 +153,33 @@ CREATE TABLE `rol_tiene_permiso` (
   `rol_id` int(11) NOT NULL,
   `permiso_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `rol_tiene_permiso`
+--
+
+INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),
+(1, 6),
+(1, 7),
+(1, 8),
+(1, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(1, 13),
+(1, 14),
+(1, 15),
+(1, 16),
+(1, 17),
+(1, 18),
+(1, 19),
+(1, 20),
+(1, 21);
 
 -- --------------------------------------------------------
 
@@ -148,7 +226,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `first_name`, `last_name`, `activo`, `updated_at`, `created_at`) VALUES
-(1, '', 'admin', 'sha256$xNZpjEnz$2d7e5b9f933820cecbed0e94bc7a85e1743514f328fa266908b956a0a46144ef', 'Cosme', 'Fulanito', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'admin', 'admin@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Admin', 'Fulanito', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'operador', 'operador@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Operador', 'Fulanito', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'nadie', 'nadie@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Cosme', 'Fulanito', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -163,6 +243,14 @@ CREATE TABLE `usuario_tiene_rol` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Volcado de datos para la tabla `usuario_tiene_rol`
+--
+
+INSERT INTO `usuario_tiene_rol` (`usuario_id`, `rol_id`) VALUES
+(1, 1),
+(2, 2);
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -170,6 +258,12 @@ CREATE TABLE `usuario_tiene_rol` (
 -- Indices de la tabla `categories`
 --
 ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `configuracion`
+--
+ALTER TABLE `configuracion`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -233,6 +327,12 @@ ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `configuracion`
+--
+ALTER TABLE `configuracion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `issues`
 --
 ALTER TABLE `issues`
@@ -242,13 +342,13 @@ ALTER TABLE `issues`
 -- AUTO_INCREMENT de la tabla `permiso`
 --
 ALTER TABLE `permiso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
 --
 ALTER TABLE `rol`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `statuses`
@@ -260,7 +360,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
