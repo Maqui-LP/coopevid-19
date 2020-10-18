@@ -80,6 +80,3 @@ class User(db.Model):
             if rol not in user.roles:
                 user.roles.append(rol)
 
-    @staticmethod
-    def getByNameLastNameAndState(nombre, apellido, estado):
-        return User.query.filter(User.first_name.like(nombre), User.first_name.like(nombre), User.activo == estado)
