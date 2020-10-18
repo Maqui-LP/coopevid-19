@@ -89,14 +89,12 @@ def create_app(environment="development"):
     app.add_url_rule("/roles/nuevo", "roles_new", rol.new)
 
     # Rutas para administrar el sistema
-    
     app.add_url_rule("/configuracion", "configuracion_form", configuracion.form )
     app.add_url_rule("/configuracion", "configuracion_update", configuracion.update , methods=["POST"])
 
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():
-        print(f'######################configuracion del sitio: {Configuracion.getConfiguracion().id}')
         if Configuracion.getStateOfSite():
             return render_template("mantenimiento.html")
         else:    

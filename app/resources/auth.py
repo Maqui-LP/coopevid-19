@@ -8,9 +8,8 @@ def login():
 
 
 def authenticate():
-    
     params = request.form.to_dict()
-    user = User.query.filter(User.email == params["email"]).first()
+    user = User.query.filter(User.email == params.get("email")).first()
     
     if not user:
         flash("Usuario o clave incorrecto.")

@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.user import User
 from app.helpers.auth import authenticated
 from app.helpers.granted import granted
+from app.helpers.form_validation import validateUser, validateUpdateUser
 from app.db_sqlalchemy import db_sqlalchemy
 from datetime import datetime
 from app.models.rol import Rol
@@ -25,6 +26,7 @@ def index():
 def new():
     if not authenticated(session):
         abort(401)
+
     if not granted("usuario_new"):
         abort(403)
 
@@ -53,8 +55,13 @@ def modificarRoles():
 
 
 def create():
-    
     data = request.form.to_dict()
+
+    error = validateUser(data)
+    if error:
+        flash(error)
+        return redirect(url_for("user_new"))
+
     hashed_pass = generate_password_hash(data['password'], method='sha256')
     data['password'] = hashed_pass
     data['activo'] = True
@@ -84,7 +91,12 @@ def update():
 
     user_id = int(request.args.get("user_id"))
     data = request.form.to_dict()
-    #user2 = User.query.filter(User.email == data.get("email"), User.id != user_id).first()
+
+    error = validateUpdateUser(data)
+    if error:
+        flash(error)
+        return redirect(url_for("user_edit"))
+
     user2 = User.getUserByEmail(data.get("email"))
 
     if(user2 is not None and user2.id != user_id):
