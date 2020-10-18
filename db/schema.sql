@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 18-10-2020 a las 00:30:10
+-- Tiempo de generación: 18-10-2020 a las 01:13:49
 -- Versión del servidor: 10.5.6-MariaDB-1:10.5.6+maria~focal
 -- Versión de PHP: 7.4.11
 
@@ -55,8 +55,16 @@ CREATE TABLE `configuracion` (
   `titulo` varchar(255) NOT NULL,
   `mantenimiento` tinyint(1) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
-  `contacto` varchar(255) NOT NULL
+  `contacto` varchar(255) NOT NULL,
+  `paginacion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `configuracion`
+--
+
+INSERT INTO `configuracion` (`id`, `titulo`, `mantenimiento`, `descripcion`, `contacto`, `paginacion`) VALUES
+(1, 'Donaciones COVID-19', 0, 'Esta pagina esta destinada a colaborar en la lucha contra el COVID-19', 'contacto@coopevid.com', 5);
 
 -- --------------------------------------------------------
 
@@ -99,28 +107,27 @@ CREATE TABLE `permiso` (
 --
 
 INSERT INTO `permiso` (`id`, `nombre`) VALUES
-(1, 'usuario_index'),
-(2, 'usuario_new'),
-(3, 'usuario_destroy'),
-(4, 'usuario_update'),
-(5, 'usuario_show'),
-(6, 'rol_index'),
-(7, 'rol_new'),
-(8, 'rol_destroy'),
-(9, 'rol_update'),
-(10, 'rol_show'),
+(13, 'categoria_destroy'),
 (11, 'categoria_index'),
 (12, 'categoria_new'),
-(13, 'categoria_destroy'),
-(14, 'categoria_update'),
 (15, 'categoria_show'),
+(14, 'categoria_update'),
+(21, 'configuracion_update'),
+(18, 'issue_destroy'),
 (16, 'issue_index'),
 (17, 'issue_new'),
-(18, 'issue_destroy'),
-(19, 'issue_update'),
 (20, 'issue_show'),
-(21, 'configuracion_update');
-
+(19, 'issue_update'),
+(8, 'rol_destroy'),
+(6, 'rol_index'),
+(7, 'rol_new'),
+(10, 'rol_show'),
+(9, 'rol_update'),
+(3, 'usuario_destroy'),
+(1, 'usuario_index'),
+(2, 'usuario_new'),
+(5, 'usuario_show'),
+(4, 'usuario_update');
 
 -- --------------------------------------------------------
 
@@ -330,7 +337,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT de la tabla `configuracion`
 --
 ALTER TABLE `configuracion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `issues`
@@ -342,13 +349,13 @@ ALTER TABLE `issues`
 -- AUTO_INCREMENT de la tabla `permiso`
 --
 ALTER TABLE `permiso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
 --
 ALTER TABLE `rol`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `statuses`
