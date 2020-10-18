@@ -9,6 +9,9 @@
 <h1>Usuarios</h1>
 {% block content %}
 <div>
+  <a href="{{ url_for('search_users_page')}}" class="btn btn-primary m-3 p-3 float-right">Buscar Usuarios</a>
+</div>
+<div>
   <a href="{{ url_for('user_new')}}" class="btn btn-primary m-3 p-3">Agregar Usuario</a>
 </div>
 
