@@ -25,12 +25,16 @@ def index():
 def new():
     if not authenticated(session):
         abort(401)
+    if not granted("usuario_new"):
+        abort(403)
 
     return render_template("user/new.html")
 
 def roles():
     if not authenticated(session):
         abort(401)
+    if not granted("usuario_update"):
+        abort(403)
 
     user_id = request.args.get("user_id")
     user = User.getUserById(user_id)
@@ -104,6 +108,8 @@ def update():
 def edit():
     if not authenticated(session):
         abort(401)
+    if not granted("usuario_update"):
+        abort(403)
     
     user_id = request.args.get("user_id")
     user = User.getUserById(user_id)
@@ -112,6 +118,9 @@ def edit():
 
 
 def delete():
+    if not granted("usuario_destroy"):
+        abort(403)
+
     user_id = request.form.to_dict()
     user = User.getUserById(user_id["user_id"])
     if(user is None):
@@ -132,6 +141,9 @@ def perfil():
     return render_template("user/perfil.html", user=user)
 
 def toogleUserActivity():
+    if not granted("usuario_update"):
+        abort(403)
+    
     user_id = request.form.to_dict()
     User.toogleUsrActivity(user_id["user_id"])
 

@@ -3,18 +3,26 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.rol import Rol
 from app.helpers.auth import authenticated
 from app.db_sqlalchemy import db_sqlalchemy
+from app.helpers.granted import granted
 
 db = db_sqlalchemy
 
 #protected resources
 def index():
+    if not authenticated(session):
+        abort(401)
+    if not granted("rol_index"):
+        abort(403)
+
     roles = Rol.query.all()
     return render_template("rol/index.html", roles=roles)
 
 def new():
     if not authenticated(session):
         abort(401)
-    
+    if not granted("rol_new"):
+        abort(403)
+
     return render_template("roles/new.html")
 
 def create():
