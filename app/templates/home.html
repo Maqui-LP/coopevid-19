@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-{% set show_users=True %}
 {% block title %}Home{% endblock %}
 {% block head %}
   {{ super() }}
@@ -7,9 +6,10 @@
 {% block navbar %}
   {% include "navbar.html" %}
 {% endblock %}
+{% set config = getConfig() %}
 {% block content %}
   <div class="row justify-content-center mt-3">
-    <h1 class="text-centerr">DONACIONES COVID-19</h1>
+    <h1 class="text-centerr">{{config.titulo}}</h1>
   </div>
   <!--
   <a href="{{ url_for('issue_index') }}" class="link">Consultas</a>

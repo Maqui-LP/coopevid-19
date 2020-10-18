@@ -6,6 +6,7 @@
 {% block navbar %}
   {% include "navbar.html" %}
 {% endblock %}
+{% set config = getConfig() %}
 {% block content %}
 <div class="container bootstrap snippet">
   <div class="justify-content-center">
@@ -13,28 +14,28 @@
       <form action="{{url_for('configuracion_update')}}"" method="POST">
         <div class="form-group">                    
               <label for="username"><h4>Titulo</h4></label>
-              <input type="text" class="form-control" name="titulo" id="username" value="" placeholder="Titulo" required="true"> 
+              <input type="text" class="form-control" name="titulo" id="titulo" value="{{config.titulo}}" placeholder="Titulo" required="true"> 
         </div>
         <div class="form-group">                    
-              <label for="email"><h4>Descripcion</h4></label>
-              <input type="text" class="form-control" name="descripcion" id="email" value="" placeholder="descripcion" required="true"> 
+              <label for="descripcion"><h4>Descripcion</h4></label>
+              <input type="text" class="form-control" name="descripcion" id="descripcion" value="{{config.descripcion}}" placeholder="descripcion" required="true"> 
         </div>
         <div class="form-group">                       
-              <label for="email"><h4>Contacto</h4></label>
-              <input type="email" class="form-control" name="contacto" id="first_name" value="" placeholder="Ingresa un mail" required="true">        
+              <label for="contacto"><h4>Contacto</h4></label>
+              <input type="email" class="form-control" name="contacto" id="contacto" value="{{config.contacto}}" placeholder="Ingresa un mail" required="true">        
         </div>
         <div class="form-group">     
             <p>Mantenimiento</p>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="mantenimiento" id="mantenimiento">
+                <input class="form-check-input" type="checkbox" name="mantenimiento" id="mantenimiento" {% if config.mantenimiento  %} checked {% endif %}>
                 <label class="form-check-label" for="mantenimiento">
                   Habilitado
                 </label>
               </div>
         </div>
         <div class="form-group">     
-            <label for="email"><h4>Paginacion</h4></label>
-            <input type="number" class="form-control" name="paginacion" id="last_name" value="" placeholder="Paginacion" required="true"> 
+            <label for="paginacion"><h4>Paginacion</h4></label>
+            <input type="number" class="form-control" name="paginacion" id="paginacion" value="{{config.paginacion}}" placeholder="Paginacion" required="true"> 
       </div>
 
         <div class="form-group">

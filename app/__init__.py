@@ -14,6 +14,7 @@ from app.resources.api import issue as api_issue
 from app.helpers import handler
 from app.helpers import auth as helper_auth
 from app.helpers import granted
+from app.helpers import config as config_helper
 #from flask_bootstrap import Bootstrap
 
 
@@ -55,7 +56,7 @@ def create_app(environment="development"):
      #   db.create_all()
 
     # Funciones que se exportan al contexto de Jinja2
-    app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated, is_granted=granted.granted)
+    app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated, is_granted=granted.granted, getConfig=config_helper.getConfig)
     app.config["TEMPLATES_AUTO_RELOAD"]=True
 
     # Autenticación
