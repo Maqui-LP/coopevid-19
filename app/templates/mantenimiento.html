@@ -8,5 +8,8 @@
 <body>
     <h1>Sitio en mantenimiento</h1>
     <p>Disculpe las molestias, programadores trabajando</p>
+    {% if is_granted("configuracion_update") %}
+    <a  href="{{ url_for('configuracion_form') }}"  class="btn btn-secondary"> Configuracion del Sitio</a>
+    {% endif %}
 </body>
 </html>

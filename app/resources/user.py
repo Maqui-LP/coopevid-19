@@ -162,3 +162,17 @@ def toogleUserActivity():
     db.session.commit()
 
     return redirect(url_for("user_index"))
+
+def searchUserPage():
+    return render_template("/user/search.html")
+
+def searchUsers():
+    data = request.form.to_dict()
+    nombre= "%{}%".format(data['nombre'])
+    apellido = "%{}%".format(data['apellido'])
+    estado = int(data['estado'])
+
+    users = User.getByNameLastNameAndState(nombre, apellido, estado)
+
+    return render_template("/user/search.html", users=users)
+
