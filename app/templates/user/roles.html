@@ -10,7 +10,7 @@
         <form action="{{ url_for('modificar_roles', user_id=user.id) }}" method="POST">
             {% for each in roles %}
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="{{each.nombre}}" id="{{each.nombre}}" {% if each in user.roles %} checked {% endif %}>
+                <input class="form-check-input" type="checkbox" {% if session.get('user') == user.id and each.nombre == "administrador" %} disabled {% endif %} name="{{each.nombre}}" id="{{each.nombre}}" {% if each in user.roles %} checked {% endif %}>
                 <label class="form-check-label" for="defaultCheck1">
                 {{each.nombre}}
                 </label>
