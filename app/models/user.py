@@ -2,6 +2,7 @@ from app.db_sqlalchemy import db_sqlalchemy
 from flask import Flask, request, jsonify
 from datetime import datetime
 from app.models.rol import Rol
+from app.models.configuracion import Configuracion
 
 db = db_sqlalchemy
 
@@ -83,3 +84,8 @@ class User(db.Model):
     @staticmethod
     def getByNameLastNameAndState(nombre, apellido, estado):
         return User.query.filter(User.first_name.like(nombre), User.first_name.like(nombre), User.activo == estado)
+
+    @staticmethod
+    def getAllPaginado(numero_pagina):
+        return User.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+        
