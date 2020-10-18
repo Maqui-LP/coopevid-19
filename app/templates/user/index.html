@@ -50,7 +50,7 @@
       <td>
         <form action="{{url_for('user_delete')}}" method=post>   
         <input type=hidden value="{{ user.id }}" name="user_id"/>   
-        <input class="btn btn-danger" type=submit value="Eliminar"/> </form>
+        <input class="btn btn-danger" {% if session.get('user') == user.id %} disabled {% endif %} type=submit value="Eliminar"/> </form>
       </td>
       <td>
         {% if user.activo %}
