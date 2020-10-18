@@ -7,7 +7,7 @@ from app.helpers.form_validation import validateUser, validateUpdateUser
 from app.db_sqlalchemy import db_sqlalchemy
 from datetime import datetime
 from app.models.rol import Rol
-
+from app.models.configuracion import Configuracion
 
 db = db_sqlalchemy
 
@@ -19,9 +19,24 @@ def index():
     if not granted("usuario_index"):
         abort(403)
 
-    #users = User.query.all()
-    users = User.getAll()
-    return render_template("user/index.html", users=users)
+    numero_pagina = request.args.get("numero_pagina")
+    if numero_pagina:
+        numero_pagina = int(numero_pagina) 
+    print("*********************************************")
+    print("El numero recibido es: ", numero_pagina)
+    
+    usuarios_totales = User.getAll()
+    
+    users = User.getAllPaginado(numero_pagina)
+
+    print("Tamaño: ", len(users))
+
+    cantidad_paginas = int((len(usuarios_totales) - 1) / Configuracion.getConfiguracion().paginacion)
+
+    print("Cantiadad de paginas: ", cantidad_paginas)
+    
+    return render_template("user/index.html", users=users, cantidad_paginas=cantidad_paginas )
+
 
 def new():
     if not authenticated(session):
