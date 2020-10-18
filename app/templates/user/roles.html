@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Modificar roles del Usuario {{user.username}}</h1>
+  <div class="container">
+    <div class="row clearfix">
+        <form action="{{ url_for('modificar_roles', user_id=user.id) }}" method="POST">
+            {% for each in roles %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" {% if session.get('user') == user.id and each.nombre == "Administrador" %} disabled {% endif %} name="{{each.nombre}}" id="{{each.nombre}}" {% if each in user.roles %} checked {% endif %}>
+                <label class="form-check-label" for="defaultCheck1">
+                {{each.nombre}}
+                </label>
+            </div>
+            {% endfor %}
+            <div>
+                <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+</div>
+{% endblock %}

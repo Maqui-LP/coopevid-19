@@ -3,15 +3,38 @@
 {% block head %}
   {{ super() }}
 {% endblock %}
-{% block content %}
-  <h1>Inicio</h1>
-  <p>Página de inicio de la aplicación</p>
-  <a href="{{ url_for('issue_index') }}" class="link">Consultas</a>
-  {% if is_authenticated(session) %}
-    <a href="{{ url_for('user_index') }}" class="link">Usuarios</a>
-    <a href="{{ url_for('auth_logout') }}" class="link">Cerrar sesión</a>
-  {% else %}
-    <a href="{{ url_for('auth_login') }}" class="link">Iniciar sesión</a>
-  {% endif %}
-
+{% block navbar %}
+  {% include "navbar.html" %}
 {% endblock %}
+{% set config = getConfig() %}
+{% block content %}
+  <div class="row justify-content-center mt-3">
+    <h1 class="text-centerr">{{config.titulo}}</h1>
+  </div>
+  <!--
+  <a href="{{ url_for('issue_index') }}" class="link">Consultas</a>
+  -->
+  <div class="jumbotron">
+    <h1 class="display-4">Bienvenido</h1>
+    <p class="lead">Esta pagina esta destinada a colaborar en la lucha contra el COVID-19</p>
+    <hr class="my-4">
+    <p>Ante cualquier consulta o sugerencia puede contactarnos a COOPEVID@gmail.com</p>
+  </div>
+  {% if not is_authenticated(session) %}
+  <div>
+    <div class="container mb-3 mt-3">
+      <div class="row justify-content-center">
+          <div class="col-4">
+              <div class="card text-center" >
+                <div class="card-body">
+                  <h5 class="card-title">Bienvenidos</h5>
+                  <a href="{{url_for('auth_login')}}" class="btn btn-primary">Iniciar Sesion</a>
+                  <h6 class="mt-1"><a href="#">¿No estas registrado?</a></h6>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+  {% endif %}
+  {% endblock %}

@@ -3,29 +3,46 @@
 {% block head %}
   {{ super() }}
 {% endblock %}
+{% block navbar %}
+  {% include "navbar.html" %}
+{% endblock %}
 {% block content %}
-  <h1>Crear un usuario</h1>
-  <form action="{{ url_for('user_create') }}" method="POST">
-    <p>
-      <label>Email<label></br>
-      <input name="email" placeholder="Correo"/>
-    </p>
-    <p>
-      <label>Clave<label></br>
-      <input type="password" name="password" placeholder="Clave"/>
-    </p>
-    <p>
-      <label>Nombre<label></br>
-      <input name="first_name" placeholder="Nombre"/>
-    </p>
-    <p>
-      <label>Apellido<label></br>
-      <input name="last_name" placeholder="Apellido"/>
-    </p>
-    <p>
-      <input type="submit" value="Crear">
-      <button type="reset">Limpiar</button>
-    </p>
-  </form>
-  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+<div class="container mb-3 mt-5">
+ 
+  <div class="row justify-content-center">
+    <div>
+      <h1>Crear nuevo usuario</h1>
+    </div>
+  </div>
+    <div class="row justify-content-center"> 
+      <form action="{{ url_for('user_create') }}" method="POST">
+        <div class="form-group">
+          <label>username</label></br>
+          <input name="username" placeholder="username" required="true"/>
+        </div>
+        <div class="form-group">
+          <label>Email</label></br>
+          <input name="email" type="email" placeholder="Correo" required="true"/>
+        </div>
+        <div class="form-group">
+          <label>Clave</label></br>
+          <input type="password" name="password" placeholder="Clave" required="true"/>
+        </div>
+        <div class="form-group">
+          <label>Nombre</label></br>
+          <input name="first_name" placeholder="Nombre" required="true"/>
+        </div>
+        <div class="form-group">
+          <label>Apellido</label></br>
+          <input name="last_name" placeholder="Apellido" required="true"/>
+        </div>
+        <div>
+          <input type="submit" class="btn btn-success" value="Crear">
+          <button class="btn btn-warning" type="reset">Limpiar</button>
+          <a href="{{ url_for('user_index') }}" class="btn btn-primary">Volver</a>
+        </div>
+      </form>
+    </div>
+</div>
+
 {% endblock %}

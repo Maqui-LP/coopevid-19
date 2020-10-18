@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block navbar %}
+  {% include "navbar.html" %}
+{% endblock %}
+{% set config = getConfig() %}
+{% block content %}
+<div class="container bootstrap snippet">
+  <div class="justify-content-center">
+      <h1>Modificar La configuracion del sistema</h1>
+      <form action="{{url_for('configuracion_update')}}"" method="POST">
+        <div class="form-group">                    
+              <label for="username"><h4>Titulo</h4></label>
+              <input type="text" class="form-control" name="titulo" id="titulo" value="{{config.titulo}}" placeholder="Titulo" required="true"> 
+        </div>
+        <div class="form-group">                    
+              <label for="descripcion"><h4>Descripcion</h4></label>
+              <input type="text" class="form-control" name="descripcion" id="descripcion" value="{{config.descripcion}}" placeholder="descripcion" required="true"> 
+        </div>
+        <div class="form-group">                       
+              <label for="contacto"><h4>Contacto</h4></label>
+              <input type="email" class="form-control" name="contacto" id="contacto" value="{{config.contacto}}" placeholder="Ingresa un mail" required="true">        
+        </div>
+        <div class="form-group">     
+            <p>Mantenimiento</p>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="mantenimiento" id="mantenimiento" {% if config.mantenimiento  %} checked {% endif %}>
+                <label class="form-check-label" for="mantenimiento">
+                  Habilitado
+                </label>
+              </div>
+        </div>
+        <div class="form-group">     
+            <label for="paginacion"><h4>Paginacion</h4></label>
+            <input type="number" class="form-control" name="paginacion" id="paginacion" value="{{config.paginacion}}" placeholder="Paginacion" required="true"> 
+      </div>
+
+        <div class="form-group">
+                <br>
+                <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+        </div>
+      </form>
+      <a  href="{{ url_for('home') }}"  class="btn btn-secondary"> Volver</a>
+    </div>
+</div>
+{% endblock %}

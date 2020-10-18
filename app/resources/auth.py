@@ -1,6 +1,6 @@
 from flask import redirect, render_template, request, url_for, abort, session, flash
-from app.db import connection
 from app.models.user import User
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def login():
@@ -8,16 +8,22 @@ def login():
 
 
 def authenticate():
-    conn = connection()
-    params = request.form
-
-    user = User.find_by_email_and_pass(conn, params["email"], params["password"])
-
+    params = request.form.to_dict()
+    user = User.query.filter(User.email == params.get("email")).first()
+    
     if not user:
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))
+    
+    if not (check_password_hash(user.password, params.get('password'))):
+        flash("Usuario o clave incorrecto.")
+        return redirect(url_for("auth_login"))
+    if not user.activo == 1:
+        flash("Tu usuario se encuentra desactivado comunicate para mas información")
+        return redirect(url_for("auth_login"))
 
-    session["user"] = user["email"]
+    session["user"] = user.id
+
     flash("La sesión se inició correctamente.")
 
     return redirect(url_for("home"))

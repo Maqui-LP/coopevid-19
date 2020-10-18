@@ -3,10 +3,10 @@ class Issue(object):
     def all(cls, conn):
         sql = "SELECT * FROM issues"
 
-        cursor = conn.cursor()
-        cursor.execute(sql)
+        #cursor = conn.cursor()
+        #cursor.execute(sql)
 
-        return cursor.fetchall()
+        #return cursor.fetchall()
 
     @classmethod
     def create(cls, conn, data):
@@ -15,8 +15,8 @@ class Issue(object):
             VALUES (%s, %s, %s, %s)
         """
 
-        cursor = conn.cursor()
-        cursor.execute(sql, list(data.values()))
-        conn.commit()
+        #cursor = conn.cursor()
+        #cursor.execute(sql, list(data.values()))
+        #conn.commit()
 
-        return True
+        #return True
