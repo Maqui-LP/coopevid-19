@@ -16,9 +16,9 @@
   -->
   <div class="jumbotron">
     <h1 class="display-4">Bienvenido</h1>
-    <p class="lead">Esta pagina esta destinada a colaborar en la lucha contra el COVID-19</p>
+    <p class="lead"> {{config.descripcion}}</p>
     <hr class="my-4">
-    <p>Ante cualquier consulta o sugerencia puede contactarnos a COOPEVID@gmail.com</p>
+    <p>Ante cualquier consulta o sugerencia puede contactarnos a {{config.contacto}}</p>
   </div>
   {% if not is_authenticated(session) %}
   <div>
