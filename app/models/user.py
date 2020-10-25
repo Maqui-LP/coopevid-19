@@ -24,6 +24,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
     roles = db.relationship('Rol',
                             secondary=usuario_tiene_rol)
+    turnos = db.relationship('Turno', backref="users")
 
 
     def __init__(self, data):
