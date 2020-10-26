@@ -15,6 +15,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+
+CREATE DATABASE IF NOT EXISTS `proyecto` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `proyecto`;
 --
 -- Table structure for table `categories`
 --
@@ -54,12 +57,14 @@ CREATE TABLE `centros` (
   `closehour` time NOT NULL,
   `web` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL,
+  `address` varchar(255) NOT NULL,
   `lat` float NOT NULL,
   `long` float NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `phone` (`phone`),
   UNIQUE KEY `web` (`web`),
+  UNIQUE KEY `address` (`address`),
   UNIQUE KEY `lat` (`lat`),
   UNIQUE KEY `long` (`long`),
   CONSTRAINT `type_id` FOREIGN KEY (`id`) REFERENCES `tipo_centro` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
