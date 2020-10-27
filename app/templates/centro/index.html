@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block navbar %}
+  {% include "navbar.html" %}
+{% endblock %}
+<h1>Centros</h1>
+{% block content %}
+<div>
+  <a href="" class="btn btn-primary m-3 p-3 float-right">Buscar Centros</a>
+</div>
+<div>
+  <a href="{{ url_for('centro_new')}}" class="btn btn-primary m-3 p-3">Agregar Centro</a>
+</div>
+
+<div class="container mt-5">
+
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Nombre del centro</th>
+        <th scope="col">Direccion</th>
+        <th scope="col">Telefono</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for centro in centros %}
+    <tr>
+      <td>{{ centro.nombre }}</td>
+      <td>{{ centro.direccion }}</td>
+      <td>{{ centro.telefono }}</td>
+    </tr>      
+    {% endfor %}
+
+  </div>  
+
+  {% endblock %}
+
+      
