@@ -6,6 +6,7 @@ from config import config
 from app import db
 from app.resources import issue
 from app.resources import user
+from app.resources import centro
 from app.resources import auth
 from app.resources import rol
 from app.resources import configuracion
@@ -85,6 +86,12 @@ def create_app(environment="development"):
     #rutas para busqueda de usuarios
     app.add_url_rule("/usuarios/search", "search_users_page", user.searchUserPage)
     app.add_url_rule("/usuarios/search", "search_users", user.searchUsers, methods=["POST"])
+
+    #Rutas para centros
+    app.add_url_rule("/centros", "centro_index", centro.index)
+    app.add_url_rule("/centros", "centro_create", centro.create, methods=["POST"])
+    app.add_url_rule("/centros/nuevo", "centro_new", centro.new)
+
 
     # Rutas de Roles
     app.add_url_rule("/roles", "roles_index", rol.index)
