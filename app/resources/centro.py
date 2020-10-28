@@ -7,6 +7,7 @@ from app.helpers.form_validation import validateUser, validateUpdateUser
 from app.db_sqlalchemy import db_sqlalchemy
 from datetime import datetime
 from app.models.rol import Rol
+from app.models.centro import Centro
 from app.models.configuracion import Configuracion
 
 db = db_sqlalchemy
@@ -48,8 +49,14 @@ def create():
         abort(401)
 
     data = request.form.to_dict()
+    data['status'] = False
 
     for each in data:
         print(each)
 
+    nuevoCentro = Centro(data)
+
+    db.session.add(nuevoCentro)
+    db.session.commit()
+    
     return redirect(url_for("centro_index"))

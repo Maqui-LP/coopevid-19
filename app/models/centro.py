@@ -20,3 +20,19 @@ class Centro(db.Model):
     #TODO: agregar el protocolo con formato PDF y el tema del municipio 
     #el municipio no se si tenemos que crear una clase municipio en base 
     #a la api de la catedra o solo poner el String con el nombre
+
+    def __init__(self, data):
+        self.name = data['name']
+        self.phone = data['phone']
+        self.openHour = data['openHour']
+        self.closeHour = data['closeHour']
+        self.type_id = data['type_id']
+        self.web = data['web']
+        self.status = data['status']
+        self.address = data['address']
+        self.lat = data['lat']
+        self.long = data['long']
+
+    @staticmethod
+    def getAll():
+        return Centro.query.all()

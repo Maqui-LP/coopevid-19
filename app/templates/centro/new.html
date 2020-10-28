@@ -28,7 +28,7 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                     <label>Direcccion del centro</label></br>
-                    <input name="addres" class="form-control"  type="text" placeholder="Ingrese la direccion del centro de    ayuda"     required="true"/>
+                    <input name="address" class="form-control"  type="text" placeholder="Ingrese la direccion del centro de    ayuda"     required="true"/>
                 </div>
             </div>
             <div class="form-group col-md-6">
@@ -64,12 +64,12 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                   <label>Tipo de centro de ayuda</label></br>
-                  <select class="form-control" name="center_type" placeholder="Seleccione el tipo de       centro de ayuda" required="true">
-                    <option>Ropa</option>
-                    <option>Comida</option>
-                    <option>Muebles</option>
-                    <option>Higiene Personal</option>
-                    <option>Higiene del Hogar</option>
+                  <select class="form-control" name="type_id" placeholder="Seleccione el tipo de       centro de ayuda" required="true">
+                    <option value="1">Ropa</option>
+                    <option value="2">Comida</option>
+                    <option value="3">Muebles</option>
+                    <option value="4">Higiene Personal</option>
+                    <option value="5">Higiene del Hogar</option>
                   </select>
                 </div>
             </div>
@@ -80,11 +80,11 @@
                 <div class="form-group">
                     <label>Municipio</label></br>
                     <select name="municipio" class="form-control" placeholder="Seleccione el municipio del centro de ayuda"      required="true">
-                        <option>La Plata</option>
-                        <option>Ensenada</option>
-                        <option>Berisso</option>
-                        <option>Tolosa</option>
-                        <option>City Bell</option>
+                        <option value="1">La Plata</option>
+                        <option value="2">Ensenada</option>
+                        <option value="3">Berisso</option>
+                        <option value="4">Tolosa</option>
+                        <option value="5">City Bell</option>
                     </select>
                 </div>
             </div>
@@ -105,11 +105,19 @@
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    <label>Coordenadas</label></br>
-                    <input type="text" class="form-control" name="coordinates" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
+                    <label>Latitud</label></br>
+                    <input type="text" class="form-control" name="lat" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
                 </div>
             </div>
-
+        </div>
+        
+        <div>
+          <div class="form-group col-md-6">
+            <div class="form-group">
+                <label>Longitud</label></br>
+                <input type="text" class="form-control" name="long" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
+            </div>
+          </div>
         </div>
         
 

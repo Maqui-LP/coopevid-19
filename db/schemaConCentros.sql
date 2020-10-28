@@ -60,6 +60,7 @@ CREATE TABLE `centros` (
   `address` varchar(255) NOT NULL,
   `lat` float NOT NULL,
   `long` float NOT NULL,
+  `type_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `phone` (`phone`),
@@ -67,7 +68,7 @@ CREATE TABLE `centros` (
   UNIQUE KEY `address` (`address`),
   UNIQUE KEY `lat` (`lat`),
   UNIQUE KEY `long` (`long`),
-  CONSTRAINT `type_id` FOREIGN KEY (`id`) REFERENCES `tipo_centro` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `type_id` FOREIGN KEY (`type_id`) REFERENCES `tipo_centro` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
