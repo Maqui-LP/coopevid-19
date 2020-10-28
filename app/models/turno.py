@@ -10,7 +10,3 @@ class Turno(db.Model):
     horaInicio = db.Column(db.DateTime, nullable=False)
     userEmail = db.Column(db.String(255), nullable=False)
     userId = db.Column(db.Integer, db.ForeingKey('users.id'))
-
-    # No ponemos horaFin porque todos los turnos duran la misma cantidad de tiempo
-    # Guardo userEmail y userId porque userEmail es con el mail que pidió 
-    # el turno (puede cambiarse), el userId no cambia nunca
