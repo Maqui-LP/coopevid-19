@@ -2,6 +2,10 @@ from app.db_sqlalchemy import db_sqlalchemy
 from sqlalchemy.dialects.mysql import TIME
 db = db_sqlalchemy
 
+tipo_centro = db.Table('tipo_centro',
+    db.Column('id', db.Integer, db.ForeignKey('centros.type_id'))
+)
+
 class Centro(db.Model):
     __tablename__ = 'centros'
     id = db.Column(db.Integer, primary_key = True)
