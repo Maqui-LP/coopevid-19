@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block navbar %}
+  {% include "navbar.html" %}
+{% endblock %}
+{% block content %}
+<div class="container mb-3 mt-5">
+ 
+    <div class="text-center">
+        <div>
+          <h1>Crear nuevo Centro</h1>
+        </div>
+
+    </div>
+    
+    <div > 
+      <form action="{{ url_for('centro_create') }}" method="POST" autocomplete="off".>
+
+        <div class="form-group">
+            <label>Nombre del centro:</label></br>
+            <input name="name" class="form-control" type="text" placeholder="Ingrese el nombre del centro de ayuda"   required="true"/>
+        </div>
+        
+        <div class="form-row">    
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label>Direcccion del centro</label></br>
+                    <input name="address" class="form-control"  type="text" placeholder="Ingrese la direccion del centro de    ayuda"     required="true"/>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label>Telefono</label></br>
+                  <input name="phone" class="form-control" type="text" placeholder="Ingrese el numero de telefono del centro de ayuda" required="true"/>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label>Mail</label></br>
+                  <input name="mail" class="form-control" type="email" placeholder="Ingrese la direccion de correo electronico del centro de ayuda" required="true"/>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label>Horario de apertura:</label></br>
+                  <input type="time" class="form-control" name="openHour" placeholder="Ingrese el horario de apertura del centro de ayuda" required="true"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label>Horario de cierre:</label></br>
+                    <input type="time" class="form-control" name="closeHour" placeholder="Ingrese el horario de cierre del centro de ayuda" required="true"/>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label>Tipo de centro de ayuda</label></br>
+                  <select class="form-control" name="type_id" placeholder="Seleccione el tipo de       centro de ayuda" required="true">
+                    <option value="1">Ropa</option>
+                    <option value="2">Comida</option>
+                    <option value="3">Muebles</option>
+                    <option value="4">Higiene Personal</option>
+                    <option value="5">Higiene del Hogar</option>
+                  </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label>Municipio</label></br>
+                    <select name="municipio" class="form-control" placeholder="Seleccione el municipio del centro de ayuda"      required="true">
+                        <option value="1">La Plata</option>
+                        <option value="2">Ensenada</option>
+                        <option value="3">Berisso</option>
+                        <option value="4">Tolosa</option>
+                        <option value="5">City Bell</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label>Direcccion del sitio web:</label></br>
+                  <input name="web" class="form-control" placeholder="Ingrese la direccion del sitio web del centro de ayuda" required="true"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label>Protocolo de visita</label></br>
+                    <input type="file"  class="form-control form-control-file" name="visit_protocol" required="true"/>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label>Latitud</label></br>
+                    <input type="text" class="form-control" name="lat" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+          <div class="form-group col-md-6">
+            <div class="form-group">
+                <label>Longitud</label></br>
+                <input type="text" class="form-control" name="long" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
+            </div>
+          </div>
+        </div>
+        
+
+        <div>
+          <input type="submit" class="btn btn-success" value="Crear">
+          <button class="btn btn-warning" type="reset">Limpiar</button>
+          <a href="{{ url_for('centro_index') }}" class="btn btn-primary">Volver</a>
+        </div>
+      </form>
+    </div>
+    
+
+</div>
+
+{% endblock %}
