@@ -26,6 +26,9 @@ class Centro(db.Model):
     #a la api de la catedra o solo poner el String con el nombre
 
     def __init__(self, data):
+        print("+++++++++++++++++++++++++++++++++++++++++++++++")
+        print(f"{data['openHour']}")
+        print("+++++++++++++++++++++++++++++++++++++++++++++++")
         self.name = data['name']
         self.phone = data['phone']
         self.openHour = data['openHour']
@@ -36,6 +39,10 @@ class Centro(db.Model):
         self.address = data['address']
         self.lat = data['lat']
         self.long = data['long']
+        print("***********************************************")
+        print(f"{self.openHour}")
+        print(f"{type(self.openHour)}")
+        print("***********************************************")
 
     @staticmethod
     def getAll():

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Turnos{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block navbar %}
+  {% include "navbar.html" %}
+{% endblock %}
+<h1>Turnos</h1>
+{% block content %}
+<div>
+  <a href="" class="btn btn-primary m-3 p-3 float-right">Buscar Turno</a>
+</div>
+<div>
+  <a href="{{ url_for('turno_new')}}" class="btn btn-primary m-3 p-3">Agregar Turno</a>
+</div>
+
+<div class="container mt-5">
+
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Mail del usuario</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Hora</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for turno in turnos %}
+    <tr>
+      <td>{{ turno.userEmail }}</td>
+      <td>{{ turno.dia }}</td>
+      <td>{{ turno.horaInicio }}</td>
+    </tr>      
+    {% endfor %}
+
+  </div>  
+
+  {% endblock %}
+
+      
