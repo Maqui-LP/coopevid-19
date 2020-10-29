@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 from app.models.rol import Rol
 from app.models.configuracion import Configuracion
+from app.models.turno import Turno
 
 db = db_sqlalchemy
 

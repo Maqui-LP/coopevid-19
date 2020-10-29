@@ -10,4 +10,4 @@ class Turno(db.Model):
     dia = db.Column(db.Date, unique=False, nullable=False)
     horaInicio = db.Column(TIME(), unique= False, nullable=False)
     userEmail = db.Column(db.String(255), nullable=False)
-    userId = db.Column(db.Integer, db.ForeingKey('users.id'))
+    userId = db.Column(db.Integer, db.ForeignKey('users.id'))
