@@ -19,8 +19,8 @@ class Turno(db.Model):
         self.horaInicio = data['hora']
         self.userEmail = data['mail']
         self.userId = data['userId']
-        self.centroId = data['centroId']
-        self.centroNombre = data['centroNombre']
+        #self.centroId = data['centroId']
+        #self.centroNombre = data['centroNombre']
     
     @staticmethod
     def getAll():
