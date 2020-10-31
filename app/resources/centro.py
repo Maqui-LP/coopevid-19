@@ -57,3 +57,18 @@ def create():
     db.session.commit()
     
     return redirect(url_for("centro_index"))
+
+def delete():
+    #if not granted("centro_destroy"):
+    #    abort(403)
+
+    centro_id = request.form.to_dict()
+    centro = Centro.getCentroById(centro_id["centro_id"])
+    if(centro is None):
+        flash("El centro no existe")
+        return redirect(url_for("centro_index"))
+
+    db.session.delete(centro)
+    db.session.commit()
+
+    return redirect(url_for("centro_index"))
