@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 from app.models.rol import Rol
 from app.models.configuracion import Configuracion
+from app.models.turno import Turno
 
 db = db_sqlalchemy
 
@@ -24,6 +25,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
     roles = db.relationship('Rol',
                             secondary=usuario_tiene_rol)
+    turnos = db.relationship('Turno', backref="users")
 
 
     def __init__(self, data):

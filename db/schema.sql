@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 18-10-2020 a las 01:13:49
+-- Tiempo de generación: 29-10-2020 a las 15:40:50
 -- Versión del servidor: 10.5.6-MariaDB-1:10.5.6+maria~focal
 -- Versión de PHP: 7.4.11
 
@@ -46,6 +46,27 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `centros`
+--
+
+DROP TABLE IF EXISTS `centros`;
+CREATE TABLE `centros` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `openhour` time NOT NULL,
+  `closehour` time NOT NULL,
+  `web` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `lat` float NOT NULL,
+  `long` float NOT NULL,
+  `type_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `configuracion`
 --
 
@@ -64,7 +85,12 @@ CREATE TABLE `configuracion` (
 --
 
 INSERT INTO `configuracion` (`id`, `titulo`, `mantenimiento`, `descripcion`, `contacto`, `paginacion`) VALUES
-(1, 'Donaciones COVID-19', 0, 'Esta pagina esta destinada a colaborar en la lucha contra el COVID-19', 'contacto@coopevid.com', 5);
+(1, 'Donaciones COVID-19', 0, 'Esta pagina esta destinada a colaborar en la lucha contra el COVID-19', 'contacto@coopevid.com', 5),
+(3, 'nueva configuracion', 1, 'deshabilitando sitio', 'un mail', 12),
+(4, 'asdas', 1, 'dasdas', 'dasdda@sadasdas', 12),
+(5, 'ddsa', 0, 'dasdsa', 'das@dasd', 12),
+(6, 'dasds', 1, 'dasd', 'das@dsa', 12),
+(7, 'dasds', 0, 'dasd', 'das@dsa.com', 12);
 
 -- --------------------------------------------------------
 
@@ -77,8 +103,8 @@ CREATE TABLE `issues` (
   `id` int(11) NOT NULL,
   `email` varchar(30) DEFAULT NULL,
   `description` text DEFAULT NULL,
-  `category_id` int(10) NOT NULL,
-  `status_id` int(10) NOT NULL
+  `category_id` int(11) NOT NULL,
+  `status_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -212,6 +238,44 @@ INSERT INTO `statuses` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tipo_centro`
+--
+
+DROP TABLE IF EXISTS `tipo_centro`;
+CREATE TABLE `tipo_centro` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tipo_centro`
+--
+
+INSERT INTO `tipo_centro` (`id`, `name`) VALUES
+(2, 'Comida'),
+(5, 'Higiene del Hogar'),
+(4, 'Higiene Personal'),
+(3, 'Muebles'),
+(1, 'Ropa');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `turno`
+--
+
+DROP TABLE IF EXISTS `turno`;
+CREATE TABLE `turno` (
+  `id` int(11) NOT NULL,
+  `dia` date NOT NULL,
+  `horaInicio` time NOT NULL,
+  `userEmail` varchar(255) NOT NULL,
+  `userId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -234,8 +298,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `first_name`, `last_name`, `activo`, `updated_at`, `created_at`) VALUES
 (1, 'admin', 'admin@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Admin', 'Fulanito', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'operador', 'operador@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Operador', 'Fulanito', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'nadie', 'nadie@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Cosme', 'Fulanito', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(2, 'operador', 'operador@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Operador', 'Fulanito', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -266,6 +329,19 @@ INSERT INTO `usuario_tiene_rol` (`usuario_id`, `rol_id`) VALUES
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `centros`
+--
+ALTER TABLE `centros`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `phone` (`phone`),
+  ADD UNIQUE KEY `web` (`web`),
+  ADD UNIQUE KEY `address` (`address`),
+  ADD UNIQUE KEY `lat` (`lat`),
+  ADD UNIQUE KEY `long` (`long`),
+  ADD KEY `type_id` (`type_id`);
 
 --
 -- Indices de la tabla `configuracion`
@@ -309,6 +385,20 @@ ALTER TABLE `statuses`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `tipo_centro`
+--
+ALTER TABLE `tipo_centro`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indices de la tabla `turno`
+--
+ALTER TABLE `turno`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userId` (`userId`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -334,10 +424,16 @@ ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `centros`
+--
+ALTER TABLE `centros`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `configuracion`
 --
 ALTER TABLE `configuracion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `issues`
@@ -364,6 +460,18 @@ ALTER TABLE `statuses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT de la tabla `tipo_centro`
+--
+ALTER TABLE `tipo_centro`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `turno`
+--
+ALTER TABLE `turno`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
@@ -372,6 +480,12 @@ ALTER TABLE `users`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `centros`
+--
+ALTER TABLE `centros`
+  ADD CONSTRAINT `type_id` FOREIGN KEY (`type_id`) REFERENCES `tipo_centro` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `issues`
@@ -386,6 +500,12 @@ ALTER TABLE `issues`
 ALTER TABLE `rol_tiene_permiso`
   ADD CONSTRAINT `rol_tiene_permiso_ibfk_1` FOREIGN KEY (`permiso_id`) REFERENCES `permiso` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `rol_tiene_permiso_ibfk_2` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `turno`
+--
+ALTER TABLE `turno`
+  ADD CONSTRAINT `turno_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 
 --
 -- Filtros para la tabla `usuario_tiene_rol`
