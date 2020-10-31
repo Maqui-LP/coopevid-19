@@ -37,7 +37,10 @@
         <a href="#" class="btn btn-success m-1 p-2">Ver</a>
       </td>
       <td>
-        <a href="#" class="btn btn-danger m-1 p-2">Eliminar</a>
+        <form action="{{url_for('centro_delete')}}" method=post>   
+          <input type=hidden value="{{ centro.id }}" name="centro_id"/>   
+          <input class="btn btn-danger" type=submit value="Eliminar"/> 
+        </form>        
       </td>
     </tr>      
     {% endfor %}
