@@ -83,6 +83,7 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/update", "user_update", user.update, methods=["POST"])
     app.add_url_rule("/usuarios/editar", "user_edit", user.edit)
     app.add_url_rule("/usuarios/perfil", "user_perfil", user.perfil)
+    app.add_url_rule("/usuarios/perfil", "user_perfilUpdate", user.perfilUpdate, methods=["POST"])
     app.add_url_rule("/usuarios/toogleUser", "toogle_user_activity", user.toogleUserActivity, methods=["POST"])
     #rutas para busqueda de usuarios
     app.add_url_rule("/usuarios/search", "search_users_page", user.searchUserPage)
