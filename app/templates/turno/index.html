@@ -20,6 +20,7 @@
   <table class="table">
     <thead class="thead-dark">
       <tr>
+        <th scope="col">Centro de Ayuda</th>
         <th scope="col">Mail del usuario</th>
         <th scope="col">Fecha</th>
         <th scope="col">Hora</th>
@@ -28,6 +29,7 @@
     <tbody>
     {% for turno in turnos %}
     <tr>
+      <td>{{turno.centroNombre}}</td>
       <td>{{ turno.userEmail }}</td>
       <td>{{ turno.dia }}</td>
       <td>{{ turno.horaInicio }}</td>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 29-10-2020 a las 15:40:50
+-- Tiempo de generación: 31-10-2020 a las 21:46:26
 -- Versión del servidor: 10.5.6-MariaDB-1:10.5.6+maria~focal
 -- Versión de PHP: 7.4.11
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `proyecto`
 --
-CREATE DATABASE IF NOT EXISTS `proyecto` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `proyecto`;
 
 -- --------------------------------------------------------
 
@@ -270,7 +268,9 @@ CREATE TABLE `turno` (
   `dia` date NOT NULL,
   `horaInicio` time NOT NULL,
   `userEmail` varchar(255) NOT NULL,
-  `userId` int(11) DEFAULT NULL
+  `userId` int(11) DEFAULT NULL,
+  `centroId` int(11) NOT NULL,
+  `centroNombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -396,7 +396,8 @@ ALTER TABLE `tipo_centro`
 --
 ALTER TABLE `turno`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `userId` (`userId`);
+  ADD KEY `userId` (`userId`),
+  ADD KEY `centroId` (`centroId`);
 
 --
 -- Indices de la tabla `users`
@@ -469,7 +470,7 @@ ALTER TABLE `tipo_centro`
 -- AUTO_INCREMENT de la tabla `turno`
 --
 ALTER TABLE `turno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -505,7 +506,8 @@ ALTER TABLE `rol_tiene_permiso`
 -- Filtros para la tabla `turno`
 --
 ALTER TABLE `turno`
-  ADD CONSTRAINT `turno_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `turno_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `turno_ibfk_2` FOREIGN KEY (`centroId`) REFERENCES `centros` (`id`);
 
 --
 -- Filtros para la tabla `usuario_tiene_rol`
