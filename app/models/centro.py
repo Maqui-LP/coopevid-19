@@ -1,5 +1,7 @@
 from app.db_sqlalchemy import db_sqlalchemy
 from sqlalchemy.dialects.mysql import TIME
+from app.models.configuracion import Configuracion
+
 db = db_sqlalchemy
 
 tipo_centro = db.Table('tipo_centro',
@@ -40,3 +42,7 @@ class Centro(db.Model):
     @staticmethod
     def getAll():
         return Centro.query.all()
+
+    @staticmethod
+    def getAllPaginado(numero_pagina):
+        return Centro.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
