@@ -85,7 +85,7 @@ class User(db.Model):
 
     @staticmethod
     def getByNameLastNameAndState(nombre, apellido, estado):
-        return User.query.filter(User.first_name.like(nombre), User.first_name.like(nombre), User.activo == estado)
+        return User.query.filter(User.first_name.like(nombre), User.last_name.like(apellido), User.activo == estado)
 
     @staticmethod
     def getAllPaginado(numero_pagina):
