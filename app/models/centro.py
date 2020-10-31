@@ -1,5 +1,6 @@
 from app.db_sqlalchemy import db_sqlalchemy
 from sqlalchemy.dialects.mysql import TIME
+from app.models.turno import Turno
 db = db_sqlalchemy
 
 tipo_centro = db.Table('tipo_centro',
@@ -19,16 +20,13 @@ class Centro(db.Model):
     address = db.Column(db.String, nullable=False)
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
-    
+    turnos = db.relationship('Turno', backref="centros")
 
     #TODO: agregar el protocolo con formato PDF y el tema del municipio 
     #el municipio no se si tenemos que crear una clase municipio en base 
     #a la api de la catedra o solo poner el String con el nombre
 
     def __init__(self, data):
-        print("+++++++++++++++++++++++++++++++++++++++++++++++")
-        print(f"{data['openHour']}")
-        print("+++++++++++++++++++++++++++++++++++++++++++++++")
         self.name = data['name']
         self.phone = data['phone']
         self.openHour = data['openHour']
@@ -39,11 +37,11 @@ class Centro(db.Model):
         self.address = data['address']
         self.lat = data['lat']
         self.long = data['long']
-        print("***********************************************")
-        print(f"{self.openHour}")
-        print(f"{type(self.openHour)}")
-        print("***********************************************")
 
     @staticmethod
     def getAll():
         return Centro.query.all()
+    
+    @staticmethod
+    def getCentroById(centro_id):
+        return Centro.query.filter(Centro.id == centro_id).first()

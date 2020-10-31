@@ -40,17 +40,18 @@ def create():
         abort(401)
 
     data = request.form.to_dict()
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(f"{type(data['hora'])}")
-    print(f"{data['hora']}")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    user = User.getUserByEmail
+    user = User.getUserByEmail(data['mail'])
     if not user:
         flash("No existe un usuario con dicho email")
-        return redirec(url_for("turno_new"))
-
+        return redirect(url_for("turno_new"))
     data['userId'] = User.getUserByEmail(data['mail']).id
-
+    """
+    centro = Centro.getCentroById(data['centroId'])
+    if not centro:
+        flash("No existe dicho centro")
+        return redirect(url_for("turno_new"))
+    data['centroNombre'] = centro.name
+    """
     nuevoTurno = Turno(data)
 
     db.session.add(nuevoTurno)
