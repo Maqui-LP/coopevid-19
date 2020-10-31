@@ -23,6 +23,8 @@
         <th scope="col">Nombre del centro</th>
         <th scope="col">Direccion</th>
         <th scope="col">Telefono</th>
+        <th scope="col">Detalle</th>
+        <th scope="col">Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -31,6 +33,12 @@
       <td>{{ centro.name }}</td>
       <td>{{ centro.address }}</td>
       <td>{{ centro.phone }}</td>
+      <td>
+        <a href="#" class="btn btn-primary m-1 p-2">Ver</a>
+      </td>
+      <td>
+        <a href="#" class="btn btn-primary m-1 p-2">Eliminar</a>
+      </td>
     </tr>      
     {% endfor %}
 
