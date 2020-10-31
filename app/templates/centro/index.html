@@ -34,15 +34,25 @@
       <td>{{ centro.address }}</td>
       <td>{{ centro.phone }}</td>
       <td>
-        <a href="#" class="btn btn-primary m-1 p-2">Ver</a>
+        <a href="#" class="btn btn-success m-1 p-2">Ver</a>
       </td>
       <td>
-        <a href="#" class="btn btn-primary m-1 p-2">Eliminar</a>
+        <a href="#" class="btn btn-danger m-1 p-2">Eliminar</a>
       </td>
     </tr>      
     {% endfor %}
-
   </div>  
+
+    <!--Paginacion-->  
+    {% if cantidad_paginas %}
+    <div aria-label="Page navigation">
+      <ul class="pagination ">
+        {% for each in range(1, cantidad_paginas + 2): %}
+        <li class="page-item"><a class="page-link" href="{{url_for('centro_index', numero_pagina=each)}}">{{each}}</a></li>
+        {% endfor %}      
+      </ul>
+    </div>  
+    {% endif %}
 
   {% endblock %}
 

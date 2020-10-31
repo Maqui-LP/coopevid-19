@@ -27,9 +27,19 @@ def index():
     if not authenticated(session):
         abort(401)
 
-    centros = Centro.getAll()
+    numero_pagina = request.args.get("numero_pagina")
+        
+    if numero_pagina:
+        numero_pagina = int(numero_pagina) 
 
-    return render_template("centro/index.html", centros=centros)
+    centros_totales = Centro.getAll()
+
+    centros = Centro.getAllPaginado(numero_pagina)
+
+    cantidad_paginas = int((len(centros_totales) - 1) / Configuracion.getConfiguracion().paginacion)
+    
+
+    return render_template("centro/index.html", centros=centros, cantidad_paginas=cantidad_paginas )
 
 def create():
     if not authenticated(session):
