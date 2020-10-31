@@ -1,5 +1,6 @@
 from app.db_sqlalchemy import db_sqlalchemy
 from sqlalchemy.dialects.mysql import TIME
+from app.models.turno import Turno
 from app.models.configuracion import Configuracion
 
 db = db_sqlalchemy
@@ -21,7 +22,7 @@ class Centro(db.Model):
     address = db.Column(db.String, nullable=False)
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
-    
+    #turnos = db.relationship('Turno', backref="centros")
 
     #TODO: agregar el protocolo con formato PDF y el tema del municipio 
     #el municipio no se si tenemos que crear una clase municipio en base 
@@ -42,6 +43,10 @@ class Centro(db.Model):
     @staticmethod
     def getAll():
         return Centro.query.all()
+    
+    @staticmethod
+    def getCentroById(centro_id):
+        return Centro.query.filter(Centro.id == centro_id).first()
 
     @staticmethod
     def getAllPaginado(numero_pagina):

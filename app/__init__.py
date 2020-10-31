@@ -7,6 +7,7 @@ from app import db
 from app.resources import issue
 from app.resources import user
 from app.resources import centro
+from app.resources import turno
 from app.resources import auth
 from app.resources import rol
 from app.resources import configuracion
@@ -93,6 +94,10 @@ def create_app(environment="development"):
     app.add_url_rule("/centros/nuevo", "centro_new", centro.new)
     app.add_url_rule("/centros/delete", "centro_delete", centro.delete , methods=["POST"])
 
+    # Rutas para Turnos 
+    app.add_url_rule("/turnos", "turno_index", turno.index)
+    app.add_url_rule("/turnos", "turno_create", turno.create, methods=["POST"])
+    app.add_url_rule("/turnos/nuevo", "turno_new", turno.new)
 
     # Rutas de Roles
     app.add_url_rule("/roles", "roles_index", rol.index)
