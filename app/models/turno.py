@@ -1,5 +1,5 @@
 from app.db_sqlalchemy import db_sqlalchemy
-from datetime import date
+from datetime import date, datetime, timedelta
 from sqlalchemy.dialects.mysql import TIME
 
 db = db_sqlalchemy
@@ -30,3 +30,8 @@ class Turno(db.Model):
     def getTurnoByHoraFechaCentro(hora, fecha, centro):
         return Turno.query.filter(Turno.dia == fecha, Turno.horaInicio == hora, Turno.centroId == centro).first()
     
+    @staticmethod
+    def getDailyList():
+        today = date.today()
+        nextDay = today + timedelta(days=2)
+        return Turno.query.filter(Turno.dia >= today, Turno.dia <= nextDay).order_by(Turno.dia, Turno.horaInicio)
