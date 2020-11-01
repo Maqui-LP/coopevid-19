@@ -52,6 +52,7 @@ CREATE TABLE `centros` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
+  `mail` varchar(255) NOT NULL,
   `openhour` time NOT NULL,
   `closehour` time NOT NULL,
   `web` varchar(255) NOT NULL,
@@ -66,9 +67,9 @@ CREATE TABLE `centros` (
 -- Volcado de datos para la tabla `centros`
 --
 
-INSERT INTO `centros` (`id`, `name`, `phone`, `openhour`, `closehour`, `web`, `status`, `address`, `lat`, `long`, `type_id`) VALUES
-(5, 'Casita', '2932474861', '08:00:00', '23:00:00', 'www.casita.com', 0, 'Diagonal 79 957', 123, 321, 2),
-(6, 'Otro', '457246715', '01:00:00', '00:00:00', 'www.cadas.com', 0, 'sad 2', 15, 45, 1);
+INSERT INTO `centros` (`id`, `name`, `phone`, `mail`, `openhour`, `closehour`, `web`, `status`, `address`, `lat`, `long`, `type_id`) VALUES
+(5, 'Casita', '2932474861', 'casita@gmail.com', '08:00:00', '23:00:00', 'www.casita.com', 0, 'Diagonal 79 957', 123, 321, 2),
+(6, 'Otro', '457246715', 'otro@gmail.com','01:00:00', '00:00:00', 'www.cadas.com', 0, 'sad 2', 15, 45, 1);
 
 -- --------------------------------------------------------
 
