@@ -9,10 +9,9 @@ from datetime import datetime
 from app.models.rol import Rol
 from app.models.centro import Centro
 from app.models.configuracion import Configuracion
+from app.helpers.form_validation import validateCentro
 
 db = db_sqlalchemy
-
-
 
 def new():
     if not authenticated(session):
@@ -46,10 +45,13 @@ def create():
         abort(401)
 
     data = request.form.to_dict()
-    data['status'] = False
 
-    for each in data:
-        print(each)
+    error = validateCentro(data)
+    if error:
+        flash(error)
+        return redirect(url_for("centro_new"))
+
+    data['status'] = False
 
     nuevoCentro = Centro(data)
 
