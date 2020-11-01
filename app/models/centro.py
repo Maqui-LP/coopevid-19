@@ -14,6 +14,7 @@ class Centro(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(255), unique=True, nullable=False)
     phone= db.Column(db.String(255),unique=True,nullable=False)
+    mail = db.Column(db.String(255), unique=True, nullable = False)
     openHour= db.Column(TIME(), unique=False, nullable=False)
     closeHour= db.Column(TIME(), unique=False, nullable=False)
     type_id= db.Column(db.Integer, db.ForeignKey('tipo_centro.id'), nullable=False)
@@ -31,6 +32,7 @@ class Centro(db.Model):
     def __init__(self, data):
         self.name = data['name']
         self.phone = data['phone']
+        self.mail = data['mail']
         self.openHour = data['openHour']
         self.closeHour = data['closeHour']
         self.type_id = data['type_id']
