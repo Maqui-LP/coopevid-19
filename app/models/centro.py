@@ -52,6 +52,3 @@ class Centro(db.Model):
     def getAllPaginado(numero_pagina):
         return Centro.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
 
-    @staticmethod
-    def getCentroById(centro_id):
-        return Centro.query.filter(Centro.id == centro_id).first()
