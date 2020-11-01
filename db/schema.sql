@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 31-10-2020 a las 23:37:04
+-- Tiempo de generación: 01-11-2020 a las 22:15:43
 -- Versión del servidor: 10.5.6-MariaDB-1:10.5.6+maria~focal
 -- Versión de PHP: 7.4.11
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `proyecto`
 --
+CREATE DATABASE IF NOT EXISTS `proyecto` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `proyecto`;
 
 -- --------------------------------------------------------
 
@@ -69,7 +71,7 @@ CREATE TABLE `centros` (
 
 INSERT INTO `centros` (`id`, `name`, `phone`, `mail`, `openhour`, `closehour`, `web`, `status`, `address`, `lat`, `long`, `type_id`) VALUES
 (5, 'Casita', '2932474861', 'casita@gmail.com', '08:00:00', '23:00:00', 'www.casita.com', 0, 'Diagonal 79 957', 123, 321, 2),
-(6, 'Otro', '457246715', 'otro@gmail.com','01:00:00', '00:00:00', 'www.cadas.com', 0, 'sad 2', 15, 45, 1);
+(6, 'Otro', '457246715', 'otro@gmail.com', '01:00:00', '00:00:00', 'www.cadas.com', 0, 'sad 2', 15, 45, 1);
 
 -- --------------------------------------------------------
 
@@ -295,7 +297,10 @@ CREATE TABLE `turno` (
 --
 
 INSERT INTO `turno` (`id`, `dia`, `horaInicio`, `userEmail`, `userId`, `centroId`, `centroNombre`) VALUES
-(2, '2020-11-02', '09:00:00', 'admin@coopevid.com', 1, 5, 'Casita');
+(2, '2020-11-02', '09:00:00', 'admin@coopevid.com', 1, 5, 'Casita'),
+(3, '2020-11-03', '10:00:00', 'admin@coopevid.com', 1, 5, 'Casita'),
+(4, '2020-11-10', '09:00:00', 'admin@coopevid.com', 1, 5, 'Casita'),
+(5, '2020-11-03', '09:00:00', 'operador@coopevid.com', 2, 5, 'Casita');
 
 -- --------------------------------------------------------
 
@@ -494,7 +499,7 @@ ALTER TABLE `tipo_centro`
 -- AUTO_INCREMENT de la tabla `turno`
 --
 ALTER TABLE `turno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `users`

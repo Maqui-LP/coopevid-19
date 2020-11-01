@@ -31,7 +31,7 @@ def index():
     if not authenticated(session):
         abort(401)
 
-    turnos = Turno.getAll()
+    turnos = Turno.getDailyList()
 
     return render_template("turno/index.html", turnos=turnos)
 
