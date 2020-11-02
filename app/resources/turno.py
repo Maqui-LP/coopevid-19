@@ -20,7 +20,7 @@ def new():
     if not authenticated(session):
         abort(401)
 
-    if not granted("usuario_new"):
+    if not granted("turno_new"):
         abort(403)
 
     centros= Centro.getAll()
@@ -30,6 +30,9 @@ def new():
 def index():
     if not authenticated(session):
         abort(401)
+
+    if not granted("turno_index"):
+        abort(403)
 
     turnos = Turno.getDailyList()
 
