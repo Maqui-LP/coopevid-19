@@ -37,13 +37,12 @@
                   </div>
                   <div class="col-xs-6">
                     <label for="email"><h4>Correo</h4></label>
-                      <input type="email" class="form-control" value="{{user.email}}" name="email" id="email" placeholder="tu_email@email.com">
-                    </div>
+                    <input type="email" class="form-control" value="{{user.email}}" name="email" id="email" placeholder="tu_email@email.com">
                   </div>
                   <div class="col-xs-6">
                     <label for="roles"><h4>Roles</h4></label>
                     {% for rol in user.roles %}
-                        <input type="text" class="form-control" value="{{rol.nombre}}"  id="rol" placeholder="roles">
+                      <p>{{rol.nombre}}</p>
                     {% endfor %}
                   </div>
                   <div class="form-group">
