@@ -138,7 +138,8 @@
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
 integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
 crossorigin=""></script>
-<script>
+<script src="{{url_for('static', filename='js/map.js')}}">
+  /**
   //creo el mapa con coordenada inicial plaza moreno
   let myMap = L.map('myMap').setView([ -34.9206722, -57.9561499],13)
   //variable para la marca
@@ -168,6 +169,6 @@ crossorigin=""></script>
       maxZoom:15
   }).addTo(myMap)
 
-
+**/
 </script>
 {% endblock %}
