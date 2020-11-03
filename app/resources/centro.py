@@ -23,7 +23,7 @@ def new():
     if not authenticated(session):
         abort(401)
 
-    if not granted("centro_new"):
+    if not granted("centro_create"):
         abort(403)
 
     return render_template("centro/new.html")
