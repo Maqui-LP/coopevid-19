@@ -66,3 +66,18 @@ def create():
     db.session.commit()
     
     return redirect(url_for("turno_index"))
+
+def delete():
+    if not granted("turno_destroy"):
+        abort(403)
+
+    turno_id = request.form.to_dict()
+    turno = Turno.getTurnoById(turno_id["turno_id"])
+    if(turno is None):
+        flash("El turno no existe")
+        return redirect(url_for("turno_index"))
+
+    db.session.delete(turno)
+    db.session.commit()
+
+    return redirect(url_for("turno_index"))
