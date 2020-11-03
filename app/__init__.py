@@ -24,6 +24,9 @@ def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
     
+    #Definicion de path de archivos estaticos
+    #app.config['CENTROS_PDF'] = '/media/pdfs'
+
     #Bootstrap
     #Bootstrap(app)
     

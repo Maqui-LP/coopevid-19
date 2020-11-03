@@ -10,8 +10,14 @@ from app.models.rol import Rol
 from app.models.centro import Centro
 from app.models.configuracion import Configuracion
 from app.helpers.form_validation import validateCentro
+from werkzeug.utils import secure_filename
+import app
+import random
+import os
 
 db = db_sqlalchemy
+
+MEDIA_PATH = './app/media/pdfs'
 
 def new():
     if not authenticated(session):
@@ -36,22 +42,32 @@ def index():
     centros = Centro.getAllPaginado(numero_pagina)
 
     cantidad_paginas = int((len(centros_totales) - 1) / Configuracion.getConfiguracion().paginacion)
-    
 
     return render_template("centro/index.html", centros=centros, cantidad_paginas=cantidad_paginas )
 
 def create():
     if not authenticated(session):
         abort(401)
-
+    
     data = request.form.to_dict()
 
+    archive = request.files['visit_protocol']
+
+    if not archive or archive.filename == '':
+        flash("Archivo Invalido")
+        exit(0)
+
+    filename = secure_filename(archive.filename)
+    filename = f"{filename}_{random.randint(1000,9999)}.pdf"
+    
     error = validateCentro(data)
     if error:
         flash(error)
         return redirect(url_for("centro_new"))
 
     data['status'] = False
+
+    archive.save(os.path.join(MEDIA_PATH, filename))
 
     nuevoCentro = Centro(data)
 
