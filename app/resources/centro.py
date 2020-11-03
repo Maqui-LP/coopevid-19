@@ -23,7 +23,7 @@ def new():
     if not authenticated(session):
         abort(401)
 
-    if not granted("usuario_new"):
+    if not granted("centro_new"):
         abort(403)
 
     return render_template("centro/new.html")
@@ -31,6 +31,9 @@ def new():
 def index():
     if not authenticated(session):
         abort(401)
+
+    if not granted("centro_index"):
+        abort(403)
 
     numero_pagina = request.args.get("numero_pagina")
         
@@ -91,8 +94,8 @@ def create():
     return redirect(url_for("centro_index"))
 
 def delete():
-    #if not granted("centro_destroy"):
-    #    abort(403)
+    if not granted("centro_destroy"):
+        abort(403)
 
     centro_id = request.form.to_dict()
     centro = Centro.getCentroById(centro_id["centro_id"])

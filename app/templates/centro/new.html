@@ -2,6 +2,9 @@
 {% block title %}Centros{% endblock %}
 {% block head %}
   {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
 {% endblock %}
 {% block navbar %}
   {% include "navbar.html" %}
@@ -106,7 +109,7 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                     <label>Latitud</label></br>
-                    <input type="text" class="form-control" name="lat" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
+                    <input type="text" id="lat" class="form-control" name="lat" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
                 </div>
             </div>
         </div>
@@ -115,12 +118,15 @@
           <div class="form-group col-md-6">
             <div class="form-group">
                 <label>Longitud</label></br>
-                <input type="text" class="form-control" name="long" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
+                <input type="text" id="long" class="form-control" name="long" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
             </div>
           </div>
         </div>
         
         </div>
+
+        <div id="myMap" class="mb-3" style="height: 400px; width: 600px; position: relative;"></div>
+
 
         <div>
           <input type="submit" class="btn btn-success" value="Crear">
@@ -132,5 +138,39 @@
     
 
 </div>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+crossorigin=""></script>
+<script>
+  //creo el mapa con coordenada inicial plaza moreno
+  let myMap = L.map('myMap').setView([ -34.9206722, -57.9561499],13)
+  //variable para la marca
+  let marker;
+  //link al template del mapa sacado de ngx-leaflet
+  const urlOpenLayers = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
+  function onMapClick(e){
+    //alert("hiciste click en: " + e.latlng);
+    //obtengo lat-long del evento
+    const lat = e.latlng.lat;
+    const long = e.latlng.lng;
+    //si ya hay marcador lo elimino para no tener muchos al mismo tiempo
+    if(marker){
+      myMap.removeLayer(marker);
+    }
+    //genero el marcador y seteo el popup con la lat lng
+    marker = L.marker([lat,long],{draggable:true}).bindPopup(e.latlng.toString()).openPopup().addTo(myMap);
+    document.getElementById("lat").value= lat;
+    document.getElementById("long").value = long;
+  }
+  
+  myMap.on('click', onMapClick);
+
+  //agrgo el layer al div
+  L.tileLayer(urlOpenLayers,{
+      maxZoom:15
+  }).addTo(myMap)
+
+
+</script>
 {% endblock %}

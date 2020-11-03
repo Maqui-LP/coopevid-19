@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 31-10-2020 a las 23:37:04
+-- Tiempo de generación: 02-11-2020 a las 22:09:49
 -- Versión del servidor: 10.5.6-MariaDB-1:10.5.6+maria~focal
 -- Versión de PHP: 7.4.11
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `proyecto`
 --
+CREATE DATABASE IF NOT EXISTS `proyecto` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `proyecto`;
 
 -- --------------------------------------------------------
 
@@ -70,7 +72,7 @@ CREATE TABLE `centros` (
 
 INSERT INTO `centros` (`id`, `name`, `phone`, `mail`, `openhour`, `closehour`, `web`, `status`, `address`, `lat`, `long`, `type_id`) VALUES
 (5, 'Casita', '2932474861', 'casita@gmail.com', '08:00:00', '23:00:00', 'www.casita.com', 0, 'Diagonal 79 957', 123, 321, 2),
-(6, 'Otro', '457246715', 'otro@gmail.com','01:00:00', '00:00:00', 'www.cadas.com', 0, 'sad 2', 15, 45, 1);
+(6, 'Otro', '457246715', 'otro@gmail.com', '01:00:00', '00:00:00', 'www.cadas.com', 0, 'sad 2', 15, 45, 1);
 
 -- --------------------------------------------------------
 
@@ -152,6 +154,11 @@ INSERT INTO `permiso` (`id`, `nombre`) VALUES
 (12, 'categoria_new'),
 (15, 'categoria_show'),
 (14, 'categoria_update'),
+(26, 'centro_create'),
+(27, 'centro_destroy'),
+(23, 'centro_index'),
+(24, 'centro_show'),
+(25, 'centro_update'),
 (21, 'configuracion_update'),
 (18, 'issue_destroy'),
 (16, 'issue_index'),
@@ -164,6 +171,11 @@ INSERT INTO `permiso` (`id`, `nombre`) VALUES
 (7, 'rol_new'),
 (10, 'rol_show'),
 (9, 'rol_update'),
+(31, 'turno_create'),
+(32, 'turno_destroy'),
+(28, 'turno_index'),
+(29, 'turno_show'),
+(30, 'turno_update'),
 (3, 'usuario_destroy'),
 (1, 'usuario_index'),
 (2, 'usuario_new'),
@@ -228,7 +240,26 @@ INSERT INTO `rol_tiene_permiso` (`rol_id`, `permiso_id`) VALUES
 (1, 19),
 (1, 20),
 (1, 21),
-(1, 22);
+(1, 22),
+(1, 23),
+(1, 24),
+(1, 25),
+(1, 26),
+(1, 27),
+(1, 28),
+(1, 29),
+(1, 30),
+(1, 31),
+(1, 32),
+(2, 23),
+(2, 24),
+(2, 25),
+(2, 26),
+(2, 28),
+(2, 29),
+(2, 30),
+(2, 31),
+(2, 32);
 
 -- --------------------------------------------------------
 
@@ -296,7 +327,10 @@ CREATE TABLE `turno` (
 --
 
 INSERT INTO `turno` (`id`, `dia`, `horaInicio`, `userEmail`, `userId`, `centroId`, `centroNombre`) VALUES
-(2, '2020-11-02', '09:00:00', 'admin@coopevid.com', 1, 5, 'Casita');
+(2, '2020-11-02', '09:00:00', 'admin@coopevid.com', 1, 5, 'Casita'),
+(3, '2020-11-03', '10:00:00', 'admin@coopevid.com', 1, 5, 'Casita'),
+(4, '2020-11-10', '09:00:00', 'admin@coopevid.com', 1, 5, 'Casita'),
+(5, '2020-11-03', '09:00:00', 'operador@coopevid.com', 2, 5, 'Casita');
 
 -- --------------------------------------------------------
 
@@ -323,7 +357,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `first_name`, `last_name`, `activo`, `updated_at`, `created_at`) VALUES
 (1, 'Adminita', 'admin@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Admina', 'Fulanito', 1, '2020-10-31 23:08:49', '0000-00-00 00:00:00'),
-(2, 'operador', 'operador@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Operador', 'Fulanito', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(2, 'operador', 'operador@coopevid.com', 'sha256$q7bSSMwZ$d125a6aeaf2172af3874b8dbfe64e8eed969d02e5c7f50c5f4c91a9e723c46e5', 'Operador', 'Fulanito', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'Nadie', 'nadie@coopevid.com', 'sha256$zaWstyiq$65ae1ad35339fc9a8dcffd2757e28a4dff0d36a666c3b08a882beb51bdf26759', 'Nadie', 'Nada', 1, '2020-11-02 20:42:46', '2020-11-02 20:42:46');
 
 -- --------------------------------------------------------
 
@@ -471,7 +506,7 @@ ALTER TABLE `issues`
 -- AUTO_INCREMENT de la tabla `permiso`
 --
 ALTER TABLE `permiso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -495,13 +530,13 @@ ALTER TABLE `tipo_centro`
 -- AUTO_INCREMENT de la tabla `turno`
 --
 ALTER TABLE `turno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
