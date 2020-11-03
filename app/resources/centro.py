@@ -67,7 +67,21 @@ def create():
 
     data['status'] = False
 
+    centro = Centro.getCentroByPhone(data.get('phone'))
+    if(centro is not None):
+        flash("Ya existe un centro con ese telefono")
+        return redirect(url_for("centro_new"))
+
+    
+
+    centro = Centro.getCentroByAddress(data.get('phone'))
+    if(centro is not None):
+        flash("Ya existe un centro con esa direccion")
+        return redirect(url_for("centro_new"))
+
     archive.save(os.path.join(MEDIA_PATH, filename))
+
+    data['file_name'] = filename
 
     nuevoCentro = Centro(data)
 

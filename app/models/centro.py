@@ -23,6 +23,7 @@ class Centro(db.Model):
     address = db.Column(db.String, nullable=False)
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
+    file_name = db.Column(db.String)
     turnos = db.relationship('Turno')
 
     #TODO: agregar el protocolo con formato PDF y el tema del municipio 
@@ -41,7 +42,8 @@ class Centro(db.Model):
         self.address = data['address']
         self.lat = data['lat']
         self.long = data['long']
-
+        self.file_name = data['file_name']
+        
     @staticmethod
     def getAll():
         return Centro.query.all()
@@ -54,3 +56,14 @@ class Centro(db.Model):
     def getAllPaginado(numero_pagina):
         return Centro.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
 
+    @staticmethod
+    def getCentroByEmail(email):
+        return Centro.query.filter(Centro.email == email).first()
+
+    @staticmethod
+    def getCentroByAddress(address):
+        return Centro.query.filter(Centro.address == address).first()
+
+    @staticmethod   
+    def getCentroByPhone(phone):
+        return Centro.query.filter(Centro.phone == phone).first()
