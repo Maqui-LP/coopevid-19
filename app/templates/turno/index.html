@@ -24,6 +24,7 @@
         <th scope="col">Mail del usuario</th>
         <th scope="col">Fecha</th>
         <th scope="col">Hora</th>
+        <th scope="col">Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -33,6 +34,37 @@
       <td>{{ turno.userEmail }}</td>
       <td>{{ turno.dia }}</td>
       <td>{{ turno.horaInicio }}</td>
+      <td>
+          <!-- Boton que dispara el modal -->
+          <button type="button" class="btn btn-danger m-1 p-2" data-toggle="modal" data-target="#modalBorrarTurno{{turno.id}}">
+            Borrar
+          </button>
+          <!-- Modal -->
+          <div class="modal fade" id="modalBorrarTurno{{turno.id}}">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalBorrarTurnoTitulo{{turno.id}}">Borrar Turno Definitivamente</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h3>Eliminaras el turno del {{turno.dia}} a las {{turno.horaInicio}} de {{ turno.userEmail }}</h3>
+                  <p>¿Seguro que deseas eliminarlo?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+
+                  <form action="{{url_for('turno_delete')}}" method=post>   
+                    <input type=hidden value="{{ turno.id }}" name="turno_id"/>   
+                    <input class="btn btn-danger" type=submit value="Eliminar"/> 
+                  </form>   
+                </div>
+              </div>
+            </div>
+          </div>
+      </td>
     </tr>      
     {% endfor %}
 

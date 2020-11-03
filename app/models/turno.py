@@ -35,3 +35,7 @@ class Turno(db.Model):
         today = date.today()
         nextDay = today + timedelta(days=2)
         return Turno.query.filter(Turno.dia >= today, Turno.dia <= nextDay).order_by(Turno.dia, Turno.horaInicio)
+
+    @staticmethod
+    def getTurnoById(id):
+        return Turno.query.filter(Turno.id == id).first()
