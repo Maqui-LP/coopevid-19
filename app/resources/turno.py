@@ -20,7 +20,7 @@ def new():
     if not authenticated(session):
         abort(401)
 
-    if not granted("turno_new"):
+    if not granted("turno_create"):
         abort(403)
 
     centros= Centro.getAll()

@@ -62,17 +62,13 @@ CREATE TABLE `centros` (
   `address` varchar(255) NOT NULL,
   `lat` float NOT NULL,
   `long` float NOT NULL,
-  `file_name` varchar(255),
+  `file_name` varchar(255) NOT NULL,
   `type_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `centros`
 --
-
-INSERT INTO `centros` (`id`, `name`, `phone`, `mail`, `openhour`, `closehour`, `web`, `status`, `address`, `lat`, `long`, `type_id`) VALUES
-(5, 'Casita', '2932474861', 'casita@gmail.com', '08:00:00', '23:00:00', 'www.casita.com', 0, 'Diagonal 79 957', 123, 321, 2),
-(6, 'Otro', '457246715', 'otro@gmail.com', '01:00:00', '00:00:00', 'www.cadas.com', 0, 'sad 2', 15, 45, 1);
 
 -- --------------------------------------------------------
 
@@ -325,12 +321,6 @@ CREATE TABLE `turno` (
 --
 -- Volcado de datos para la tabla `turno`
 --
-
-INSERT INTO `turno` (`id`, `dia`, `horaInicio`, `userEmail`, `userId`, `centroId`, `centroNombre`) VALUES
-(2, '2020-11-02', '09:00:00', 'admin@coopevid.com', 1, 5, 'Casita'),
-(3, '2020-11-03', '10:00:00', 'admin@coopevid.com', 1, 5, 'Casita'),
-(4, '2020-11-10', '09:00:00', 'admin@coopevid.com', 1, 5, 'Casita'),
-(5, '2020-11-03', '09:00:00', 'operador@coopevid.com', 2, 5, 'Casita');
 
 -- --------------------------------------------------------
 

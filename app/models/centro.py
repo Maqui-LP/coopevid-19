@@ -23,7 +23,7 @@ class Centro(db.Model):
     address = db.Column(db.String, nullable=False)
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
-    file_name = db.Column(db.String)
+    file_name = db.Column(db.String, nullable=False)
     turnos = db.relationship('Turno')
 
     #TODO: agregar el protocolo con formato PDF y el tema del municipio 
@@ -67,3 +67,7 @@ class Centro(db.Model):
     @staticmethod   
     def getCentroByPhone(phone):
         return Centro.query.filter(Centro.phone == phone).first()
+
+    @staticmethod
+    def getCentrobyName(name):
+        return Centro.query.filter(Centro.name == name).first()
