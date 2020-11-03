@@ -113,4 +113,5 @@ coc-settings.json
 data/
 
 #PDFs
+*.pdf
 app/media/pdf/*.pdf

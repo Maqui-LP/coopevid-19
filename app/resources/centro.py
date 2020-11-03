@@ -68,16 +68,14 @@ def create():
         flash(error)
         return redirect(url_for("centro_new"))
 
-    data['status'] = False
+    data['status'] = False    
 
-    centro = Centro.getCentroByPhone(data.get('phone'))
+    centro = Centro.getCentrobyName(data.get('name'))
     if(centro is not None):
-        flash("Ya existe un centro con ese telefono")
+        flash("Ya existe un centro con ese nombre")
         return redirect(url_for("centro_new"))
 
-    
-
-    centro = Centro.getCentroByAddress(data.get('phone'))
+    centro = Centro.getCentroByAddress(data.get('address'))
     if(centro is not None):
         flash("Ya existe un centro con esa direccion")
         return redirect(url_for("centro_new"))
