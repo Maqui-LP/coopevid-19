@@ -13,16 +13,17 @@ class Centro(db.Model):
     __tablename__ = 'centros'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(255), unique=True, nullable=False)
-    phone= db.Column(db.String(255),unique=True,nullable=False)
-    mail = db.Column(db.String(255), unique=True, nullable = False)
-    openHour= db.Column(TIME(), unique=False, nullable=False)
-    closeHour= db.Column(TIME(), unique=False, nullable=False)
+    phone= db.Column(db.String(255), unique=False ,nullable=False)
+    mail = db.Column(db.String(255), nullable = False)
+    openHour= db.Column(TIME(), nullable=False)
+    closeHour= db.Column(TIME(), nullable=False)
     type_id= db.Column(db.Integer, db.ForeignKey('tipo_centro.id'), nullable=False)
-    web= db.Column(db.String, unique=False , nullable=False)
+    web= db.Column(db.String , nullable=False)
     status = db.Column(db.Boolean,nullable=False)
     address = db.Column(db.String, nullable=False)
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
+    file_name = db.Column(db.String)
     turnos = db.relationship('Turno')
 
     #TODO: agregar el protocolo con formato PDF y el tema del municipio 
@@ -41,7 +42,8 @@ class Centro(db.Model):
         self.address = data['address']
         self.lat = data['lat']
         self.long = data['long']
-
+        self.file_name = data['file_name']
+        
     @staticmethod
     def getAll():
         return Centro.query.all()
@@ -54,3 +56,14 @@ class Centro(db.Model):
     def getAllPaginado(numero_pagina):
         return Centro.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
 
+    @staticmethod
+    def getCentroByEmail(email):
+        return Centro.query.filter(Centro.email == email).first()
+
+    @staticmethod
+    def getCentroByAddress(address):
+        return Centro.query.filter(Centro.address == address).first()
+
+    @staticmethod   
+    def getCentroByPhone(phone):
+        return Centro.query.filter(Centro.phone == phone).first()
