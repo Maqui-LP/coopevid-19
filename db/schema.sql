@@ -396,11 +396,6 @@ ALTER TABLE `categories`
 ALTER TABLE `centros`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`),
-  ADD UNIQUE KEY `phone` (`phone`),
-  ADD UNIQUE KEY `web` (`web`),
-  ADD UNIQUE KEY `address` (`address`),
-  ADD UNIQUE KEY `lat` (`lat`),
-  ADD UNIQUE KEY `long` (`long`),
   ADD KEY `type_id` (`type_id`);
 
 --
