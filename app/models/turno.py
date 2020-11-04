@@ -39,3 +39,7 @@ class Turno(db.Model):
     @staticmethod
     def getTurnoById(id):
         return Turno.query.filter(Turno.id == id).first()
+
+    @staticmethod
+    def updateTurno(id, data):
+        Turno.query.filter(Turno.id == id).update(data)
