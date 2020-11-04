@@ -81,3 +81,41 @@ def delete():
     db.session.commit()
 
     return redirect(url_for("turno_index"))
+
+def update():
+    if not authenticated(session):
+        abort(401)
+
+    turno_id = int(request.args.get("turno_id"))
+    data = request.form.to_dict()
+    
+    #TODO: generar un validateTurnoUpdate
+
+    turno_db = Turno.getTurnoById(turno_id)
+    if(turno_db is None):
+        flash("El turno no existe")
+        #TODO: redireccionar a turno_update
+        #TODO: en realidad evaluar este caso
+        return redirect(url_for("turno_index"))
+    
+    turno_horario_fecha_db = Turno.getTurnoByHoraFechaCentro(data['horaInicio'], data['dia'], turno_db.centroId)
+    if turno_horario_fecha_db is not None:
+        flash("El horario no se encuentra disponible, seleccione otro horario")
+        return render_template("turno/update.html", turno=turno_db)
+
+    Turno.updateTurno(turno_id, data)
+
+    db.session.commit()
+
+    return redirect(url_for("turno_index"))
+
+def edit():
+    if not authenticated(session):
+        abort(401)
+    if not granted("turno_update"):
+        abort(403)
+    
+    turno_id = request.args.get("turno_id")
+    turno = Turno.getTurnoById(turno_id)
+
+    return render_template("turno/update.html", turno=turno)
