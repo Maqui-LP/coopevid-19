@@ -11,8 +11,9 @@ from app.resources import turno
 from app.resources import auth
 from app.resources import rol
 from app.resources import configuracion
+from app.resources.api import centro as centroApi
 from app.models.configuracion import Configuracion
-from app.resources.api import issue as api_issue
+
 from app.helpers import handler
 from app.helpers import auth as helper_auth
 from app.helpers import granted
@@ -132,6 +133,13 @@ def create_app(environment="development"):
     app.register_error_handler(401, handler.unauthorized_error)
     app.register_error_handler(403, handler.forbbiden_error)
     app.register_error_handler(500, handler.internal_server_error)
+
+
+    #API REST routes
+    ##centros
+    app.add_url_rule("/api/centros", "centro_api_index", centroApi.index, methods=["GET"])
+    
+    ##turnos
 
 
     # Retornar la instancia de app configurada
