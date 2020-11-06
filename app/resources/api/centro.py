@@ -3,10 +3,7 @@ from app.models.centro import Centro
 
 def index():
     page = int(request.args.get("page"))
-    print("********************************************")
-    print(page)
-    print("********************************************")
-
+    
     centros_totales = Centro.getAll()
     centros = Centro.getAllPaginado(page)
     json = []
