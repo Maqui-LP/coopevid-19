@@ -551,8 +551,8 @@ ALTER TABLE `rol_tiene_permiso`
 -- Filtros para la tabla `turno`
 --
 ALTER TABLE `turno`
-  ADD CONSTRAINT `turno_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `turno_ibfk_2` FOREIGN KEY (`centroId`) REFERENCES `centros` (`id`);
+  ADD CONSTRAINT `turno_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `turno_ibfk_2` FOREIGN KEY (`centroId`) REFERENCES `centros` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `usuario_tiene_rol`
