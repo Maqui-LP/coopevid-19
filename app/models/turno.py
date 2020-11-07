@@ -42,4 +42,5 @@ class Turno(db.Model):
 
     @staticmethod
     def updateTurno(id, data):
+        data.pop('csrf_token')
         Turno.query.filter(Turno.id == id).update(data)

@@ -67,6 +67,7 @@ class User(db.Model):
 
     @staticmethod
     def updateUser(user_id, data):
+        data.pop('csrf_token')
         User.query.filter(User.id == user_id).update(data)
 
     @staticmethod
@@ -78,6 +79,7 @@ class User(db.Model):
     def setRoles(user_id, data):
         user = User.getUserById(user_id)
         user.roles = list()
+        data.pop('csrf_token')
         for each in data:
             rol = Rol.query.filter(Rol.nombre == str(each)).first()
             if rol not in user.roles:
