@@ -24,7 +24,7 @@ class Centro(db.Model):
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
     file_name = db.Column(db.String, nullable=False)
-    turnos = db.relationship('Turno')
+    turnos = db.relationship('Turno', cascade="all, delete-orphan")
 
     #TODO: agregar el protocolo con formato PDF y el tema del municipio 
     #el municipio no se si tenemos que crear una clase municipio en base 
