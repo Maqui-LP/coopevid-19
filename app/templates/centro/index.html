@@ -62,6 +62,7 @@
                   <form action="{{url_for('centro_delete')}}" method=post>   
                     <input type=hidden value="{{ centro.id }}" name="centro_id"/>   
                     <input class="btn btn-danger" type=submit value="Eliminar"/> 
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                   </form>   
                 </div>
               </div>

@@ -29,4 +29,3 @@ def internal_server_error(e):
         "error_description": "Ha ocurrido un error en el servidor",
     }
     return render_template("error.html", **kwargs), 500    
-

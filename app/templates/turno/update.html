@@ -43,6 +43,7 @@
           <button class="btn btn-warning" type="reset">Limpiar</button>
           <a href="{{ url_for('turno_index') }}" class="btn btn-primary">Volver</a>
         </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       </form>
     </div>
 </div>

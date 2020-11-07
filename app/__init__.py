@@ -1,6 +1,7 @@
-from os import path, environ
+from os import path, environ, urandom
 from flask import Flask, render_template, g, session
 from flask_session import Session
+
 from app.db_sqlalchemy import db_sqlalchemy
 from config import config
 from app import db
@@ -18,15 +19,21 @@ from app.helpers import handler
 from app.helpers import auth as helper_auth
 from app.helpers import granted
 from app.helpers import config as config_helper
+from flask_wtf.csrf import CSRFProtect
 #from flask_bootstrap import Bootstrap
 
+csrf = CSRFProtect()
 
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
-    
+    csrf.init_app(app)
+
     #Definicion de path de archivos estaticos
     #app.config['CENTROS_PDF'] = '/media/pdfs'
+
+    SECRET_KEY = urandom(32)
+    app.config['SECRET_KEY'] = SECRET_KEY
 
     #Bootstrap
     #Bootstrap(app)
