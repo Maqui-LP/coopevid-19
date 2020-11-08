@@ -105,3 +105,66 @@ def delete():
     db.session.commit()
 
     return redirect(url_for("centro_index"))
+
+def detalle():
+    if not authenticated(session):
+        abort(401)
+    if not granted("centro_show"):
+        abort(403)
+
+    centro_id = request.args.get("centro_id")
+    centro = Centro.getCentroById(centro_id)
+
+    return render_template("centro/detalle.html", centro=centro)
+
+def edit():
+    if not authenticated(session):
+        abort(401)
+    if not granted("centro_update"):
+        abort(403)
+    
+    centro_id = request.args.get("centro_id")
+    centro = Centro.getCentroById(centro_id)
+
+    return render_template("centro/update.html", centro=centro)
+
+def update():
+    if not authenticated(session):
+        abort(401)
+
+    centro_id = int(request.args.get("centro_id"))
+    data = request.form.to_dict()
+    ############################################
+    #archive = request.files['visit_protocol']
+
+    #if not archive or archive.filename == '':
+    #    flash("Archivo Invalido")
+    #    exit(0)
+
+    #filename = secure_filename(archive.filename)
+    #filename = f"{filename}_{random.randint(1000,9999)}.pdf"
+
+    #archive.save(os.path.join(MEDIA_PATH, filename))
+
+    #data['file_name'] = filename
+    #################################
+    error = validateCentro(data)
+    if error:
+        flash(error)
+        return redirect(url_for("centro_index"))
+
+    centro2 = Centro.getCentroByAddress(data.get("address"))
+
+    if(centro2 is not None and centro2.id != centro_id):
+        flash("Ya existe un centro con esa direccion")
+        return redirect(url_for("centro_index"))
+
+    centro2 = Centro.getCentrobyName(data.get("name"))
+    if(centro2 is not None and centro2.id != centro_id):
+        flash("Ya existe un centro con ese nombre")
+        return redirect(url_for("centro_index"))
+
+    Centro.updateCentro(centro_id, data)
+    
+    db.session.commit()
+    return redirect(url_for("centro_index"))

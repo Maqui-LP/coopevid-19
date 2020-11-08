@@ -71,3 +71,9 @@ class Centro(db.Model):
     @staticmethod
     def getCentrobyName(name):
         return Centro.query.filter(Centro.name == name).first()
+
+    @staticmethod
+    def updateCentro(centro_id, data):
+        data.pop('csrf_token')
+        data.pop('municipio')
+        Centro.query.filter(Centro.id == centro_id).update(data)
