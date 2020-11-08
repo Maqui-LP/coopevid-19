@@ -146,7 +146,7 @@ def create_app(environment="development"):
     ##centros
     app.add_url_rule("/api/centros", "centro_api_index", centroApi.index, methods=["GET"])
     app.add_url_rule("/api/centros/<id>", "centro_id_api_index", centroApi.getById, methods=["GET"])
-    
+    app.add_url_rule("/api/centros", "centro_api_create", centroApi.create, methods=["POST"])
     ##turnos
 
 
