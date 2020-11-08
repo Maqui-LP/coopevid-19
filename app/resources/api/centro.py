@@ -58,24 +58,24 @@ def create():
     archive = request.files['visit_protocol']
 
     if not archive or archive.filename == '':
-        abort(404)
+        abort(400)
 
     filename = secure_filename(archive.filename)
     filename = f"{filename}_{random.randint(1000,9999)}.pdf"
     
     error = validateCentro(data)
     if error:
-        abort(404)
+        abort(400)
 
     data['status'] = False    
 
     centro = Centro.getCentrobyName(data.get('name'))
     if(centro is not None):
-        abort(404)
+        abort(400)
 
     centro = Centro.getCentroByAddress(data.get('address'))
     if(centro is not None):
-        abort(404)
+        abort(400)
 
     archive.save(os.path.join(MEDIA_PATH, filename))
 
@@ -88,5 +88,15 @@ def create():
     
     #TODO obtener el objeto guardado y retornarlo como json
 
-    return "Whohw"
+    json_centro =  {
+        "nombre": nuevoCentro.name,
+        "direccion": nuevoCentro.address,
+        "telefono": nuevoCentro.phone,
+        "hora_apertura":nuevoCentro.openHour.isoformat(),
+        "hora_cierre":nuevoCentro.closeHour.isoformat(),
+        "web":nuevoCentro.web,
+        "email":nuevoCentro.mail
+    }
+
+    return jsonify(atributos = json_centro) 
     
