@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}Perfil{% endblock %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+
+{% endblock %}
+{% block navbar %}
+  {% include "navbar.html" %}
+{% endblock %}
+{% block content %}
+<div class="container bootstrap snippet">
+    <div class="card m-2 text-center border-primary">
+        <div class="card-header">
+          Detalle del centro "{{centro.name}}"
+        </div>
+        <div class="card-body">
+            <div class="card-group">
+                    <div class="card text-center border-primary">
+                        <h5 class="card-title">Datos de contacto</h5>
+                        <p class="card-text">Telefono:</p>
+                        <p class="card-text">{{centro.phone}}</p>
+                        <p class="card-text">Mail:</p>
+                        <p class="card-text">{{centro.mail}}</p>
+                        <p class="card-text">Horario Apertura: {{centro.openHour}}</p>
+                        <p class="card-text">Horario cierre: {{centro.closeHour}}</p>
+                        <p class="card-text">Direccion web:</p>
+                        <p class="card-text">{{centro.web}}</p>
+                        <p class="card-text">Estado: {%if centro.status %} Activo {% else %} Inactivo {% endif %}</p>
+                    </div>
+                    <div class="card text-center border-primary">
+                        <h5 class="card-title">Ubicacion</h5>
+                        <p class="card-text">{{centro.address}}</p>
+                        <div id="myMap" class="m-auto border-primary" style="height: 250px; width: 450px; position: relative;"></div>
+                    </div>
+          </div>
+        <hr>
+          <a href="#" class="btn btn-primary">Editar</a>
+          <a href="#" class="btn btn-primary">Eliminar</a>
+          <a href="{{ url_for('centro_index') }}" class="btn btn-primary">Volver</a>
+        </div>
+      </div>
+      <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+crossorigin=""></script>
+<script src="{{url_for('static', filename='js/map.js')}}"></script>
+{% endblock %}

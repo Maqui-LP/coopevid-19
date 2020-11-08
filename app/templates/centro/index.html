@@ -34,7 +34,7 @@
       <td>{{ centro.address }}</td>
       <td>{{ centro.phone }}</td>
       <td>
-        <a href="#" class="btn btn-success m-1 p-2">Ver</a>
+        <a href="{{ url_for('centro_detalle', centro_id=centro.id)}}" class="btn btn-success m-1 p-2">Ver</a>
       </td>
       <td>
 

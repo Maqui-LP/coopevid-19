@@ -105,3 +105,14 @@ def delete():
     db.session.commit()
 
     return redirect(url_for("centro_index"))
+
+def detalle():
+    if not authenticated(session):
+        abort(401)
+    if not granted("centro_show"):
+        abort(403)
+
+    centro_id = request.args.get("centro_id")
+    centro = Centro.getCentroById(centro_id)
+
+    return render_template("centro/detalle.html", centro=centro)
