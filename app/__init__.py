@@ -19,15 +19,14 @@ from app.helpers import handler
 from app.helpers import auth as helper_auth
 from app.helpers import granted
 from app.helpers import config as config_helper
-from flask_wtf.csrf import CSRFProtect
+from app.csrf import app_csrf
 #from flask_bootstrap import Bootstrap
 
-csrf = CSRFProtect()
 
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
-    csrf.init_app(app)
+    app_csrf.init_app(app)
 
     #Definicion de path de archivos estaticos
     #app.config['CENTROS_PDF'] = '/media/pdfs'
@@ -150,7 +149,7 @@ def create_app(environment="development"):
     ##centros
     app.add_url_rule("/api/centros", "centro_api_index", centroApi.index, methods=["GET"])
     app.add_url_rule("/api/centros/<id>", "centro_id_api_index", centroApi.getById, methods=["GET"])
-    
+    app.add_url_rule("/api/centros", "centro_api_create", centroApi.create, methods=["POST"])
     ##turnos
 
 
