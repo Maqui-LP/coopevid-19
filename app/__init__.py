@@ -105,11 +105,10 @@ def create_app(environment="development"):
     app.add_url_rule("/centros", "centro_create", centro.create, methods=["POST"])
     app.add_url_rule("/centros/nuevo", "centro_new", centro.new)
     app.add_url_rule("/centros/delete", "centro_delete", centro.delete , methods=["POST"])
-    #ruta para ver detalle
     app.add_url_rule("/centro/detalle", "centro_detalle", centro.detalle)
-    #ruta para ver formulario de cambio
+    app.add_url_rule("/centro/editar", "centro_edit", centro.edit)
     #ruta para enviar cambios
-
+    app.add_url_rule("/centro/update", "centro_update", centro.update, methods=["POST"])
 
     # Rutas para Turnos 
     app.add_url_rule("/turnos", "turno_index", turno.index)
