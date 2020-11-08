@@ -3,12 +3,11 @@ from app.models.centro import Centro
 from app.helpers.form_validation import validateCentro
 from werkzeug.utils import secure_filename
 from app.db_sqlalchemy import db_sqlalchemy
-from flask_wtf.csrf import CSRFProtect
+from app.csrf import app_csrf
 import random
 import os
 
-csrf = CSRFProtect()
-
+csrf = app_csrf
 db = db_sqlalchemy
 
 MEDIA_PATH = './app/media/pdfs'
