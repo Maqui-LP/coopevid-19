@@ -80,14 +80,12 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    <label>Municipio</label></br>
-                    <select name="municipio" class="form-control" value="{{centro.municipio}}" required="true">
-                        <option value="1">La Plata</option>
-                        <option value="2">Ensenada</option>
-                        <option value="3">Berisso</option>
-                        <option value="4">Tolosa</option>
-                        <option value="5">City Bell</option>
-                    </select>
+                  <label>Municipio</label></br>
+                  <select name="municipio_id" class="form-control"  required="true">
+                    {% for each in municipios %}
+                    <option value="{{municipios[each].id}}" {% if (municipio.name == municipios[each].name) %} selected="selected" {% endif %}>{{municipios[each].name}}</option>
+                    {% endfor%}
+                  </select>
                 </div>
             </div>
             <div class="form-group col-md-6">

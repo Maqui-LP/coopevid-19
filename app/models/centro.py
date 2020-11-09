@@ -21,6 +21,7 @@ class Centro(db.Model):
     web= db.Column(db.String , nullable=False)
     status = db.Column(db.Boolean,nullable=False)
     address = db.Column(db.String, nullable=False)
+    municipio_id = db.Column(db.Integer)
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
     file_name = db.Column(db.String, nullable=False)
@@ -40,6 +41,7 @@ class Centro(db.Model):
         self.web = data['web']
         self.status = data['status']
         self.address = data['address']
+        self.municipio_id = data['municipio_id']
         self.lat = data['lat']
         self.long = data['long']
         self.file_name = data['file_name']
@@ -75,5 +77,4 @@ class Centro(db.Model):
     @staticmethod
     def updateCentro(centro_id, data):
         data.pop('csrf_token')
-        data.pop('municipio')
         Centro.query.filter(Centro.id == centro_id).update(data)

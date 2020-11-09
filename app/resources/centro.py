@@ -11,6 +11,7 @@ from app.models.centro import Centro
 from app.models.configuracion import Configuracion
 from app.helpers.form_validation import validateCentro
 from werkzeug.utils import secure_filename
+import requests
 import app
 import random
 import os
@@ -26,9 +27,17 @@ def new():
     if not granted("centro_create"):
         abort(403)
 
-    return render_template("centro/new.html")
+    municipios = getMunicipios()
+
+    print("------------------------------------------------")
+    for each in municipios:
+        print(municipios[each])
+    print("------------------------------------------------")
+
+    return render_template("centro/new.html", municipios=municipios)
 
 def index():
+
     if not authenticated(session):
         abort(401)
 
@@ -115,7 +124,15 @@ def detalle():
     centro_id = request.args.get("centro_id")
     centro = Centro.getCentroById(centro_id)
 
-    return render_template("centro/detalle.html", centro=centro)
+    municipios = getMunicipios()
+
+    for each in municipios:
+        print(type(each))
+        print(type(centro.municipio_id))
+        if int(each) == centro.municipio_id:
+            municipio = municipios[each] 
+
+    return render_template("centro/detalle.html", centro=centro, municipio=municipio)
 
 def edit():
     if not authenticated(session):
@@ -126,7 +143,15 @@ def edit():
     centro_id = request.args.get("centro_id")
     centro = Centro.getCentroById(centro_id)
 
-    return render_template("centro/update.html", centro=centro)
+    municipios = getMunicipios()
+
+    for each in municipios:
+        print(type(each))
+        print(type(centro.municipio_id))
+        if int(each) == centro.municipio_id:
+            municipio = municipios[each] 
+
+    return render_template("centro/update.html", centro=centro, municipios=municipios, municipio=municipio)
 
 def update():
     if not authenticated(session):
@@ -168,3 +193,10 @@ def update():
     
     db.session.commit()
     return redirect(url_for("centro_index"))
+
+def getMunicipios():
+    r = requests.get('https://api-referencias.proyecto2020.linti.unlp.edu.ar/municipios?page=1&per_page=135')
+
+    r = r.json()
+
+    return r.get("data").get("Town")
