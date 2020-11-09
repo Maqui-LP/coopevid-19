@@ -60,6 +60,7 @@ CREATE TABLE `centros` (
   `web` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `address` varchar(255) NOT NULL,
+  `municipio_id` int(11) NOT NULL,
   `lat` float NOT NULL,
   `long` float NOT NULL,
   `file_name` varchar(255) NOT NULL,
