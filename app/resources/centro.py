@@ -4,6 +4,7 @@ from app.models.user import User
 from app.helpers.auth import authenticated
 from app.helpers.granted import granted
 from app.helpers.form_validation import validateUser, validateUpdateUser
+from app.helpers.xss_escape import escape_xss
 from app.db_sqlalchemy import db_sqlalchemy
 from datetime import datetime
 from app.models.rol import Rol
@@ -62,6 +63,7 @@ def create():
         abort(401)
     
     data = request.form.to_dict()
+    data = escape_xss(data)
 
     archive = request.files['visit_protocol']
 
@@ -159,6 +161,7 @@ def update():
 
     centro_id = int(request.args.get("centro_id"))
     data = request.form.to_dict()
+    data = escape_xss(data)
     ############################################
     #archive = request.files['visit_protocol']
 
