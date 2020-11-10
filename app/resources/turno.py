@@ -4,6 +4,7 @@ from app.models.user import User
 from app.helpers.auth import authenticated
 from app.helpers.granted import granted
 from app.helpers.form_validation import validateUser, validateUpdateUser
+from app.helpers.xss_escape import escape_xss
 from app.db_sqlalchemy import db_sqlalchemy
 from datetime import datetime
 from app.models.rol import Rol
@@ -43,6 +44,8 @@ def create():
         abort(401)
 
     data = request.form.to_dict()
+    data = escape_xss(data)
+
     user = User.getUserByEmail(data.get("mail"))
     if not user:
         flash("No existe un usuario con dicho email")
@@ -88,6 +91,7 @@ def update():
 
     turno_id = int(request.args.get("turno_id"))
     data = request.form.to_dict()
+    data = escape_xss(data)
     
     #TODO: generar un validateTurnoUpdate
 

@@ -8,6 +8,7 @@ from app.db_sqlalchemy import db_sqlalchemy
 from datetime import datetime
 from app.models.rol import Rol
 from app.models.configuracion import Configuracion
+from app.helpers.xss_escape import escape_xss
 
 db = db_sqlalchemy
 
@@ -65,7 +66,8 @@ def modificarRoles():
 
 def create():
     data = request.form.to_dict()
-
+    data = escape_xss(data)
+    
     error = validateUser(data)
     if error:
         flash(error)
@@ -100,6 +102,7 @@ def update():
 
     user_id = int(request.args.get("user_id"))
     data = request.form.to_dict()
+    data = escape_xss(data)
 
     error = validateUpdateUser(data)
     if error:
@@ -167,6 +170,7 @@ def perfilUpdate():
 
     user_id = session.get("user")
     data = request.form.to_dict()
+    data = escape_xss(data)
 
     error = validateUpdateUser(data)
     if error:
