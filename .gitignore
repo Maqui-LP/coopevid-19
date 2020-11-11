@@ -111,6 +111,3 @@ flask_session
 coc-settings.json
 .vscode
 data/
-
-#PDFs
-*.pdf

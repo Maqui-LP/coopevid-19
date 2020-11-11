@@ -3,7 +3,6 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 from app.models.rol import Rol
 from app.models.configuracion import Configuracion
-from app.models.turno import Turno
 
 db = db_sqlalchemy
 
@@ -25,7 +24,6 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
     roles = db.relationship('Rol',
                             secondary=usuario_tiene_rol)
-    turnos = db.relationship('Turno', backref="users")
 
 
     def __init__(self, data):
@@ -67,7 +65,6 @@ class User(db.Model):
 
     @staticmethod
     def updateUser(user_id, data):
-        data.pop('csrf_token')
         User.query.filter(User.id == user_id).update(data)
 
     @staticmethod
@@ -79,7 +76,6 @@ class User(db.Model):
     def setRoles(user_id, data):
         user = User.getUserById(user_id)
         user.roles = list()
-        data.pop('csrf_token')
         for each in data:
             rol = Rol.query.filter(Rol.nombre == str(each)).first()
             if rol not in user.roles:
@@ -87,7 +83,7 @@ class User(db.Model):
 
     @staticmethod
     def getByNameLastNameAndState(nombre, apellido, estado):
-        return User.query.filter(User.first_name.like(nombre), User.last_name.like(apellido), User.activo == estado)
+        return User.query.filter(User.first_name.like(nombre), User.first_name.like(nombre), User.activo == estado)
 
     @staticmethod
     def getAllPaginado(numero_pagina):

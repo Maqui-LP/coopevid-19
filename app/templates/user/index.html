@@ -53,24 +53,18 @@
       <td>
         <form action="{{url_for('user_delete')}}" method=post>   
         <input type=hidden value="{{ user.id }}" name="user_id"/>   
-        <input class="btn btn-danger" {% if session.get('user') == user.id %} disabled {% endif %} type=submit value="Eliminar"/>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      </form>
+        <input class="btn btn-danger" {% if session.get('user') == user.id %} disabled {% endif %} type=submit value="Eliminar"/> </form>
       </td>
       <td>
         {% if user.activo %}
           <form action="{{url_for('toogle_user_activity')}}" method=post>   
           <input type=hidden value="{{ user.id }}" name="user_id"/>   
-          <input class="btn btn-danger" type=submit value="Desactivar"/>
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-          </form>       
+          <input class="btn btn-danger" type=submit value="Desactivar"/> </form>       
           
         {% else %}
           <form action="{{url_for('toogle_user_activity')}}" method=post>   
           <input type=hidden value="{{ user.id }}" name="user_id"/>   
-          <input class="btn btn-danger" type=submit value="Activar"/>
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-          </form>
+          <input class="btn btn-danger" type=submit value="Activar"/> </form>
         {% endif %}
       </td>
       <td>

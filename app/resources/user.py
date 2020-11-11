@@ -8,7 +8,6 @@ from app.db_sqlalchemy import db_sqlalchemy
 from datetime import datetime
 from app.models.rol import Rol
 from app.models.configuracion import Configuracion
-from app.helpers.xss_escape import escape_xss
 
 db = db_sqlalchemy
 
@@ -66,8 +65,7 @@ def modificarRoles():
 
 def create():
     data = request.form.to_dict()
-    data = escape_xss(data)
-    
+
     error = validateUser(data)
     if error:
         flash(error)
@@ -102,7 +100,6 @@ def update():
 
     user_id = int(request.args.get("user_id"))
     data = request.form.to_dict()
-    data = escape_xss(data)
 
     error = validateUpdateUser(data)
     if error:
@@ -113,13 +110,13 @@ def update():
 
     if(user2 is not None and user2.id != user_id):
         flash("Ya existe un usuario con ese email")
-        return redirect(url_for("user_edit"))
+        return redirect(url_for("user_index"))
     
     #user2 = User.query.filter(User.username == data.get("username"), User.id != user_id).first()
     user2 = User.getUserByUsername(data.get("username"))
     if(user2 is not None and user2.id != user_id):
         flash("Ya existe un usuario con ese username")
-        return redirect(url_for("user_edit"))
+        return redirect(url_for("user_index"))
 
     data["updated_at"] = datetime.now()
     User.updateUser(user_id, data)
@@ -164,40 +161,6 @@ def perfil():
 
     return render_template("user/perfil.html", user=user)
 
-def perfilUpdate():
-    if not authenticated(session):
-        abort(401)
-
-    user_id = session.get("user")
-    data = request.form.to_dict()
-    data = escape_xss(data)
-
-    error = validateUpdateUser(data)
-    if error:
-        flash(error)
-        return redirect(url_for("user_perfil"))
-
-    user2 = User.getUserByEmail(data.get("email"))
-
-    if(user2 is not None and user2.id != user_id):
-        flash("Ya existe un usuario con ese email")
-        return redirect(url_for("user_perfil"))
-    
-    #user2 = User.query.filter(User.username == data.get("username"), User.id != user_id).first()
-    user2 = User.getUserByUsername(data.get("username"))
-    if(user2 is not None and user2.id != user_id):
-        flash("Ya existe un usuario con ese username")
-        return redirect(url_for("user_perfil"))
-
-    data["updated_at"] = datetime.now()
-    User.updateUser(user_id, data)
-
-    
-    db.session.commit()
-
-    return redirect(url_for("user_index"))
-
-
 def toogleUserActivity():
     if not granted("usuario_update"):
         abort(403)
@@ -214,7 +177,6 @@ def searchUserPage():
 
 def searchUsers():
     data = request.form.to_dict()
-    data = escape_xss(data)
     nombre= "%{}%".format(data['nombre'])
     apellido = "%{}%".format(data['apellido'])
     estado = int(data['estado'])

@@ -15,12 +15,6 @@
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('user_index')}}">Usuarios</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{url_for('centro_index')}}">Centros</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{url_for('turno_index')}}">Turnos</a>
-          </li>
           {% if is_granted("configuracion_update") %}
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('configuracion_form')}}">Configuracion</a>
