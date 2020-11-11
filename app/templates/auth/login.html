@@ -25,6 +25,7 @@
               <div class="form-gorup ml-5">
                 <input type="submit" class="btn btn-primary" value="Iniciar Sesion">
               </div>
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             </form>
         </div>
       </div>
