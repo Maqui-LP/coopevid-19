@@ -2,6 +2,7 @@ from flask import redirect, render_template, request, url_for, session, abort, j
 from app.helpers.auth import authenticated
 from app.helpers.granted import granted
 from app.helpers.form_validation import validateConfiguracion
+from app.helpers.xss_escape import escape_xss
 from app.db_sqlalchemy import db_sqlalchemy
 from app.models.configuracion import Configuracion
 
@@ -16,6 +17,7 @@ def form():
 
 def update():
     data = request.form.to_dict()
+    data = escape_xss(data)
 
     error = validateConfiguracion(data)
     if error:

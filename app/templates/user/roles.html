@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Usuarios{% endblock %}
+{% block title %}Roles{% endblock %}
 {% block head %}
   {{ super() }}
 {% endblock %}
@@ -19,6 +19,7 @@
             <div>
                 <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Guardar Cambios</button>
             </div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         </form>
     </div>
 </div>
