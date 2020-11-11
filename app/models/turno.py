@@ -1,6 +1,7 @@
 from app.db_sqlalchemy import db_sqlalchemy
 from datetime import date, datetime, timedelta
 from sqlalchemy.dialects.mysql import TIME
+from app.models.configuracion import Configuracion
 
 db = db_sqlalchemy
 
@@ -34,7 +35,8 @@ class Turno(db.Model):
     def getDailyList():
         today = date.today()
         nextDay = today + timedelta(days=2)
-        return Turno.query.filter(Turno.dia >= today, Turno.dia <= nextDay).order_by(Turno.dia, Turno.horaInicio)
+        turnos = Turno.query.filter(Turno.dia >= today, Turno.dia <= nextDay).order_by(Turno.dia, Turno.horaInicio) 
+        return turnos
 
     @staticmethod
     def getTurnoById(id):
@@ -44,3 +46,17 @@ class Turno(db.Model):
     def updateTurno(id, data):
         data.pop('csrf_token')
         Turno.query.filter(Turno.id == id).update(data)
+
+    @staticmethod
+    def getByCentroAndMail(centro, mail):
+        return Turno.query.filter(Turno.centroNombre.like(centro), Turno.userEmail.like(mail))
+
+    @staticmethod
+    def getDailyPaginado(numero_pagina):
+        today = date.today()
+        nextDay = today + timedelta(days=2)
+        return Turno.query.filter(Turno.dia >= today, Turno.dia <= nextDay).order_by(Turno.dia, Turno.horaInicio).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+
+    @staticmethod
+    def getSearchPaginado(numero_pagina, centro, mail):
+        return Turno.query.filter(Turno.centroNombre.like(centro), Turno.userEmail.like(mail)).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items

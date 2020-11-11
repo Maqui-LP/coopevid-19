@@ -35,9 +35,16 @@ def index():
     if not granted("turno_index"):
         abort(403)
 
-    turnos = Turno.getDailyList()
+    numero_pagina = request.args.get("numero_pagina")
+    if numero_pagina:
+        numero_pagina = int(numero_pagina)
 
-    return render_template("turno/index.html", turnos=turnos)
+    turnos_total = Turno.getDailyList()
+    turnos = Turno.getDailyPaginado(numero_pagina)
+
+    cantidad_paginas = int((turnos_total.count() - 1) / Configuracion.getConfiguracion().paginacion)
+
+    return render_template("turno/index.html", turnos=turnos, cantidad_paginas=cantidad_paginas)
 
 def create():
     if not authenticated(session):
@@ -123,3 +130,23 @@ def edit():
     turno = Turno.getTurnoById(turno_id)
 
     return render_template("turno/update.html", turno=turno)
+
+def searchTurnoPage():
+    return render_template("/turno/search.html")
+
+def searchTurnos():
+    data = request.args.to_dict()
+    data = escape_xss(data)
+    centro= "%{}%".format(data.get('centro'))
+    mail = "%{}%".format(data.get('mail'))
+
+    numero_pagina = request.args.get("numero_pagina")
+    if numero_pagina:
+        numero_pagina = int(numero_pagina)
+    
+    turnos_total = Turno.getByCentroAndMail(centro, mail)
+    turnos = Turno.getSearchPaginado(numero_pagina, centro, mail)
+    
+    cantidad_paginas = int((turnos_total.count() - 1) / Configuracion.getConfiguracion().paginacion)
+    
+    return render_template("/turno/search.html", turnos=turnos, cantidad_paginas=cantidad_paginas, centro=centro, mail=mail)

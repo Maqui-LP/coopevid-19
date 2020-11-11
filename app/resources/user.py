@@ -214,6 +214,7 @@ def searchUserPage():
 
 def searchUsers():
     data = request.form.to_dict()
+    data = escape_xss(data)
     nombre= "%{}%".format(data['nombre'])
     apellido = "%{}%".format(data['apellido'])
     estado = int(data['estado'])
