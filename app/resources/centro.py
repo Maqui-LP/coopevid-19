@@ -80,7 +80,8 @@ def create():
         return redirect(url_for("centro_new"))
 
     data['status'] = False    
-
+    data['status_create'] = "ACEPTADO"
+    
     centro = Centro.getCentrobyName(data.get('name'))
     if(centro is not None):
         flash("Ya existe un centro con ese nombre")
