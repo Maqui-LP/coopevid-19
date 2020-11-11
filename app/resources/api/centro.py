@@ -1,5 +1,7 @@
 from flask import  jsonify, request, abort
 from app.models.centro import Centro
+from app.models.turno import Turno
+from app.models.user import User
 from app.helpers.form_validation import validateCentro
 from werkzeug.utils import secure_filename
 from app.db_sqlalchemy import db_sqlalchemy
@@ -99,4 +101,37 @@ def create():
     }
 
     return jsonify(atributos = json_centro) 
-    
+
+@csrf.exempt
+def reserva(id):
+
+    data = request.json
+    hora = data.get('hora')
+    fecha = data.get('dia')
+    data["fecha"] = fecha
+    turnoDb = Turno.getTurnoByHoraFechaCentro(hora, fecha, id)
+
+    if turnoDb is not None:
+        abort(400)
+
+    data["centroId"] = id
+    centro = Centro.getCentroById(id)
+    data["centroNombre"] = centro.name
+    user = User.getUserByEmail(data.get('email_donante'))
+
+    data["mail"] = user.email
+    data["userId"] = user.id
+    nuevoTurno = Turno(data)    
+
+    db.session.add(nuevoTurno)
+    db.session.commit()
+
+
+    json_turno = {
+        "centro_id": id,
+        "email_donante": nuevoTurno.userEmail,
+        "hora_inicio": nuevoTurno.horaInicio.isoformat(),
+        "fecha": nuevoTurno.dia
+    }
+
+    return jsonify(atributos = json_turno) 
