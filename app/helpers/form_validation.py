@@ -59,13 +59,3 @@ def validateUpdateUser(data):
     constraints['email'] = ['email']
 
     return validateData(data, constraints)
-
-def validateCentro(data):
-    """ Validate centro
-    """
-
-    constraints = {}
-    constraints['required'] = ['name', 'phone', 'mail', 'openHour', 'closeHour', 'type_id', 'web', 'address', 'lat', 'long']
-    constraints['mail'] = ['mail']
-
-    return validateData(data, constraints)
