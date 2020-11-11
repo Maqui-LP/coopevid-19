@@ -82,6 +82,7 @@ def create():
     archive.save(os.path.join(MEDIA_PATH, filename))
 
     data['file_name'] = filename
+    data['status_create'] = "PENDIENTE"
 
     nuevoCentro = Centro(data)
 
