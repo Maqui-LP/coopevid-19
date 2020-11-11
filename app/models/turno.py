@@ -44,3 +44,7 @@ class Turno(db.Model):
     def updateTurno(id, data):
         data.pop('csrf_token')
         Turno.query.filter(Turno.id == id).update(data)
+
+    @staticmethod
+    def getByCentroAndMail(centro, mail):
+        return Turno.query.filter(Turno.centroNombre.like(centro), Turno.userEmail.like(mail))

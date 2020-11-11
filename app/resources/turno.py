@@ -123,3 +123,17 @@ def edit():
     turno = Turno.getTurnoById(turno_id)
 
     return render_template("turno/update.html", turno=turno)
+
+def searchTurnoPage():
+    return render_template("/turno/search.html")
+
+def searchTurnos():
+    data = request.form.to_dict()
+    data = escape_xss(data)
+
+    centro= "%{}%".format(data['centro'])
+    mail = "%{}%".format(data['mail'])
+
+    turnos = Turno.getByCentroAndMail(centro, mail)
+
+    return render_template("/turno/search.html", turnos=turnos)
