@@ -2,7 +2,6 @@ from flask import redirect, render_template, request, url_for, session, abort, j
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.rol import Rol
 from app.helpers.auth import authenticated
-from app.helpers.xss_escape import escape_xss
 from app.db_sqlalchemy import db_sqlalchemy
 from app.helpers.granted import granted
 
@@ -29,8 +28,6 @@ def new():
 def create():
     
     data = request.form.to_dict()
-    data = escape_xss(data)
-
 
     rol = Rol.query.filter(Rol.nombre == data.get("nombre")).first()
     if (rol is not None):
