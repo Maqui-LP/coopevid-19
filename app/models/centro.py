@@ -80,3 +80,18 @@ class Centro(db.Model):
     def updateCentro(centro_id, data):
         data.pop('csrf_token')
         Centro.query.filter(Centro.id == centro_id).update(data)
+
+    @staticmethod
+    def toggleAprobacion(centro_id):
+        estado = Centro.query.filter(Centro.id == centro_id).first().status_create
+        if estado == "ACEPTADO":
+            nuevo_estado = "RECHAZADO"
+            Centro.query.filter(Centro.id == centro_id).update({'status_create': nuevo_estado})
+        else:
+            nuevo_estado = "ACEPTADO"
+            Centro.query.filter(Centro.id == centro_id).update({'status_create': nuevo_estado})
+
+    @staticmethod
+    def definirStatusCreate(centro_id, status):
+        Centro.query.filter(Centro.id == centro_id).update({'status_create': status})
+

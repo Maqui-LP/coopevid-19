@@ -25,6 +25,7 @@
         <th scope="col">Telefono</th>
         <th scope="col">Detalle</th>
         <th scope="col">Eliminar</th>
+        <th scope="col">Aceptar/Rechazar</th>
       </tr>
     </thead>
     <tbody>
@@ -68,6 +69,43 @@
               </div>
             </div>
           </div> 
+      </td>
+      <td>
+        {% if centro.status_create == "ACEPTADO" %}
+          <form action="{{url_for('toggle_aprobacion')}}" method=POST>   
+          <input type="hidden" value="{{ centro.id }}" name="centro_id"/>   
+          <input class="btn btn-danger" type=submit value="Rechazar"/>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          </form>       
+          
+        {% else %}
+          {% if centro.status_create == "RECHAZADO" %}  
+            <form action="{{url_for('toggle_aprobacion')}}" method=POST>   
+            <input type="hidden" value="{{ centro.id }}" name="centro_id"/>   
+            <input class="btn btn-success" type=submit value="Aprobar"/>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            </form>
+          {% else %}
+          <div class="row">
+            <div class="col-4">
+              <form action="{{url_for('definir_status_create')}}" method=POST>   
+                <input type="hidden" value="{{ centro.id }}" name="centro_id"/>
+                <input type="hidden" value="ACEPTADO" name="status_create"/>
+                <input class="btn btn-success" type=submit value="Aprobar"/>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              </form>
+            </div>
+            <div class="col-auto">  
+              <form action="{{url_for('definir_status_create')}}" method=POST>   
+                <input type="hidden" value="{{ centro.id }}" name="centro_id"/>
+                <input type="hidden" value="RECHAZADO" name="status_create"/>  
+                <input class="btn btn-danger" type=submit value="Rechazar"/>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              </form>
+            </div>
+          </div>    
+          {% endif %}
+        {% endif %}
       </td>
     </tr>      
     {% endfor %}

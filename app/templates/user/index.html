@@ -26,7 +26,6 @@
         <th scope="col">Apellido</th>
         <th scope="col">ID</th>
         <th scope="col">Roles</th>
-        <th scope="col">Permisos</th>
         <th scope="col">Editar</th>
         <th scope="col">Eliminar</th>
         <th scope="col">Activar/Desactivar</th>
@@ -43,9 +42,6 @@
       <td>{{ user.id }}</td>
       <td>{% for rol in user.roles %}
         <p>{{rol.nombre}}</p>
-      {% endfor %}</td>
-      <td>{% for perm in user.getPermisos() %}
-        <p>{{perm}}</p>
       {% endfor %}</td>
       <td>
         <a href="{{url_for('user_edit', user_id=user.id)}}" class="btn btn-success">Editar</a>
