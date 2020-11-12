@@ -213,13 +213,19 @@ def searchUserPage():
     return render_template("/user/search.html")
 
 def searchUsers():
-    data = request.form.to_dict()
+    data = request.args.to_dict()
     data = escape_xss(data)
-    nombre= "%{}%".format(data['nombre'])
-    apellido = "%{}%".format(data['apellido'])
-    estado = int(data['estado'])
+    nombre= "%{}%".format(data.get('nombre'))
+    apellido = "%{}%".format(data.get('apellido'))
+    estado = int(data.get('estado'))
 
-    users = User.getByNameLastNameAndState(nombre, apellido, estado)
+    numero_pagina = request.args.get("numero_pagina")
+    if numero_pagina:
+        numero_pagina = int(numero_pagina)
+    
+    users_total = User.getByNameLastNameAndState(nombre, apellido, estado)
+    users = User.getSearchPaginado(numero_pagina, nombre, apellido, estado)
+    cantidad_paginas = int((users_total.count() - 1) / Configuracion.getConfiguracion().paginacion)
 
-    return render_template("/user/search.html", users=users)
+    return render_template("/user/search.html", users=users, cantidad_paginas=cantidad_paginas, nombre=nombre, apellido=apellido, estado=estado)
 
