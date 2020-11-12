@@ -97,7 +97,7 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/toogleUser", "toogle_user_activity", user.toogleUserActivity, methods=["POST"])
     #rutas para busqueda de usuarios
     app.add_url_rule("/usuarios/search", "search_users_page", user.searchUserPage)
-    app.add_url_rule("/usuarios/search", "search_users", user.searchUsers, methods=["POST"])
+    app.add_url_rule("/usuarios/search/list", "search_users", user.searchUsers)
 
     #Rutas para centros
     app.add_url_rule("/centros", "centro_index", centro.index)

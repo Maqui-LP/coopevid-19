@@ -92,4 +92,8 @@ class User(db.Model):
     @staticmethod
     def getAllPaginado(numero_pagina):
         return User.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+
+    @staticmethod
+    def getSearchPaginado(numero_pagina, nombre, apellido, estado):
+        return User.query.filter(User.first_name.like(nombre), User.last_name.like(apellido), User.activo == estado).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
         
