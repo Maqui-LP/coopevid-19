@@ -233,3 +233,28 @@ def definirStatusCreate():
     db.session.commit()
 
     return redirect(url_for("centro_index"))
+
+def searchCentrosPage():
+    return render_template("/centro/search.html")
+
+def searchCentros():
+    data = request.args.to_dict()
+    data = escape_xss(data)
+    status = data.get('status')
+    name = "%{}%".format(data.get('name'))
+    
+    numero_pagina = request.args.get("numero_pagina")
+    if numero_pagina:
+        numero_pagina = int(numero_pagina)
+
+    if status is None:
+        centros =  Centro.getAllByNamePaginado(numero_pagina,name)
+        total = Centro.getAllByName(name).count()
+    else:
+        centros = Centro.getAllByStatusPaginado(numero_pagina, status)
+        total = Centro.getAllByStatus(status).count()
+    
+    cantidad_paginas = int((total - 1) / Configuracion.getConfiguracion().paginacion)
+    
+    return render_template("/centro/search.html", centros=centros, cantidad_paginas=cantidad_paginas, status=status, name=name)
+    

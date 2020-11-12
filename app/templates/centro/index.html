@@ -9,7 +9,7 @@
 <h1>Centros</h1>
 {% block content %}
 <div>
-  <a href="" class="btn btn-primary m-3 p-3 float-right">Buscar Centros</a>
+  <a href="{{url_for('search_centros_page')}}" class="btn btn-primary m-3 p-3 float-right">Buscar Centros</a>
 </div>
 <div>
   <a href="{{ url_for('centro_new')}}" class="btn btn-primary m-3 p-3">Agregar Centro</a>
