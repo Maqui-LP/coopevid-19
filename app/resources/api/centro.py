@@ -144,14 +144,8 @@ def getTurnoByFecha(id):
     if (centro is None):
         abort(404)
     
-    data = request.json
-    if data is None:
-        fecha = date.today()    
-    else:
-        fecha = data.get('dia', date.today())
-    """En caso de tener más campos, podría poner if data is None: data = {}
-        y luego acceder a cada valor sin el else, con el .get y un valor por defecto
-    """
+    data = request.args
+    fecha = data.get('fecha', date.today())
 
     turnos = Turno.getByFechaCentro(id, fecha)
     json = []

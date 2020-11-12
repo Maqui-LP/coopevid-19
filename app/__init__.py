@@ -157,7 +157,7 @@ def create_app(environment="development"):
     app.add_url_rule("/api/centros", "centro_api_create", centroApi.create, methods=["POST"])
     app.add_url_rule("/api/centros/<id>/reserva", "centro_api_reserva", centroApi.reserva, methods=["POST"])
     ##turnos
-    app.add_url_rule("/api/centros/<id>/turnos", "centro_api_turnos", centroApi.getTurnoByFecha, methods=["GET"])
+    app.add_url_rule("/api/centros/<id>/turnos_disponibles", "centro_api_turnos", centroApi.getTurnoByFecha, methods=["GET"])
 
     # Retornar la instancia de app configurada
     return app
