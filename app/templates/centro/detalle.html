@@ -32,8 +32,9 @@
                     </div>
                     <div class="card text-center border-primary">
                         <h5 class="card-title">Ubicacion</h5>
+                        <p>{{centro.lat}}{{centro.long}}</p>
                         <p class="card-text">{{municipio.name}} {{centro.address}}</p>
-                        <div id="myMap" class="m-auto border-primary" style="height: 250px; width: 450px; position: relative;"></div>
+                        <div id="myMap" onchange="setPosition()" class="m-auto border-primary" style="height: 250px; width: 450px; position: relative;"></div>
                     </div>
           </div>
         <hr>
@@ -79,5 +80,18 @@
       <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
 integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
 crossorigin=""></script>
-<script src="{{url_for('static', filename='js/map.js')}}"></script>
+<script>
+  //creo el mapa con coordenada inicial plaza moreno
+  let myMap = L.map('myMap').setView([ "{{centro.lat}}", "{{centro.long}}"],13)
+  //variable para la marca
+  let marker = L.marker(["{{centro.lat}}","{{centro.long}}"],{draggable:false}).addTo(myMap);
+  //link al template del mapa sacado de ngx-leaflet
+  const urlOpenLayers = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+
+
+
+  L.tileLayer(urlOpenLayers,{
+      maxZoom:15
+  }).addTo(myMap)
+</script>
 {% endblock %}
