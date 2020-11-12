@@ -61,6 +61,22 @@ class Centro(db.Model):
         return Centro.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
 
     @staticmethod
+    def getAllByStatusPaginado(numero_pagina, status_create):
+        return Centro.query.filter(Centro.status_create == status_create).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+
+    @staticmethod
+    def getAllByStatus(status_create):
+        return Centro.query.filter(Centro.status_create == status_create)
+
+    @staticmethod
+    def getAllByNamePaginado(numero_pagina,name):
+        return Centro.query.filter(Centro.name.like(name)).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+
+    @staticmethod
+    def getAllByName(name):
+        return Centro.query.filter(Centro.name.like(name))
+
+    @staticmethod
     def getCentroByEmail(email):
         return Centro.query.filter(Centro.email == email).first()
 

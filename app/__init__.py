@@ -110,6 +110,9 @@ def create_app(environment="development"):
     app.add_url_rule("/centro/statusCreate", "definir_status_create", centro.definirStatusCreate, methods=["POST"])
     #ruta para enviar cambios
     app.add_url_rule("/centro/update", "centro_update", centro.update, methods=["POST"])
+    #Rutas para busqueda de Centros
+    app.add_url_rule("/centros/search", "search_centros_page", centro.searchCentrosPage)
+    app.add_url_rule("/centros/search/list", "search_centro", centro.searchCentros)
 
     # Rutas para Turnos 
     app.add_url_rule("/turnos", "turno_index", turno.index)
