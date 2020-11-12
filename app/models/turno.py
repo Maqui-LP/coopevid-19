@@ -60,3 +60,7 @@ class Turno(db.Model):
     @staticmethod
     def getSearchPaginado(numero_pagina, centro, mail):
         return Turno.query.filter(Turno.centroNombre.like(centro), Turno.userEmail.like(mail)).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+
+    @staticmethod
+    def getByFechaCentro(centro, fecha):
+        return Turno.query.filter(Turno.centroId == centro, Turno.dia == fecha).all()
