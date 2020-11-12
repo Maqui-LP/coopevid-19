@@ -8,6 +8,7 @@ from app.db_sqlalchemy import db_sqlalchemy
 from app.csrf import app_csrf
 import random
 import os
+from datetime import date
 
 csrf = app_csrf
 db = db_sqlalchemy
@@ -136,3 +137,31 @@ def reserva(id):
     }
 
     return jsonify(atributos = json_turno) 
+
+@csrf.exempt
+def getTurnoByFecha(id):
+    centro = Centro.getCentroById(id)
+    if (centro is None):
+        abort(404)
+    
+    data = request.json
+    if data is None:
+        fecha = date.today()    
+    else:
+        fecha = data.get('dia', date.today())
+    """En caso de tener más campos, podría poner if data is None: data = {}
+        y luego acceder a cada valor sin el else, con el .get y un valor por defecto
+    """
+
+    turnos = Turno.getByFechaCentro(id, fecha)
+    json = []
+
+    for turno in turnos:
+        dic = {
+            "fecha": turno.dia,
+            "horaInicio": turno.horaInicio.isoformat(),
+            "userEmail": turno.userEmail,
+            "centro":turno.centroNombre
+        }
+        json.append(dic)
+    return jsonify(turnos=json)
