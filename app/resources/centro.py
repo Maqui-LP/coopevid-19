@@ -204,3 +204,32 @@ def getMunicipios():
     r = r.json()
 
     return r.get("data").get("Town")
+
+def toggleAprobacion():
+    if not authenticated(session):
+        abort(401)
+    if not granted("centro_update"):
+        abort(403)
+    
+    data = request.form.to_dict()
+    centro_id = data["centro_id"]
+    Centro.toggleAprobacion(centro_id)
+
+    db.session.commit()
+
+    return redirect(url_for("centro_index"))
+
+def definirStatusCreate():
+    if not authenticated(session):
+        abort(401)
+    if not granted("centro_update"):
+        abort(403)
+
+    data = request.form.to_dict()
+    data = escape_xss(data)
+
+    Centro.definirStatusCreate(data["centro_id"], data["status_create"])
+
+    db.session.commit()
+
+    return redirect(url_for("centro_index"))
