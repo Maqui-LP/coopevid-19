@@ -86,7 +86,7 @@ def create():
         flash("Ya existe un centro con esa direccion")
         return redirect(url_for("centro_new"))
 
-    archive.save(os.path.join('https://grupo3.proyecto2020.linti.unlp.edu.ar/static/uploads/' , filename))
+    archive.save(os.path.join('app/static/uploads/' , filename))
 
     data['file_name'] = filename
 
