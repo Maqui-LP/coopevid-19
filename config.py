@@ -41,7 +41,7 @@ class TestingConfig(BaseConfig):
     DB_USER = environ.get("DB_USER", "MY_DB_USER")
     DB_PASS = environ.get("DB_PASS", "MY_DB_PASS")
     DB_NAME = environ.get("DB_NAME", "MY_DB_NAME")
-
+    MEDIA_PATH = './static/uploads'
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""
@@ -52,7 +52,7 @@ class ProductionConfig(BaseConfig):
     DB_USER = environ.get("DB_USER", "grupo3")
     DB_PASS = environ.get("DB_PASS", "ZWY2MzhjYWIyNGI5")
     DB_NAME = environ.get("DB_NAME", "grupo3")
-    MEDIA_PATH = './app/static/uploads'
+    MEDIA_PATH = './static/uploads'
 
 config = dict(
     development=DevelopmentConfig, testing=TestingConfig, production=ProductionConfig
