@@ -9,7 +9,7 @@
 <h1>Centros</h1>
 {% block content %}
 <div>
-  <a href="" class="btn btn-primary m-3 p-3 float-right">Buscar Centros</a>
+  <a href="{{url_for('search_centros_page')}}" class="btn btn-primary m-3 p-3 float-right">Buscar Centros</a>
 </div>
 <div>
   <a href="{{ url_for('centro_new')}}" class="btn btn-primary m-3 p-3">Agregar Centro</a>
@@ -25,6 +25,8 @@
         <th scope="col">Telefono</th>
         <th scope="col">Detalle</th>
         <th scope="col">Eliminar</th>
+        <th scope="col">Aceptar/Rechazar</th>
+        <th scope="col">Publicar</th>
       </tr>
     </thead>
     <tbody>
@@ -68,6 +70,43 @@
               </div>
             </div>
           </div> 
+      </td>
+      <td>
+        {% if centro.status_create == "PENDIENTE" %}
+          <div class="row">
+            <div class="col-4">
+              <form action="{{url_for('definir_status_create')}}" method=POST>   
+                <input type="hidden" value="{{ centro.id }}" name="centro_id"/>
+                <input type="hidden" value="ACEPTADO" name="status_create"/>
+                <input class="btn btn-success" type=submit value="Aprobar"/>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              </form>
+            </div>
+            <div class="col-auto">  
+              <form action="{{url_for('definir_status_create')}}" method=POST>   
+                <input type="hidden" value="{{ centro.id }}" name="centro_id"/>
+                <input type="hidden" value="RECHAZADO" name="status_create"/>  
+                <input class="btn btn-danger" type=submit value="Rechazar"/>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              </form>
+            </div>
+          </div>    
+          {% endif %}
+      </td>
+      <td>
+        {% if centro.status %}
+          <form action="{{url_for('toggle_publicacion')}}" method=POST>   
+          <input type="hidden" value="{{ centro.id }}" name="centro_id"/>   
+          <input class="btn btn-danger" type=submit value="Despublicar"/>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          </form>        
+        {% else %}  
+            <form action="{{url_for('toggle_publicacion')}}" method=POST>   
+            <input type="hidden" value="{{ centro.id }}" name="centro_id"/>   
+            <input class="btn btn-success" type=submit value="Publicar"/>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            </form> 
+        {% endif %}
       </td>
     </tr>      
     {% endfor %}

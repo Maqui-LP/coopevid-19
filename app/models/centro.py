@@ -25,6 +25,7 @@ class Centro(db.Model):
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
     file_name = db.Column(db.String, nullable=False)
+    status_create = db.Column(db.String, nullable=False)
     turnos = db.relationship('Turno', cascade="all, delete-orphan")
 
     #TODO: agregar el protocolo con formato PDF y el tema del municipio 
@@ -44,6 +45,7 @@ class Centro(db.Model):
         self.municipio_id = data['municipio_id']
         self.lat = data['lat']
         self.long = data['long']
+        self.status_create = data['status_create']
         self.file_name = data['file_name']
         
     @staticmethod
@@ -57,6 +59,18 @@ class Centro(db.Model):
     @staticmethod
     def getAllPaginado(numero_pagina):
         return Centro.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+
+    @staticmethod
+    def getAllByNameStatusCreate(name, status_create):
+        return Centro.query.filter(Centro.name.like(name), Centro.status_create.like(status_create))
+
+    @staticmethod
+    def getAllByNameStatusCreatePaginado(numero_pagina, name, status_create):
+        return Centro.query.filter(Centro.name.like(name), Centro.status_create.like(status_create)).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+
+    @staticmethod
+    def getAllByName(name):
+        return Centro.query.filter(Centro.name.like(name))
 
     @staticmethod
     def getCentroByEmail(email):
@@ -78,3 +92,13 @@ class Centro(db.Model):
     def updateCentro(centro_id, data):
         data.pop('csrf_token')
         Centro.query.filter(Centro.id == centro_id).update(data)
+
+    @staticmethod
+    def togglePublicacion(centro_id):
+        estado = Centro.query.filter(Centro.id == centro_id).first().status
+        Centro.query.filter(Centro.id == centro_id).update({'status': not estado})
+
+    @staticmethod
+    def definirStatusCreate(centro_id, status):
+        Centro.query.filter(Centro.id == centro_id).update({'status_create': status})
+

@@ -51,7 +51,7 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                   <label>Horario de apertura:</label></br>
-                  <input type="time" class="form-control" name="openHour" value="{{centro.openHour}}" required="true"/>
+                  <input id="openHour" onchange="openHourSelected(this)" type="time" class="form-control" name="openHour" value="{{centro.openHour}}" required="true"/>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                     <label>Horario de cierre:</label></br>
-                    <input type="time" class="form-control" name="closeHour" value="{{centro.closeHour}}" required="true"/>
+                    <input id="closeHour" onchange="closeHourSelected(this)" type="time" class="form-control" name="closeHour" value="{{centro.closeHour}}" required="true"/>
                 </div>
             </div>
             <div class="form-group col-md-6">
@@ -131,7 +131,61 @@
 integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
 crossorigin="">
 </script>
-<script src="{{url_for('static', filename='js/map.js')}}">
-</script>
+<script>
+  var openHour = "{{centro.openHour}}"
+  var closeHour = "{{centro.closeHour}}"
+  function openHourSelected(inputField){
+    openHour = inputField.value
+      if (openHour>= closeHour){
+        setTimeout(function(){ 
+          alert('El horario de inicio es posterior o igual al de fin!');
+          inputField.value = undefined 
+          },
+        0); 
+    }
+  }
 
+  function closeHourSelected(inputField){
+    closeHour = inputField.value    
+      if (openHour>= closeHour){
+        setTimeout(function(){
+          alert('El horario de inicio es posterior o igual al de fin!');
+          inputField.value = undefined
+        }, 
+        0)
+      }
+    
+  }
+</script>
+<script>
+//creo el mapa con coordenada inicial plaza moreno
+let myMap = L.map('myMap').setView([ "{{centro.lat}}", "{{centro.long}}"],13)
+  //variable para la marca
+  let marker = L.marker(["{{centro.lat}}","{{centro.long}}"],{draggable:false}).addTo(myMap);
+  //link al template del mapa sacado de ngx-leaflet
+  const urlOpenLayers = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+
+  function onMapClick(e){
+    //alert("hiciste click en: " + e.latlng);
+    //obtengo lat-long del evento
+    const lat = e.latlng.lat;
+    const long = e.latlng.lng;
+    //si ya hay marcador lo elimino para no tener muchos al mismo tiempo
+    if(marker){
+      myMap.removeLayer(marker);
+    }
+    //genero el marcador y seteo el popup con la lat lng
+    marker = L.marker([lat,long],{draggable:true}).bindPopup(e.latlng.toString()).openPopup().addTo(myMap);
+    document.getElementById("lat").value= lat;
+    document.getElementById("long").value = long;
+  }
+  
+  myMap.on('click', onMapClick);
+
+
+  L.tileLayer(urlOpenLayers,{
+      maxZoom:15
+  }).addTo(myMap)
+
+</script>
 {% endblock %}

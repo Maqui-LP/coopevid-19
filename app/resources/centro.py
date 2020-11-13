@@ -19,7 +19,6 @@ import os
 
 db = db_sqlalchemy
 
-MEDIA_PATH = './app/media/pdfs'
 
 def new():
     if not authenticated(session):
@@ -29,11 +28,6 @@ def new():
         abort(403)
 
     municipios = getMunicipios()
-
-    print("------------------------------------------------")
-    for each in municipios:
-        print(municipios[each])
-    print("------------------------------------------------")
 
     return render_template("centro/new.html", municipios=municipios)
 
@@ -80,7 +74,8 @@ def create():
         return redirect(url_for("centro_new"))
 
     data['status'] = False    
-
+    data['status_create'] = "ACEPTADO"
+    
     centro = Centro.getCentrobyName(data.get('name'))
     if(centro is not None):
         flash("Ya existe un centro con ese nombre")
@@ -91,7 +86,7 @@ def create():
         flash("Ya existe un centro con esa direccion")
         return redirect(url_for("centro_new"))
 
-    archive.save(os.path.join(MEDIA_PATH, filename))
+    archive.save(os.path.join(app.config['MEDIA_PATH'] , filename))
 
     data['file_name'] = filename
 
@@ -203,3 +198,53 @@ def getMunicipios():
     r = r.json()
 
     return r.get("data").get("Town")
+
+def togglePublicacion():
+    if not authenticated(session):
+        abort(401)
+    if not granted("centro_update"):
+        abort(403)
+    
+    data = request.form.to_dict()
+    centro_id = data["centro_id"]
+    Centro.togglePublicacion(centro_id)
+
+    db.session.commit()
+
+    return redirect(url_for("centro_index"))
+
+def definirStatusCreate():
+    if not authenticated(session):
+        abort(401)
+    if not granted("centro_update"):
+        abort(403)
+
+    data = request.form.to_dict()
+    data = escape_xss(data)
+
+    Centro.definirStatusCreate(data["centro_id"], data["status_create"])
+
+    db.session.commit()
+
+    return redirect(url_for("centro_index"))
+
+def searchCentrosPage():
+    return render_template("/centro/search.html")
+
+def searchCentros():
+    data = request.args.to_dict()
+    data = escape_xss(data)
+    status = "%{}%".format(data.get('status'))
+    name = "%{}%".format(data.get('name'))
+    
+    numero_pagina = request.args.get("numero_pagina")
+    if numero_pagina:
+        numero_pagina = int(numero_pagina)    
+
+    centros = Centro.getAllByNameStatusCreatePaginado(numero_pagina, name, status)
+    total = Centro.getAllByNameStatusCreate(name, status).count()
+    
+    cantidad_paginas = int((total - 1) / Configuracion.getConfiguracion().paginacion)
+    
+    return render_template("/centro/search.html", centros=centros, cantidad_paginas=cantidad_paginas, status=status, name=name)
+    

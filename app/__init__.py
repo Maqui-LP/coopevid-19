@@ -97,7 +97,7 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/toogleUser", "toogle_user_activity", user.toogleUserActivity, methods=["POST"])
     #rutas para busqueda de usuarios
     app.add_url_rule("/usuarios/search", "search_users_page", user.searchUserPage)
-    app.add_url_rule("/usuarios/search", "search_users", user.searchUsers, methods=["POST"])
+    app.add_url_rule("/usuarios/search/list", "search_users", user.searchUsers)
 
     #Rutas para centros
     app.add_url_rule("/centros", "centro_index", centro.index)
@@ -106,8 +106,13 @@ def create_app(environment="development"):
     app.add_url_rule("/centros/delete", "centro_delete", centro.delete , methods=["POST"])
     app.add_url_rule("/centro/detalle", "centro_detalle", centro.detalle)
     app.add_url_rule("/centro/editar", "centro_edit", centro.edit)
+    app.add_url_rule("/centro/toggleCentro", "toggle_publicacion", centro.togglePublicacion, methods=["POST"])
+    app.add_url_rule("/centro/statusCreate", "definir_status_create", centro.definirStatusCreate, methods=["POST"])
     #ruta para enviar cambios
     app.add_url_rule("/centro/update", "centro_update", centro.update, methods=["POST"])
+    #Rutas para busqueda de Centros
+    app.add_url_rule("/centros/search", "search_centros_page", centro.searchCentrosPage)
+    app.add_url_rule("/centros/search/list", "search_centro", centro.searchCentros)
 
     # Rutas para Turnos 
     app.add_url_rule("/turnos", "turno_index", turno.index)
@@ -153,8 +158,9 @@ def create_app(environment="development"):
     app.add_url_rule("/api/centros", "centro_api_index", centroApi.index, methods=["GET"])
     app.add_url_rule("/api/centros/<id>", "centro_id_api_index", centroApi.getById, methods=["GET"])
     app.add_url_rule("/api/centros", "centro_api_create", centroApi.create, methods=["POST"])
+    app.add_url_rule("/api/centros/<id>/reserva", "centro_api_reserva", centroApi.reserva, methods=["POST"])
     ##turnos
-
+    app.add_url_rule("/api/centros/<id>/turnos_disponibles", "centro_api_turnos", centroApi.getTurnoByFecha, methods=["GET"])
 
     # Retornar la instancia de app configurada
     return app
