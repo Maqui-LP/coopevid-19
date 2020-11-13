@@ -12,18 +12,10 @@
   <div class="justify-content-center text-center form">
       <h1>Busca centros por nombre o estado</h1>
         <form action="{{url_for('search_centro')}}" method="GET">
-            <div class="form-group">                    
-                <label for="centro"><h4>Nombre</h4></label>
-                <input type="text" class="form-control" name="name" id="centro"  placeholder="Ingresa el nombre del centro de ayuda" > 
-            </div>
-            <div class="form-group">
-                <br>
-                <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Buscar</button>
-            </div>
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        </form>
-        <form action="{{url_for('search_centro')}}" method="GET">
-
+          <div class="form-group">                    
+              <label for="name"><h4>Nombre</h4></label>
+              <input type="text" class="form-control" name="name" id="name"  placeholder="Ingresa el nombre del centro de ayuda" > 
+          </div>
           <div class="form-group">                    
               <label for="status"><h4>Estado</h4></label>
               <input type="text" class="form-control" name="status" id="status" value="" placeholder="Ingresa el estado del centro" > 
@@ -33,8 +25,7 @@
               <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Buscar</button>
           </div>
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        </form>
-        
+        </form>        
       {% if centros %}
       <h2>Listado de centros</h2>
       <table class="table">

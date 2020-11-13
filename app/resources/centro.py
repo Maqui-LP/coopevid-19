@@ -205,7 +205,7 @@ def getMunicipios():
 
     return r.get("data").get("Town")
 
-def toggleAprobacion():
+def togglePublicacion():
     if not authenticated(session):
         abort(401)
     if not granted("centro_update"):
@@ -213,7 +213,7 @@ def toggleAprobacion():
     
     data = request.form.to_dict()
     centro_id = data["centro_id"]
-    Centro.toggleAprobacion(centro_id)
+    Centro.togglePublicacion(centro_id)
 
     db.session.commit()
 
@@ -240,19 +240,15 @@ def searchCentrosPage():
 def searchCentros():
     data = request.args.to_dict()
     data = escape_xss(data)
-    status = data.get('status')
+    status = "%{}%".format(data.get('status'))
     name = "%{}%".format(data.get('name'))
     
     numero_pagina = request.args.get("numero_pagina")
     if numero_pagina:
-        numero_pagina = int(numero_pagina)
+        numero_pagina = int(numero_pagina)    
 
-    if status is None:
-        centros =  Centro.getAllByNamePaginado(numero_pagina,name)
-        total = Centro.getAllByName(name).count()
-    else:
-        centros = Centro.getAllByStatusPaginado(numero_pagina, status)
-        total = Centro.getAllByStatus(status).count()
+    centros = Centro.getAllByNameStatusCreatePaginado(numero_pagina, name, status)
+    total = Centro.getAllByNameStatusCreate(name, status).count()
     
     cantidad_paginas = int((total - 1) / Configuracion.getConfiguracion().paginacion)
     
