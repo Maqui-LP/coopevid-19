@@ -19,7 +19,6 @@ import os
 
 db = db_sqlalchemy
 
-MEDIA_PATH = './app/media/pdfs'
 
 def new():
     if not authenticated(session):
@@ -29,11 +28,6 @@ def new():
         abort(403)
 
     municipios = getMunicipios()
-
-    print("------------------------------------------------")
-    for each in municipios:
-        print(municipios[each])
-    print("------------------------------------------------")
 
     return render_template("centro/new.html", municipios=municipios)
 
@@ -92,7 +86,7 @@ def create():
         flash("Ya existe un centro con esa direccion")
         return redirect(url_for("centro_new"))
 
-    archive.save(os.path.join(MEDIA_PATH, filename))
+    archive.save(os.path.join(app.config['MEDIA_PATH'] , filename))
 
     data['file_name'] = filename
 
