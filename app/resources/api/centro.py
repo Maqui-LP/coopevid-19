@@ -17,7 +17,7 @@ MEDIA_PATH = './app/media/pdfs'
 
 @csrf.exempt
 def index():
-    page = int(request.args.get("page"))
+    page = int(request.args.get("page",1))
     
     centros_totales = Centro.getAll()
     centros = Centro.getAllPaginado(page)
