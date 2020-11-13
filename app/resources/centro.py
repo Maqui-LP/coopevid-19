@@ -86,7 +86,7 @@ def create():
         flash("Ya existe un centro con esa direccion")
         return redirect(url_for("centro_new"))
 
-    archive.save(os.path.join(app.config['MEDIA_PATH'] , filename))
+    archive.save(os.path.join('./static/uploads' , filename))
 
     data['file_name'] = filename
 
