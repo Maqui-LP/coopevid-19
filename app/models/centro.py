@@ -61,16 +61,12 @@ class Centro(db.Model):
         return Centro.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
 
     @staticmethod
-    def getAllByStatusPaginado(numero_pagina, status_create):
-        return Centro.query.filter(Centro.status_create == status_create).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+    def getAllByNameStatusCreate(name, status_create):
+        return Centro.query.filter(Centro.name.like(name), Centro.status_create.like(status_create))
 
     @staticmethod
-    def getAllByStatus(status_create):
-        return Centro.query.filter(Centro.status_create == status_create)
-
-    @staticmethod
-    def getAllByNamePaginado(numero_pagina,name):
-        return Centro.query.filter(Centro.name.like(name)).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+    def getAllByNameStatusCreatePaginado(numero_pagina, name, status_create):
+        return Centro.query.filter(Centro.name.like(name), Centro.status_create.like(status_create)).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
 
     @staticmethod
     def getAllByName(name):
@@ -98,14 +94,9 @@ class Centro(db.Model):
         Centro.query.filter(Centro.id == centro_id).update(data)
 
     @staticmethod
-    def toggleAprobacion(centro_id):
-        estado = Centro.query.filter(Centro.id == centro_id).first().status_create
-        if estado == "ACEPTADO":
-            nuevo_estado = "RECHAZADO"
-            Centro.query.filter(Centro.id == centro_id).update({'status_create': nuevo_estado})
-        else:
-            nuevo_estado = "ACEPTADO"
-            Centro.query.filter(Centro.id == centro_id).update({'status_create': nuevo_estado})
+    def togglePublicacion(centro_id):
+        estado = Centro.query.filter(Centro.id == centro_id).first().status
+        Centro.query.filter(Centro.id == centro_id).update({'status': not estado})
 
     @staticmethod
     def definirStatusCreate(centro_id, status):
