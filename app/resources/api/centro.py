@@ -93,13 +93,18 @@ def create():
     #TODO obtener el objeto guardado y retornarlo como json
 
     json_centro =  {
+        "id": nuevoCentro.id,
         "nombre": nuevoCentro.name,
         "direccion": nuevoCentro.address,
         "telefono": nuevoCentro.phone,
         "hora_apertura":nuevoCentro.openHour.isoformat(),
         "hora_cierre":nuevoCentro.closeHour.isoformat(),
         "web":nuevoCentro.web,
-        "email":nuevoCentro.mail
+        "email":nuevoCentro.mail,
+        "muncipio_id":nuevoCentro.municipio_id,
+        "type_id":nuevoCentro.type_id,
+        "lat":nuevoCentro.lat,
+        "long":nuevoCentro.long
     }
 
     return jsonify(atributos = json_centro) 
