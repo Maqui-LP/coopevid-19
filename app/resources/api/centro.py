@@ -13,7 +13,7 @@ from datetime import date
 csrf = app_csrf
 db = db_sqlalchemy
 
-MEDIA_PATH = './app/media/pdfs'
+MEDIA_PATH = 'app/static/uploads/'
 
 @csrf.exempt
 def index():
