@@ -146,16 +146,23 @@ def getTurnoByFecha(id):
     
     data = request.args
     fecha = data.get('fecha', date.today())
-
+    turnos_disponibles = ["09:00:00", "09:30:00", "10:00:00", "10:30:00", "11:00:00", "11:30:00", "12:00:00", "12:30:00", "13:00:00", "13:30:00", "14:00:00", "14:30:00", "15:00:00", "15:30:00"]
     turnos = Turno.getByFechaCentro(id, fecha)
+    hora_turnos=[]
+    for t in turnos:
+        hora_turnos.append(t.horaInicio.strftime("%H:%M:%S"))
+
+    for i, td in enumerate(turnos_disponibles):
+        if td in hora_turnos:
+            turnos_disponibles.pop(i)
+
     json = []
 
-    for turno in turnos:
+    for turno in turnos_disponibles:
         dic = {
-            "fecha": turno.dia,
-            "horaInicio": turno.horaInicio.isoformat(),
-            "userEmail": turno.userEmail,
-            "centro":turno.centroNombre
+            "fecha": fecha.strftime("%Y-%m-%d"),
+            "horaInicio": turno,
+            "centro":centro.name
         }
         json.append(dic)
     return jsonify(turnos=json)
