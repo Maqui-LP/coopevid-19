@@ -31,3 +31,16 @@ def is_number(field, name):
     except ValueError:
         message = "El campo " + str(name) + " debe ser un numero"
         return "Debe ser un valor numerico"
+
+def date_format_validation(field, name):
+    regex = "\d{4}-\d{2}-\d{2}" 
+    if not re.search(regex, field):
+        return "El campo " + str(name) + " no es un formato de fecha valido"
+    return None
+
+def time_format_validation(field, name):
+    regex = "\d{2}\:\d{2}:\d{2}"
+    if not re.search(regex,field):
+        return "El campo " + str(name) + " no es un formato de hora valido"
+    return None
+        

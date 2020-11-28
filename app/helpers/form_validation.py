@@ -1,12 +1,14 @@
-from app.helpers.field_validation import email, min_length, max_length, is_number
+from app.helpers.field_validation import email, min_length, max_length, is_number, date_format_validation, time_format_validation
 
 def validateData(data, constraint):
-    """ constraint = { email: [], required: [], number: [] }
+    """ constraint = { email: [], required: [], number: [], fecha: [] }
     """
 
     emailFields = constraint.get('email', [])
     requiredFields = constraint.get('required', [])
     numberFields = constraint.get('number', [])
+    dateFields = constraint.get('fecha', [])
+    timeFields = constraint.get('time', [])
 
     # validamos todos los requeridos
     for field in requiredFields:
@@ -26,6 +28,18 @@ def validateData(data, constraint):
     # validamos todos los numeros
     for field in numberFields:
         error = is_number(data.get(field, ''), field)
+        if error:
+            return error
+
+    # validamos las fechas
+    for field in dateFields:
+        error = date_format_validation(data.get(field, ''), field)
+        if error:
+            return error
+    
+    # validamos las horas
+    for field in timeFields:
+        error = time_format_validation(data.get(field, ''), field)
         if error:
             return error
 
@@ -67,5 +81,17 @@ def validateCentro(data):
     constraints = {}
     constraints['required'] = ['name', 'phone', 'mail', 'openHour', 'closeHour', 'type_id', 'web', 'address', 'lat', 'long']
     constraints['mail'] = ['mail']
+
+    return validateData(data, constraints)
+
+def validateReserve(data):
+    """ Validate reserva
+    """
+
+    constraints = {}
+    constraints['required'] = ['fecha', 'hora', 'mail']
+    constraints['mail'] = ['mail']
+    constraints['fecha'] = ['fecha']
+    constraints['time'] = ['hora']
 
     return validateData(data, constraints)
