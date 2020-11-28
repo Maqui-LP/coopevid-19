@@ -114,7 +114,10 @@ def reserva(id):
 
     data = request.json
     hora = data.get('hora')
-    fecha = data.get('dia')
+    #fecha = data.get('dia')
+    fecha = data.get('fecha')
+    email = data.get('email_donante')
+
     data["fecha"] = fecha
     turnoDb = Turno.getTurnoByHoraFechaCentro(hora, fecha, id)
 
@@ -124,7 +127,7 @@ def reserva(id):
     data["centroId"] = id
     centro = Centro.getCentroById(id)
     data["centroNombre"] = centro.name
-    user = User.getUserByEmail(data.get('email_donante'))
+    user = User.getUserByEmail(email)
 
     data["mail"] = user.email
     data["userId"] = user.id
@@ -137,8 +140,8 @@ def reserva(id):
     json_turno = {
         "centro_id": id,
         "email_donante": nuevoTurno.userEmail,
-        "hora_inicio": nuevoTurno.horaInicio.isoformat(),
-        "fecha": nuevoTurno.dia
+        "hora_inicio": nuevoTurno.horaInicio.strftime("%H:%M:%S"),
+        "fecha": nuevoTurno.dia.strftime("%Y-%m-%d"),
     }
 
     return jsonify(atributos = json_turno) 
