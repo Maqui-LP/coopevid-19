@@ -146,7 +146,7 @@ def reserva(id):
     json_turno = {
         "centro_id": id,
         "email_donante": nuevoTurno.userEmail,
-        "hora_inicio": nuevoTurno.horaInicio.strftime("%H:%M:%S"),
+        "hora": nuevoTurno.horaInicio.strftime("%H:%M:%S"),
         "fecha": nuevoTurno.dia.strftime("%Y-%m-%d"),
     }
 
@@ -175,7 +175,7 @@ def getTurnoByFecha(id):
     for turno in turnos_disponibles:
         dic = {
             "fecha": fecha.strftime("%Y-%m-%d"),
-            "horaInicio": turno,
+            "hora": turno,
             "centro":centro.name
         }
         json.append(dic)

@@ -89,8 +89,8 @@ def validateReserve(data):
     """
 
     constraints = {}
-    constraints['required'] = ['fecha', 'hora', 'mail']
-    constraints['mail'] = ['mail']
+    constraints['required'] = ['fecha', 'hora', 'email']
+    constraints['email'] = ['email']
     constraints['fecha'] = ['fecha']
     constraints['time'] = ['hora']
 
