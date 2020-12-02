@@ -2,7 +2,7 @@ from flask import  jsonify, request, abort
 from app.models.centro import Centro
 from app.models.turno import Turno
 from app.models.user import User
-from app.helpers.form_validation import validateCentro
+from app.helpers.form_validation import validateCentro, validateReserve
 from werkzeug.utils import secure_filename
 from app.db_sqlalchemy import db_sqlalchemy
 from app.csrf import app_csrf
@@ -116,21 +116,30 @@ def create():
 def reserva(id):
 
     data = request.json
+    
+    error = validateReserve(data)
+    if error:
+        abort(400, description="Peticion invalida, revise el formato de la misma")
+
     hora = data.get('hora')
-    fecha = data.get('dia')
-    data["fecha"] = fecha
+    fecha = data.get('fecha')
+    email = data.get('email')
+
     turnoDb = Turno.getTurnoByHoraFechaCentro(hora, fecha, id)
 
     if turnoDb is not None:
         abort(400)
 
+    data["fecha"] = fecha
     data["centroId"] = id
+    
     centro = Centro.getCentroById(id)
     data["centroNombre"] = centro.name
-    user = User.getUserByEmail(data.get('email_donante'))
-
+    
+    user = User.getUserByEmail(email)
     data["mail"] = user.email
     data["userId"] = user.id
+
     nuevoTurno = Turno(data)    
 
     db.session.add(nuevoTurno)
@@ -140,8 +149,8 @@ def reserva(id):
     json_turno = {
         "centro_id": id,
         "email_donante": nuevoTurno.userEmail,
-        "hora_inicio": nuevoTurno.horaInicio.isoformat(),
-        "fecha": nuevoTurno.dia
+        "hora": nuevoTurno.horaInicio.strftime("%H:%M:%S"),
+        "fecha": nuevoTurno.dia.strftime("%Y-%m-%d"),
     }
 
     return jsonify(atributos = json_turno) 
@@ -169,7 +178,7 @@ def getTurnoByFecha(id):
     for turno in turnos_disponibles:
         dic = {
             "fecha": fecha.strftime("%Y-%m-%d"),
-            "horaInicio": turno,
+            "hora": turno,
             "centro":centro.name
         }
         json.append(dic)
