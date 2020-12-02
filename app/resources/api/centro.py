@@ -9,6 +9,7 @@ from app.csrf import app_csrf
 import random
 import os
 from datetime import date
+from app.models.configuracion import Configuracion
 
 csrf = app_csrf
 db = db_sqlalchemy
@@ -19,11 +20,13 @@ MEDIA_PATH = 'app/static/uploads/'
 def index():
     page = int(request.args.get("page",1))
     
-    centros_totales = Centro.getAll()
+    aux = 0 if (len(Centro.getAll()) % Configuracion.getConfiguracion().paginacion == 0)  else 1
+    total_pages = int(len(Centro.getAll()) / Configuracion.getConfiguracion().paginacion) + aux
     centros = Centro.getAllPaginado(page)
     json = []
     for centro in centros:
         dic = {
+            "id":centro.id,
             "nombre": centro.name,
             "direccion": centro.address,
             "telefono": centro.phone,
@@ -33,7 +36,7 @@ def index():
             "email":centro.mail
         }
         json.append(dic)
-    return jsonify(centros=json, total=len(centros_totales), page=page)
+    return jsonify(centros=json, total_pages=total_pages, page=page)
 
 @csrf.exempt
 def getById(id):
