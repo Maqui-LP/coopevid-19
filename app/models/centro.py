@@ -24,7 +24,7 @@ class Centro(db.Model):
     municipio_id = db.Column(db.Integer)
     lat = db.Column(db.Float, nullable=False)
     long = db.Column(db.Float, nullable=False)
-    file_name = db.Column(db.String, nullable=False)
+    file_name = db.Column(db.String, nullable=True)
     status_create = db.Column(db.String, nullable=False)
     turnos = db.relationship('Turno', cascade="all, delete-orphan")
 

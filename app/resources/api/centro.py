@@ -1,4 +1,4 @@
-from flask import  jsonify, request, abort
+from flask import  jsonify, request, abort, flash
 from app.models.centro import Centro
 from app.models.turno import Turno
 from app.models.user import User
@@ -59,59 +59,47 @@ def getById(id):
 
 @csrf.exempt
 def create():
-    data = request.form.to_dict()
-
-    archive = request.files['visit_protocol']
-
-    if not archive or archive.filename == '':
-        abort(400)
-
-    filename = secure_filename(archive.filename)
-    filename = f"{filename}_{random.randint(1000,9999)}.pdf"
-    
-    error = validateCentro(data)
-    if error:
-        abort(400)
+    data = request.json
 
     data['status'] = False    
 
     centro = Centro.getCentrobyName(data.get('name'))
     if(centro is not None):
-        abort(400)
+        abort(400, "Ya existe un centro con ese nombre")
 
     centro = Centro.getCentroByAddress(data.get('address'))
     if(centro is not None):
-        abort(400)
+        abort(400, "Ya existe un centro con esa direccion")
 
-    archive.save(os.path.join(MEDIA_PATH, filename))
-
-    data['file_name'] = filename
     data['status_create'] = "PENDIENTE"
+    data['file_name'] = ""
+
+    #error = validateCentro(data)
+    #if error:    
+    #    abort(400, "Informacion invalida")
 
     nuevoCentro = Centro(data)
 
     db.session.add(nuevoCentro)
     db.session.commit()
     
-    #TODO obtener el objeto guardado y retornarlo como json
-
     json_centro =  {
         "id": nuevoCentro.id,
-        "nombre": nuevoCentro.name,
-        "direccion": nuevoCentro.address,
-        "telefono": nuevoCentro.phone,
-        "hora_apertura":nuevoCentro.openHour.isoformat(),
-        "hora_cierre":nuevoCentro.closeHour.isoformat(),
+        "name": nuevoCentro.name,
+        "address": nuevoCentro.address,
+        "phone": nuevoCentro.phone,
+        "openHour":nuevoCentro.openHour.isoformat(),
+        "closeHour":nuevoCentro.closeHour.isoformat(),
         "web":nuevoCentro.web,
-        "email":nuevoCentro.mail,
+        "mail":nuevoCentro.mail,
         "muncipio_id":nuevoCentro.municipio_id,
         "type_id":nuevoCentro.type_id,
         "lat":nuevoCentro.lat,
         "long":nuevoCentro.long
     }
 
-    return jsonify(atributos = json_centro) 
-
+    return jsonify(centro = json_centro) 
+    
 @csrf.exempt
 def reserva(id):
 
