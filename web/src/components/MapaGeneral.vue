@@ -1,18 +1,40 @@
 <template>
-  <div class="mapaGeneral">
-    <h1>{{ msg }}</h1>
-  </div>
+  <l-map 
+    style="height: 90%; width: 100%"
+    :zoom="zoom"
+    :center="center"
+    @update:zoom="zoomUpdated"
+    @update:center="centerUpdated
+  >
+
+
+    <l-tile-layer :url= "url" > </l-tile-layer>
+  </l-map>
 </template>
 
 <script>
+import { LMap, LTileLayer } from 'vue2-leaflet'
 export default {
-  name: 'MapaGeneral',
-  props: {
-    msg: String
+  components: {
+    LMap,
+    LTileLayer  
+},
+data () {
+  return  {
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    zoom: 14,
+    center: [-34.9187, -57.956]
   }
+},
+methods: {
+  zoomUpdated(zoom) {
+      this.zoom = zoom
+  },
+  centerUpdated(center) {
+    this.center = center
+  },
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
