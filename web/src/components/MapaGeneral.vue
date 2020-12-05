@@ -7,27 +7,27 @@
       @update:zoom="zoomUpdated"
       @update:center="centerUpdated"
     >
-      <!-- @update:center="centerUpdated -->
-
-
       <l-tile-layer :url="url" > </l-tile-layer>
+      <l-marker :lat-lng="markerLatLng"></l-marker>
     </l-map>
   </div>
 </template>
 
 <script>
-import { LMap, LTileLayer } from 'vue2-leaflet'
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
 export default {
   name:'MapaGeneral',
   components: {
     LMap,
-    LTileLayer  
+    LTileLayer,
+    LMarker  
   },
   data () {
     return  {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       zoom: 14,
-      center: [-34.9187, -57.956]
+      center: [-34.9187, -57.956],
+      markerLatLng: [-34.9206722, -57.9561499]
     }
   },
   methods: {
