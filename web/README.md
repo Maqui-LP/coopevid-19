@@ -24,6 +24,14 @@ For any extra information you can see the [installation docs](https://github.com
 
 ### Install dependencies
 
+<details><summary>If you don't have Node 14.15.1</summary>
+
+```sh
+$ nvm install 14.15.1
+```
+
+</details>
+
 > To install the dependencies using the correct node version:
 
 ```sh
