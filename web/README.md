@@ -31,9 +31,11 @@ $ nvm use
 $ npm install
 ```
 <details><summary>If you don't have Node 14.15.1</summary>
+
 ```sh
 $ nvm install 14.15.1
 ```
+
 </details>
 ### Compiles and hot-reloads for development
 
