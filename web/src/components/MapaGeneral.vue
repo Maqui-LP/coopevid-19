@@ -1,20 +1,24 @@
 <template>
-  <l-map 
-    style="height: 90%; width: 100%"
-    :zoom="zoom"
-    :center="center"
-    @update:zoom="zoomUpdated"
-    @update:center="centerUpdated
-  >
+  <div style="height: 550px;">
+    <l-map 
+      style="height: 90%; width: 100%"
+      :zoom="zoom"
+      :center="center"
+      @update:zoom="zoomUpdated"
+      @update:center="centerUpdated"
+    >
+      <!-- @update:center="centerUpdated -->
 
 
-    <l-tile-layer :url= "url" > </l-tile-layer>
-  </l-map>
+      <l-tile-layer :url="url" > </l-tile-layer>
+    </l-map>
+  </div>
 </template>
 
 <script>
 import { LMap, LTileLayer } from 'vue2-leaflet'
 export default {
+  name:'MapaGeneral',
   components: {
     LMap,
     LTileLayer  
