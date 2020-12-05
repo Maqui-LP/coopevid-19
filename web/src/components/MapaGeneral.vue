@@ -18,21 +18,22 @@ export default {
   components: {
     LMap,
     LTileLayer  
-},
-data () {
-  return  {
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    zoom: 14,
-    center: [-34.9187, -57.956]
+  },
+  data () {
+    return  {
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      zoom: 14,
+      center: [-34.9187, -57.956]
+    }
+  },
+  methods: {
+    zoomUpdated(zoom) {
+        this.zoom = zoom
+    },
+    centerUpdated(center) {
+      this.center = center
+    },
   }
-},
-methods: {
-  zoomUpdated(zoom) {
-      this.zoom = zoom
-  },
-  centerUpdated(center) {
-    this.center = center
-  },
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
