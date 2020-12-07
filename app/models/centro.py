@@ -61,12 +61,12 @@ class Centro(db.Model):
         return Centro.query.paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
 
     @staticmethod
-    def getAllByNameStatusCreate(name, status_create):
-        return Centro.query.filter(Centro.name.like(name), Centro.status_create.like(status_create))
+    def getAllByNameStatusCreate(name, selected_statuses):
+        return Centro.query.filter(Centro.name.like(name), Centro.status_create.in_(selected_statuses))
 
     @staticmethod
-    def getAllByNameStatusCreatePaginado(numero_pagina, name, status_create):
-        return Centro.query.filter(Centro.name.like(name), Centro.status_create.like(status_create)).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
+    def getAllByNameStatusCreatePaginado(numero_pagina, name, selected_statuses):
+        return Centro.query.filter(Centro.name.like(name), Centro.status_create.in_(selected_statuses)).paginate(page=numero_pagina, per_page=Configuracion.getConfiguracion().paginacion).items
 
     @staticmethod
     def getAllByName(name):
@@ -101,4 +101,8 @@ class Centro(db.Model):
     @staticmethod
     def definirStatusCreate(centro_id, status):
         Centro.query.filter(Centro.id == centro_id).update({'status_create': status})
+
+    @staticmethod
+    def getStatusesList():
+        return ['ACEPTADO', 'RECHAZADO', 'PENDIENTE']
 

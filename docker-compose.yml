@@ -23,8 +23,6 @@ services:
       - db
   web:
     build: .
-    ports:
-      - 5000:5000
     volumes:
       - ./:/app
     network_mode: host
