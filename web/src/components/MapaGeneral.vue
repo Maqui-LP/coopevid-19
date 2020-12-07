@@ -30,6 +30,14 @@ export default {
       markerLatLng: [-34.9206722, -57.9561499]
     }
   },
+  beforeCreate: function () {
+    fetch("http://localhost:5000/api/centros/all",{
+      "method": "GET",
+    })
+  .then(response => {
+    response.json().then(body => console.log(body));
+  });
+  },
   methods: {
     zoomUpdated(zoom) {
         this.zoom = zoom
