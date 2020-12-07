@@ -8,7 +8,9 @@
       @update:center="centerUpdated"
     >
       <l-tile-layer :url="url" > </l-tile-layer>
-      <l-marker :lat-lng="markerLatLng"></l-marker>
+      <ul v-for="(element, index) in coordinates" :key="index">
+        <l-marker @click="clickHandler(element)" :lat-lng="element.coord"></l-marker>
+      </ul>
     </l-map>
   </div>
 </template>
@@ -27,7 +29,9 @@ export default {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       zoom: 14,
       center: [-34.9187, -57.956],
-      markerLatLng: [-34.9206722, -57.9561499]
+      markerLatLng: [-34.9206722, -57.9561499],
+      centros: null,
+      coordinates:[],
     }
   },
   beforeCreate: function () {
@@ -35,7 +39,17 @@ export default {
       "method": "GET",
     })
   .then(response => {
-    response.json().then(body => console.log(body));
+    return response.json()
+    .then(body => this.centros = body.centros)
+    .then(() =>{
+      this.centros.forEach(element => {
+        var array = [element.lat, element.long];
+        element["coord"] = array;
+        console.log(element);
+        // this.coordinates.push(array);
+        this.coordinates.push(element);
+      });
+    });
   });
   },
   methods: {
@@ -45,6 +59,9 @@ export default {
     centerUpdated(center) {
       this.center = center
     },
+    clickHandler(latlng) {
+      console.log(latlng)
+    }
   }
 }
 </script>
