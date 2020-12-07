@@ -20,6 +20,7 @@ from app.helpers import auth as helper_auth
 from app.helpers import granted
 from app.helpers import config as config_helper
 from app.csrf import app_csrf
+from flask_cors import CORS
 #from flask_bootstrap import Bootstrap
 
 
@@ -27,6 +28,8 @@ def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
     app_csrf.init_app(app)
+
+    cors = CORS(app, resources={r"/api/centros/all": {"origins": "*"}})
 
     #Definicion de path de archivos estaticos
     #app.config['CENTROS_PDF'] = '/media/pdfs'
@@ -159,6 +162,7 @@ def create_app(environment="development"):
     app.add_url_rule("/api/centros/<id>", "centro_id_api_index", centroApi.getById, methods=["GET"])
     app.add_url_rule("/api/centros", "centro_api_create", centroApi.create, methods=["POST"])
     app.add_url_rule("/api/centros/<id>/reserva", "centro_api_reserva", centroApi.reserva, methods=["POST"])
+    app.add_url_rule("/api/centros/all", "centro_api_get_all_not_paginated", centroApi.get_all_not_paginated, methods=["GET"])
     ##turnos
     app.add_url_rule("/api/centros/<id>/turnos_disponibles", "centro_api_turnos", centroApi.getTurnoByFecha, methods=["GET"])
 
