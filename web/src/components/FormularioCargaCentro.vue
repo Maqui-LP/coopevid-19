@@ -124,6 +124,20 @@
       </div>
 
 
+              <!-- Web -->
+      <div class="form-row">
+            <div class="form-group col-md-12">
+                  <b-form-group id="input-group-11" label="Direccion web:" label-for="input-11">
+                    <b-form-input
+                      id="input-11"
+                      v-model="form.web"
+                      required
+                      type="url"
+                      placeholder="Ingresa la direccion web"
+                    ></b-form-input>
+                  </b-form-group>
+            </div>    
+      </div>
 
         <!-- Latitud y Longitud -->
       <div class="form-row">
@@ -153,20 +167,23 @@
             </div>
       </div>
 
-              <!-- Web -->
-      <div class="form-row">
-            <div class="form-group col-md-12">
-                  <b-form-group id="input-group-11" label="Direccion web:" label-for="input-11">
-                    <b-form-input
-                      id="input-11"
-                      v-model="form.web"
-                      required
-                      type="url"
-                      placeholder="Ingresa la direccion web"
-                    ></b-form-input>
-                  </b-form-group>
-            </div>    
+        <!-- Mapa -->
+      <div style="height: 550px;">
+        <l-map 
+          style="height: 90%; width: 100%"
+          :zoom="zoom"
+          :center="center"
+          @update:zoom="zoomUpdated"
+          @update:center="centerUpdated"
+          @click="setUbicacion"
+        >
+          <l-tile-layer :url="url" > </l-tile-layer>
+          
+          <!-- <l-marker @click="showModal(element)" :lat-lng="element.coord"></l-marker> -->
+          <l-marker :lat-lng="[form.lat,form.long ]" />
+        </l-map>
       </div>
+
 
       <b-button type="submit" variant="primary">Enviar Solicitud</b-button>
       <b-button type="reset" variant="danger">Limpiar el Formulario</b-button>
@@ -175,10 +192,19 @@
 </template>
 
 <script>
+  import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
   export default {
     name:'FormularioCargaCentro',
+    components: {
+      LMap,
+      LTileLayer,
+      LMarker
+    },
     data() {
       return {
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        zoom: 14,
+        center: [-34.9187, -57.956],
         form: {
           name: '',
           mail: '',
@@ -189,8 +215,8 @@
           web:'',
           lat:'',
           long:'',
-          type_id:null,
-          municipio_id:null,
+          type_id:'',
+          municipio_id:'',
         },
         municipios:[],
         tipos:[{id: 1, tipo: "Ropa"},
@@ -249,6 +275,16 @@
         this.$nextTick(() => {
           this.show = true
         })
+      },
+      zoomUpdated(zoom) {
+        this.zoom = zoom
+      },
+      centerUpdated(center) {
+        this.center = center
+      },
+      setUbicacion(event){
+        this.form.lat = event.latlng.lat
+        this.form.long = event.latlng.lng
       }
     }
   }
