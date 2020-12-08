@@ -26,7 +26,9 @@ def new():
 
     centros= Centro.getAll()
 
-    return render_template("turno/new.html", centros=centros)
+    params = request.args.to_dict()
+    params.pop('csrf_token', None)
+    return render_template("turno/new.html", centros=centros, **params)
 
 def index():
     if not authenticated(session):
@@ -56,19 +58,19 @@ def create():
     user = User.getUserByEmail(data.get("mail"))
     if not user:
         flash("No existe un usuario con dicho email")
-        return redirect(url_for("turno_new"))
+        return redirect(url_for("turno_new", **request.form.to_dict()))
     data['userId'] = User.getUserByEmail(data['mail']).id
 
     centro = Centro.getCentroById(data.get("centroId"))
     if not centro:
         flash("No existe dicho centro")
-        return redirect(url_for("turno_new"))
+        return redirect(url_for("turno_new", **request.form.to_dict()))
     data['centroNombre'] = centro.name
 
     turno = Turno.getTurnoByHoraFechaCentro(data['hora'], data['fecha'], data['centroId'])
     if turno is not None:
         flash("El turno no está disponible")
-        return redirect(url_for("turno_new"))
+        return redirect(url_for("turno_new", **request.form.to_dict()))
 
     nuevoTurno = Turno(data)
 
