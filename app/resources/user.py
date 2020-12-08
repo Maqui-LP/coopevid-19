@@ -40,7 +40,9 @@ def new():
     if not granted("usuario_new"):
         abort(403)
 
-    return render_template("user/new.html")
+    params = request.args.to_dict()
+    params.pop('csrf_token', None)
+    return render_template("user/new.html", **params)
 
 def roles():
     if not authenticated(session):
@@ -71,7 +73,8 @@ def create():
     error = validateUser(data)
     if error:
         flash(error)
-        return redirect(url_for("user_new"))
+        data.pop('password')
+        return redirect(url_for("user_new", **data))
 
     hashed_pass = generate_password_hash(data['password'], method='sha256')
     data['password'] = hashed_pass
@@ -82,13 +85,15 @@ def create():
 
     if(user is not None):
         flash("Ya existe un usuario con ese username")
-        return redirect(url_for("user_new"))
+        data.pop('password')
+        return redirect(url_for("user_new", **data))
 
     #user = User.query.filter(User.email == data.get("email")).first()
     user = User.getUserByEmail(data.get("email"))
     if(user is not None):
         flash("Ya existe un usuario con ese email")
-        return redirect(url_for("user_new"))
+        data.pop('password')
+        return redirect(url_for("user_new", **data))
 
     new_user = User(data)
     
