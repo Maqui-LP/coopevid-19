@@ -63,7 +63,7 @@ CREATE TABLE `centros` (
   `municipio_id` int(11) NOT NULL,
   `lat` float NOT NULL,
   `long` float NOT NULL,
-  `file_name` varchar(255) NOT NULL,
+  `file_name` varchar(255) NULL,
   `status_create` varchar(255) NOT NULL,
   `type_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

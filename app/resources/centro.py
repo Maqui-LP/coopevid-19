@@ -50,7 +50,7 @@ def index():
 
     cantidad_paginas = int((len(centros_totales) - 1) / Configuracion.getConfiguracion().paginacion)
 
-    return render_template("centro/index.html", centros=centros, cantidad_paginas=cantidad_paginas )
+    return render_template("centro/index.html", centros=centros, cantidad_paginas=cantidad_paginas)
 
 def create():
     if not authenticated(session):
@@ -229,22 +229,31 @@ def definirStatusCreate():
     return redirect(url_for("centro_index"))
 
 def searchCentrosPage():
-    return render_template("/centro/search.html")
+    return render_template("/centro/search.html", statuses=Centro.getStatusesList())
 
 def searchCentros():
     data = request.args.to_dict()
     data = escape_xss(data)
-    status = "%{}%".format(data.get('status'))
     name = "%{}%".format(data.get('name'))
+
+    # Nos quedamos con los query params que empiezan con `status-` y le quitamos esa parte
+    selected_statuses = [key.replace('status-', '') for key in data.keys() if key.startswith('status-')]
     
     numero_pagina = request.args.get("numero_pagina")
     if numero_pagina:
         numero_pagina = int(numero_pagina)    
 
-    centros = Centro.getAllByNameStatusCreatePaginado(numero_pagina, name, status)
-    total = Centro.getAllByNameStatusCreate(name, status).count()
+    centros = Centro.getAllByNameStatusCreatePaginado(numero_pagina, name, selected_statuses)
+    total = Centro.getAllByNameStatusCreate(name, selected_statuses).count()
     
     cantidad_paginas = int((total - 1) / Configuracion.getConfiguracion().paginacion)
+
+    # Usamos este diccionario para recordar cuales son los estados seleccionados para el paginado
+    status = {}
+    for s in selected_statuses:
+        status[f"status-{s}"] = "on"
     
-    return render_template("/centro/search.html", centros=centros, cantidad_paginas=cantidad_paginas, status=status, name=name)
+    return render_template("/centro/search.html", statuses=Centro.getStatusesList(), status=status,
+                           selected_statuses=selected_statuses, centros=centros,
+                           cantidad_paginas=cantidad_paginas, name=data.get('name'))
     

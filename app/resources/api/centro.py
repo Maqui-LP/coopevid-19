@@ -1,14 +1,15 @@
-from flask import  jsonify, request, abort
+from flask import  jsonify, request, abort, flash
 from app.models.centro import Centro
 from app.models.turno import Turno
 from app.models.user import User
-from app.helpers.form_validation import validateCentro
+from app.helpers.form_validation import validateCentro, validateReserve
 from werkzeug.utils import secure_filename
 from app.db_sqlalchemy import db_sqlalchemy
 from app.csrf import app_csrf
 import random
 import os
 from datetime import date
+from app.models.configuracion import Configuracion
 
 csrf = app_csrf
 db = db_sqlalchemy
@@ -19,11 +20,13 @@ MEDIA_PATH = 'app/static/uploads/'
 def index():
     page = int(request.args.get("page",1))
     
-    centros_totales = Centro.getAll()
+    aux = 0 if (len(Centro.getAll()) % Configuracion.getConfiguracion().paginacion == 0)  else 1
+    total_pages = int(len(Centro.getAll()) / Configuracion.getConfiguracion().paginacion) + aux
     centros = Centro.getAllPaginado(page)
     json = []
     for centro in centros:
         dic = {
+            "id":centro.id,
             "nombre": centro.name,
             "direccion": centro.address,
             "telefono": centro.phone,
@@ -33,7 +36,7 @@ def index():
             "email":centro.mail
         }
         json.append(dic)
-    return jsonify(centros=json, total=len(centros_totales), page=page)
+    return jsonify(centros=json, total_pages=total_pages, page=page)
 
 @csrf.exempt
 def getById(id):
@@ -56,78 +59,75 @@ def getById(id):
 
 @csrf.exempt
 def create():
-    data = request.form.to_dict()
-
-    archive = request.files['visit_protocol']
-
-    if not archive or archive.filename == '':
-        abort(400)
-
-    filename = secure_filename(archive.filename)
-    filename = f"{filename}_{random.randint(1000,9999)}.pdf"
-    
-    error = validateCentro(data)
-    if error:
-        abort(400)
+    data = request.json
 
     data['status'] = False    
 
     centro = Centro.getCentrobyName(data.get('name'))
     if(centro is not None):
-        abort(400)
+        abort(400, "Ya existe un centro con ese nombre")
 
     centro = Centro.getCentroByAddress(data.get('address'))
     if(centro is not None):
-        abort(400)
+        abort(400, "Ya existe un centro con esa direccion")
 
-    archive.save(os.path.join(MEDIA_PATH, filename))
-
-    data['file_name'] = filename
     data['status_create'] = "PENDIENTE"
+    data['file_name'] = ""
+
+    #error = validateCentro(data)
+    #if error:    
+    #    abort(400, "Informacion invalida")
 
     nuevoCentro = Centro(data)
 
     db.session.add(nuevoCentro)
     db.session.commit()
     
-    #TODO obtener el objeto guardado y retornarlo como json
-
     json_centro =  {
         "id": nuevoCentro.id,
-        "nombre": nuevoCentro.name,
-        "direccion": nuevoCentro.address,
-        "telefono": nuevoCentro.phone,
-        "hora_apertura":nuevoCentro.openHour.isoformat(),
-        "hora_cierre":nuevoCentro.closeHour.isoformat(),
+        "name": nuevoCentro.name,
+        "address": nuevoCentro.address,
+        "phone": nuevoCentro.phone,
+        "openHour":nuevoCentro.openHour.isoformat(),
+        "closeHour":nuevoCentro.closeHour.isoformat(),
         "web":nuevoCentro.web,
-        "email":nuevoCentro.mail,
+        "mail":nuevoCentro.mail,
         "muncipio_id":nuevoCentro.municipio_id,
         "type_id":nuevoCentro.type_id,
         "lat":nuevoCentro.lat,
         "long":nuevoCentro.long
     }
 
-    return jsonify(atributos = json_centro) 
-
+    return jsonify(centro = json_centro) 
+    
 @csrf.exempt
 def reserva(id):
 
     data = request.json
+    
+    error = validateReserve(data)
+    if error:
+        abort(400, description="Peticion invalida, revise el formato de la misma")
+
     hora = data.get('hora')
-    fecha = data.get('dia')
-    data["fecha"] = fecha
+    fecha = data.get('fecha')
+    email = data.get('email')
+
     turnoDb = Turno.getTurnoByHoraFechaCentro(hora, fecha, id)
 
     if turnoDb is not None:
         abort(400)
 
+    data["fecha"] = fecha
     data["centroId"] = id
+    
     centro = Centro.getCentroById(id)
     data["centroNombre"] = centro.name
-    user = User.getUserByEmail(data.get('email_donante'))
-
+    
+    user = User.getUserByEmail(email)
     data["mail"] = user.email
     data["userId"] = user.id
+
     nuevoTurno = Turno(data)    
 
     db.session.add(nuevoTurno)
@@ -137,8 +137,8 @@ def reserva(id):
     json_turno = {
         "centro_id": id,
         "email_donante": nuevoTurno.userEmail,
-        "hora_inicio": nuevoTurno.horaInicio.isoformat(),
-        "fecha": nuevoTurno.dia
+        "hora": nuevoTurno.horaInicio.strftime("%H:%M:%S"),
+        "fecha": nuevoTurno.dia.strftime("%Y-%m-%d"),
     }
 
     return jsonify(atributos = json_turno) 
@@ -166,8 +166,30 @@ def getTurnoByFecha(id):
     for turno in turnos_disponibles:
         dic = {
             "fecha": fecha.strftime("%Y-%m-%d"),
-            "horaInicio": turno,
+            "hora": turno,
             "centro":centro.name
         }
         json.append(dic)
     return jsonify(turnos=json)
+
+@csrf.exempt
+def get_all_not_paginated():
+    
+    centros = Centro.getAll()
+    json = []
+    for centro in centros:
+        dic = {
+            "id":centro.id,
+            "nombre": centro.name,
+            "direccion": centro.address,
+            "telefono": centro.phone,
+            "hora_apertura":centro.openHour.isoformat(),
+            "hora_cierre":centro.closeHour.isoformat(),
+            "web":centro.web,
+            "email":centro.mail,
+            "lat":centro.lat,
+            "long":centro.long,
+        }
+        json.append(dic)
+        
+    return jsonify(centros=json)
