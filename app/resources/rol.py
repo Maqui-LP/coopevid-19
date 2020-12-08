@@ -24,18 +24,18 @@ def new():
     if not granted("rol_new"):
         abort(403)
 
-    return render_template("roles/new.html")
+    params = request.args.to_dict()
+    params.pop('csrf_token', None)
+    return render_template("roles/new.html", **params)
 
 def create():
-    
     data = request.form.to_dict()
     data = escape_xss(data)
-
 
     rol = Rol.query.filter(Rol.nombre == data.get("nombre")).first()
     if (rol is not None):
         flash("El rol ya existe")
-        return redirect(url_for("roles_new"))
+        return redirect(url_for("roles_new", **data))
 
     new_rol = Rol(data)
 
