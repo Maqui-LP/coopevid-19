@@ -69,9 +69,13 @@
                     <b-form-select
                         id="input-3"
                         v-model="form.type_id"
-                        :options="tipos"
                         required
-                    ></b-form-select>
+                    >
+                      <option v-for="each in tipos" v-bind:key="each.id" v-bind:value="each.id">
+                        {{ each.tipo }}
+                      </option>
+
+                    </b-form-select>
                 </b-form-group>
             </div>
 
@@ -80,9 +84,12 @@
                     <b-form-select
                         id="input-4"
                         v-model="form.municipio_id"
-                        :options="municipios"
                         required
-                    ></b-form-select>
+                    >
+                      <option v-for="each in municipios" v-bind:key="each.id" v-bind:value="each.id">
+                        {{ each.name }}
+                      </option>
+                    </b-form-select>
                 </b-form-group>            
             </div>
         </div>
@@ -161,8 +168,8 @@
             </div>    
       </div>
 
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button type="submit" variant="primary">Enviar Solicitud</b-button>
+      <b-button type="reset" variant="danger">Limpiar el Formulario</b-button>
     </b-form>
   </div>
 </template>
@@ -185,15 +192,37 @@
           type_id:null,
           municipio_id:null,
         },
-        municipios:['La Plata', 'Berisso', 'Ensenada'],
-        tipos:['Ropa', 'Comida','Muebles'],
+        municipios:[],
+        tipos:[{id: 1, tipo: "Ropa"},
+               {id: 2,tipo: "Comida"},
+               {id: 3, tipo: "Muebles"},
+               {id: 4, tipo: "Higiene Personal"},
+               {id: 5, tipo: "Higiene del Hogar"}
+        ],
         show: true
       }
     },
+  beforeCreate: function () {
+    fetch("https://api-referencias.proyecto2020.linti.unlp.edu.ar/municipios?page=1&per_page=135",{
+      "method": "GET",
+    })
+  .then(response => {
+    return response.json()
+    .then(body => this.municipios = body.data.Town)
+  });
+  },
     methods: {
       onSubmit(evt) {
         evt.preventDefault()
         alert(JSON.stringify(this.form))
+        const requestOptions = {
+          method: "POST",
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(this.form)
+        };
+        fetch("http://localhost:5000/api/centros", requestOptions)
+        .then(response => response.json())
+        .then(data => (console.log(data)));
       },
       onReset(evt) {
         evt.preventDefault()

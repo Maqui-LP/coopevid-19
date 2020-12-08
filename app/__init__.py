@@ -29,7 +29,9 @@ def create_app(environment="development"):
     app = Flask(__name__)
     app_csrf.init_app(app)
 
-    cors = CORS(app, resources={r"/api/centros/all": {"origins": "*"}})
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}}, headers="Content-Type")
+    #cors = CORS(app, resources={r"/api/centros/all": {"origins": "*"}})
+    #app.config['CORS_HEADERS'] = 'Content-Type'
 
     #Definicion de path de archivos estaticos
     #app.config['CENTROS_PDF'] = '/media/pdfs'
