@@ -9,9 +9,19 @@
     >
       <l-tile-layer :url="url" > </l-tile-layer>
       <ul v-for="(element, index) in coordinates" :key="index">
-        <l-marker @click="clickHandler(element)" :lat-lng="element.coord"></l-marker>
+        <l-marker @click="showModal(element)" :lat-lng="element.coord"></l-marker>
       </ul>
     </l-map>
+    <b-modal ref="my-modal" ok-only>
+      <div class="d-block text-center">
+        <h3>{{selectedCenter.nombre}}</h3>
+        <h6>Dirección: {{selectedCenter.direccion}}</h6>
+        <h6>Email: {{selectedCenter.email}}</h6>
+        <h6>Hora de apertura: {{selectedCenter.hora_apertura}}</h6>
+        <h6>Hora de cierr: {{selectedCenter.hora_cierr}}</h6>
+        <h6>Telefono: {{selectedCenter.telefono}}</h6>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -29,9 +39,10 @@ export default {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       zoom: 14,
       center: [-34.9187, -57.956],
-      markerLatLng: [-34.9206722, -57.9561499],
+      // markerLatLng: [-34.9206722, -57.9561499],
       centros: null,
       coordinates:[],
+      selectedCenter:'',
     }
   },
   beforeCreate: function () {
@@ -44,9 +55,7 @@ export default {
     .then(() =>{
       this.centros.forEach(element => {
         var array = [element.lat, element.long];
-        element["coord"] = array;
-        console.log(element);
-        // this.coordinates.push(array);
+        element["coord"] = array;        
         this.coordinates.push(element);
       });
     });
@@ -59,8 +68,12 @@ export default {
     centerUpdated(center) {
       this.center = center
     },
-    clickHandler(latlng) {
-      console.log(latlng)
+    showModal(element) {
+      this.selectedCenter = element;
+      this.$refs['my-modal'].show();
+    },
+    hideModal(){
+      this.$refs['my-modal'].hide();
     }
   }
 }
