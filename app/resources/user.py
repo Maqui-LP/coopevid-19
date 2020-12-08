@@ -210,6 +210,11 @@ def toogleUserActivity():
     if session.get("user") == user.id:
         flash("No puede desactivarse a usted mismo")
         return redirect(url_for("user_index"))
+    
+    for rol in user.roles:
+        if rol.nombre == 'Administrador':
+            flash("El administrador no puede ser desactivado")
+            return redirect(url_for("user_index"))
         
     User.toogleUsrActivity(user_id["user_id"])
 
