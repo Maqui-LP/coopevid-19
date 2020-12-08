@@ -221,8 +221,14 @@
           body: JSON.stringify(this.form)
         };
         fetch("http://localhost:5000/api/centros", requestOptions)
-        .then(response => response.json())
-        .then(data => (console.log(data)));
+        .then(response => {
+        if(response.status == 200){
+          alert("El centro fue cargado con exito")
+          this.onReset(evt)
+        }else{
+          alert("No fue posible realizar la carga del centro. Verifique la informacion cargada y pruebe nuevamente. En caso de persistir el problema contactese con el administrador del sitio")
+        }
+        })
       },
       onReset(evt) {
         evt.preventDefault()
