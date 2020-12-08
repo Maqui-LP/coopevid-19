@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import SacarTurno from './views/SacarTurno.vue'
 import CargarCentro from './views/CargarCentro.vue'
 import Estadisticas from './views/Estadisticas.vue'
+import Mapa from './views/Mapa.vue'
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ const routes = [
     path: '/cargar_centro',
     name: 'cargar_centro',
     component: CargarCentro
+  },
+  {
+    path: '/mapa',
+    name: 'mapa',
+    component: Mapa
   }
 ]
 
