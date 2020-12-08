@@ -24,20 +24,20 @@
 
         <div class="form-group">
             <label>Nombre del centro:</label></br>
-            <input name="name" class="form-control" type="text" placeholder="Ingrese el nombre del centro de ayuda"   required="true"/>
+            <input name="name" value="{{ name }}" class="form-control" type="text" placeholder="Ingrese el nombre del centro de ayuda"   required="true"/>
         </div>
         
         <div class="form-row">    
             <div class="form-group col-md-6">
                 <div class="form-group">
                     <label>Direcccion del centro</label></br>
-                    <input name="address" class="form-control"  type="text" minlength="7" maxlength="70" placeholder="Ingrese la direccion del centro de ayuda"     required="true"/>
+                    <input name="address" value="{{ address }}" class="form-control"  type="text" minlength="7" maxlength="70" placeholder="Ingrese la direccion del centro de ayuda"     required="true"/>
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
                   <label>Telefono</label></br>
-                  <input name="phone" class="form-control" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Ingrese el numero de telefono con el formato 123-456-7890" required="true"/>
+                  <input name="phone" value="{{ phone }}" class="form-control" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Ingrese el numero de telefono con el formato 123-456-7890" required="true"/>
                 </div>
             </div>
         </div>
@@ -46,13 +46,13 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                   <label>Mail</label></br>
-                  <input name="mail" class="form-control" type="email" placeholder="Ingrese la direccion de correo electronico del centro de ayuda" required="true"/>
+                  <input name="mail" value="{{ mail }}" class="form-control" type="email" placeholder="Ingrese la direccion de correo electronico del centro de ayuda" required="true"/>
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
                   <label>Horario de apertura:</label></br>
-                  <input id="openHour" onchange="openHourSelected(this)" type="time" class="form-control" name="openHour" placeholder="Ingrese el horario de apertura del centro de ayuda" required="true"/>
+                  <input id="openHour" onchange="openHourSelected(this)" type="time" class="form-control" name="openHour" value="{{ openHour }}" placeholder="Ingrese el horario de apertura del centro de ayuda" required="true"/>
                 </div>
             </div>
         </div>
@@ -61,18 +61,18 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                     <label>Horario de cierre:</label></br>
-                    <input id="closeHour" onchange="closeHourSelected(this)" type="time" class="form-control" name="closeHour" placeholder="Ingrese el horario de cierre del centro de ayuda" required="true"/>
+                    <input id="closeHour" onchange="closeHourSelected(this)" type="time" class="form-control" name="closeHour" value="{{ closeHour }}" placeholder="Ingrese el horario de cierre del centro de ayuda" required="true"/>
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
                   <label>Tipo de centro de ayuda</label></br>
                   <select class="form-control" name="type_id" placeholder="Seleccione el tipo de       centro de ayuda" required="true">
-                    <option value="1">Ropa</option>
-                    <option value="2">Comida</option>
-                    <option value="3">Muebles</option>
-                    <option value="4">Higiene Personal</option>
-                    <option value="5">Higiene del Hogar</option>
+                    <option value="1" {% if type_id == "1" %} selected="selected" {% endif %}>Ropa</option>
+                    <option value="2" {% if type_id == "2" %} selected="selected" {% endif %}>Comida</option>
+                    <option value="3" {% if type_id == "3" %} selected="selected" {% endif %}>Muebles</option>
+                    <option value="4" {% if type_id == "4" %} selected="selected" {% endif %}>Higiene Personal</option>
+                    <option value="5" {% if type_id == "5" %} selected="selected" {% endif %}>Higiene del Hogar</option>
                   </select>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                     <label>Municipio</label></br>
                     <select name="municipio_id" class="form-control" placeholder="Seleccione el municipio del centro de ayuda"      required="true">
                       {% for each in municipios %}
-                      <option value="{{municipios[each].id}}">{{municipios[each].name}}</option>
+                      <option value="{{municipios[each].id}}" {% if municipio_id == "{{ municipios[each].id }}" %} selected="selected" {% endif %}>{{municipios[each].name}}</option>
                       {% endfor%}
                     </select>
                 </div>
@@ -92,7 +92,7 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                   <label>Direcccion del sitio Web:</label></br>
-                  <input name="web" type="url" title="Include http://" class="form-control" placeholder="http://ejemplo.com" required="true"/>
+                  <input name="web" value="{{ web }}" type="url" title="Include http://" class="form-control" placeholder="http://ejemplo.com" required="true"/>
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                     <label>Latitud</label></br>
-                    <input type="text" id="lat" class="form-control" name="lat" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
+                    <input type="text" value="{{ lat }}" id="lat" class="form-control" name="lat" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
                 </div>
             </div>
         </div>
@@ -116,7 +116,7 @@
           <div class="form-group col-md-6">
             <div class="form-group">
                 <label>Longitud</label></br>
-                <input type="text" id="long" class="form-control" name="long" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
+                <input type="text" value="{{ long }}" id="long" class="form-control" name="long" placeholder="Ingrese las coordenadas geograficas del centro de ayuda" required="true"/>
             </div>
           </div>
         </div>

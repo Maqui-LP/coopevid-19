@@ -63,7 +63,7 @@ def create():
 
     data['status'] = False    
 
-    centro = Centro.getCentrobyName(data.get('name'))
+    centro = Centro.getCentroByName(data.get('name'))
     if(centro is not None):
         abort(400, "Ya existe un centro con ese nombre")
 
