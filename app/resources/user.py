@@ -150,6 +150,9 @@ def delete():
     if(user is None):
         flash("El usuario no existe")
         return redirect(url_for("user_index"))
+    if user.id == session.get("user"):
+        flash("el usuario no puede auto eliminarse")
+        return redirect(url_for("user_index"))
 
     db.session.delete(user)
     db.session.commit()
