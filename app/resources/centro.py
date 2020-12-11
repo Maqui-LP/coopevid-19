@@ -207,11 +207,32 @@ def togglePublicacion():
     
     data = request.form.to_dict()
     centro_id = data["centro_id"]
+    
+    status_aprobacion = Centro.getStatusAprobacion(centro_id)
+    if status_aprobacion != "ACEPTADO":
+        flash("El centro debe estar aceptado")
+        return redirect(url_for("centro_index"))
+
     Centro.togglePublicacion(centro_id)
 
     db.session.commit()
 
     return redirect(url_for("centro_index"))
+
+def toggleAprobacion():
+    if not authenticated(session):
+        abort(401)
+    if not granted("centro_update"):
+        abort(403)
+    
+    data = request.form.to_dict()
+    centro_id = data["centro_id"]
+    Centro.toggleAprobacion(centro_id)
+
+    db.session.commit()
+
+    return redirect(url_for("centro_index"))
+
 
 def definirStatusCreate():
     if not authenticated(session):
