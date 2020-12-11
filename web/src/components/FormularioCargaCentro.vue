@@ -179,12 +179,21 @@
         >
           <l-tile-layer :url="url" > </l-tile-layer>
           
-          <!-- <l-marker @click="showModal(element)" :lat-lng="element.coord"></l-marker> -->
           <l-marker :lat-lng="[form.lat,form.long ]" />
         </l-map>
       </div>
-
-
+      <!-- Vue captcha Component -->
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <vue-recaptcha
+            :sitekey="form.key"
+            :loadRecaptchaScript="true"
+            @verify="onVerify"
+            @expired="onExpired"
+            ref="recaptcha"
+          />
+        </div>
+      </div>
       <b-button type="submit" variant="primary">Enviar Solicitud</b-button>
       <b-button type="reset" variant="danger">Limpiar el Formulario</b-button>
     </b-form>
@@ -192,13 +201,15 @@
 </template>
 
 <script>
+  import VueRecaptcha from "vue-recaptcha"
   import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
   export default {
     name:'FormularioCargaCentro',
     components: {
       LMap,
       LTileLayer,
-      LMarker
+      LMarker, 
+      VueRecaptcha
     },
     data() {
       return {
@@ -217,6 +228,8 @@
           long:'',
           type_id:'',
           municipio_id:'',
+          verified: false,
+          key: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
         },
         municipios:[],
         tipos:[{id: 1, tipo: "Ropa"},
@@ -240,21 +253,25 @@
     methods: {
       onSubmit(evt) {
         evt.preventDefault()
-        alert(JSON.stringify(this.form))
-        const requestOptions = {
-          method: "POST",
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(this.form)
-        };
-        fetch("http://localhost:5000/api/centros", requestOptions)
-        .then(response => {
-        if(response.status == 200){
-          alert("El centro fue cargado con exito")
-          this.onReset(evt)
-        }else{
-          alert("No fue posible realizar la carga del centro. Verifique la informacion cargada y pruebe nuevamente. En caso de persistir el problema contactese con el administrador del sitio")
+        if (this.verified) {
+          const requestOptions = {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(this.form)
+          }; 
+          fetch("http://localhost:5000/api/centros", requestOptions)
+          .then(response => {
+          if(response.status == 200){
+            alert("El centro fue cargado con exito")
+            this.onReset(evt)
+          }else{
+            alert("No fue posible realizar la carga del centro. Verifique la informacion cargada y pruebe nuevamente. En caso de persistir el problema contactese con el administrador del sitio")
+          }
+          })
+        } else {
+          alert("Es necesario validar captcha");
         }
-        })
+
       },
       onReset(evt) {
         evt.preventDefault()
@@ -270,6 +287,8 @@
         this.form.long = ''
         this.form.type_id = null
         this.form.municipio_id = null
+        this.verified = false;
+        this.$refs.recaptcha.reset();
         // Trick to reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
@@ -285,6 +304,12 @@
       setUbicacion(event){
         this.form.lat = event.latlng.lat
         this.form.long = event.latlng.lng
+      },
+      onVerify(response) {
+      this.verified = !!response;
+      },
+      onExpired() {
+        this.verified = false;
       }
     }
   }
