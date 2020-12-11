@@ -20,6 +20,7 @@ from app.helpers import auth as helper_auth
 from app.helpers import granted
 from app.helpers import config as config_helper
 from app.csrf import app_csrf
+from flask_cors import CORS
 #from flask_bootstrap import Bootstrap
 
 
@@ -27,6 +28,10 @@ def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
     app_csrf.init_app(app)
+
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}}, headers="Content-Type")
+    #cors = CORS(app, resources={r"/api/centros/all": {"origins": "*"}})
+    #app.config['CORS_HEADERS'] = 'Content-Type'
 
     #Definicion de path de archivos estaticos
     #app.config['CENTROS_PDF'] = '/media/pdfs'
@@ -108,6 +113,7 @@ def create_app(environment="development"):
     app.add_url_rule("/centro/editar", "centro_edit", centro.edit)
     app.add_url_rule("/centro/toggleCentro", "toggle_publicacion", centro.togglePublicacion, methods=["POST"])
     app.add_url_rule("/centro/statusCreate", "definir_status_create", centro.definirStatusCreate, methods=["POST"])
+    app.add_url_rule("/centro/toggleCentroAprobacion", "toggle_aprobacion", centro.toggleAprobacion, methods=["POST"])
     #ruta para enviar cambios
     app.add_url_rule("/centro/update", "centro_update", centro.update, methods=["POST"])
     #Rutas para busqueda de Centros
@@ -159,6 +165,7 @@ def create_app(environment="development"):
     app.add_url_rule("/api/centros/<id>", "centro_id_api_index", centroApi.getById, methods=["GET"])
     app.add_url_rule("/api/centros", "centro_api_create", centroApi.create, methods=["POST"])
     app.add_url_rule("/api/centros/<id>/reserva", "centro_api_reserva", centroApi.reserva, methods=["POST"])
+    app.add_url_rule("/api/centros/all", "centro_api_get_all_not_paginated", centroApi.get_all_not_paginated, methods=["GET"])
     ##turnos
     app.add_url_rule("/api/centros/<id>/turnos_disponibles", "centro_api_turnos", centroApi.getTurnoByFecha, methods=["GET"])
 

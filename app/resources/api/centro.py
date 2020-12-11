@@ -171,3 +171,25 @@ def getTurnoByFecha(id):
         }
         json.append(dic)
     return jsonify(turnos=json)
+
+@csrf.exempt
+def get_all_not_paginated():
+    
+    centros = Centro.getAll()
+    json = []
+    for centro in centros:
+        dic = {
+            "id":centro.id,
+            "nombre": centro.name,
+            "direccion": centro.address,
+            "telefono": centro.phone,
+            "hora_apertura":centro.openHour.isoformat(),
+            "hora_cierre":centro.closeHour.isoformat(),
+            "web":centro.web,
+            "email":centro.mail,
+            "lat":centro.lat,
+            "long":centro.long,
+        }
+        json.append(dic)
+        
+    return jsonify(centros=json)

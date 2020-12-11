@@ -4,7 +4,8 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/sacar_turno">Sacar Turno</router-link> |
       <router-link to="/cargar_centro">Cargar Centro</router-link> |
-      <router-link to="/estadisticas">Estadisticas</router-link> 
+      <router-link to="/estadisticas">Estadisticas</router-link> |
+      <router-link to="/mapa">Mapa de centros</router-link> 
     </div>
     <router-view/>
   </div>
