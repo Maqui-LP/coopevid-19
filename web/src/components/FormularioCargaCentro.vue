@@ -229,7 +229,7 @@
           type_id:'',
           municipio_id:'',
           verified: false,
-          key: process.env.VUE_GOOGLE_RECAPTCHA_SITE_KEY
+          key: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
         },
         municipios:[],
         tipos:[{id: 1, tipo: "Ropa"},
@@ -259,7 +259,8 @@
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.form)
           }; 
-          fetch("http://localhost:5000/api/centros", requestOptions)
+          //fetch("http://localhost:5000/api/centros", requestOptions)
+          fetch(`${process.env.VUE_APP_API_BASE}/centros`, requestOptions)
           .then(response => {
           if(response.status == 200){
             alert("El centro fue cargado con exito")
