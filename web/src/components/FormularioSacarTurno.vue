@@ -1,14 +1,9 @@
 <template>
   <div class="m-5 p-5">
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <!-- Email y Horario -->
       <div class="form-row">
         <div class="form-group col-md-6">
-          <b-form-group
-            id="input-group-1"
-            label="Mail"
-            label-for="input-1"
-          >
+          <b-form-group id="input-group-1" label="Mail" label-for="input-1">
             <b-form-input
               id="input-1"
               v-model="form.email"
@@ -19,30 +14,8 @@
           </b-form-group>
         </div>
         <div class="form-group col-md-6">
-          <b-form-group
-            id="input-group-7"
-            label="Horario"
-            label-for="input-7"
-          >
-            <b-form-input
-              id="input-7"
-              v-model="form.hora"
-              required
-              type="time"
-            ></b-form-input>
-          </b-form-group>
-        </div>
-      </div>
-
-      <!-- Centro -->
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <b-form-group
-            id="input-group-4"
-            label="Centro"
-            label-for="input-4"
-          >
-            <b-form-select id="input-4" v-model="form.centroId" required>
+          <b-form-group id="input-group-2" label="Centro" label-for="input-2">
+            <b-form-select id="input-2" v-model="form.centroId" required>
               <option
                 v-for="each in centros"
                 v-bind:key="each.id"
@@ -51,6 +24,31 @@
                 {{ each.nombre }}
               </option>
             </b-form-select>
+          </b-form-group>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <b-form-group id="input-group-3" label="Fecha" label-for="input-3">
+            <b-form-input
+              id="input-3"
+              v-model="form.fecha"
+              required
+              type="date"
+            ></b-form-input>
+          </b-form-group>
+        </div>
+        <div class="form-group col-md-6">
+          <b-form-group id="input-group-4" label="Horario" label-for="input-4">
+            <b-form-input
+              id="input-4"
+              v-model="form.hora"
+              required
+              type="time"
+              min="09:00"
+              max="15:30"
+            ></b-form-input>
           </b-form-group>
         </div>
       </div>
@@ -73,7 +71,9 @@
           <b-button type="submit" variant="primary">Enviar Solicitud</b-button>
         </div>
         <div class="form-group col-md-6">
-          <b-button type="reset" variant="danger">Limpiar el Formulario</b-button>
+          <b-button type="reset" variant="danger"
+            >Limpiar el Formulario</b-button
+          >
         </div>
       </div>
     </b-form>
@@ -82,8 +82,9 @@
 
 <script>
 import VueRecaptcha from "vue-recaptcha";
+
 export default {
-  name: "FormularioCargaCentro",
+  name: "FormularioSacarTurno",
   components: {
     VueRecaptcha,
   },
@@ -94,7 +95,7 @@ export default {
         hora: "",
         fecha: "",
         centroId: null,
-        key: process.env.VUE_GOOGLE_RECAPTCHA_SITE_KEY,
+        key: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
       },
       centros: [],
       show: true,
@@ -102,39 +103,45 @@ export default {
   },
   beforeCreate: function() {
     fetch(`${process.env.VUE_APP_API_BASE}/centros/all`)
-      .then(response => response.json())
-      .then(body => {
+      .then((response) => response.json())
+      .then((body) => {
         this.centros = body.centros;
       });
   },
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      if (this.verified) {
-        const { email, hora, dia, centroId } = this.form
+      const { email, hora, fecha, centroId } = this.form;
+
+      if (this.verified && centroId) {
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, hora, dia }),
+          body: JSON.stringify({ email, hora: `${hora}:00`, fecha }),
         };
-        fetch(`${process.env.VUE_APP_API_BASE}/centros/${centroId}/reserva`, requestOptions).then(
-          (response) => {
-            if (response.status == 200) {
-              alert("El centro fue cargado con exito");
-              this.onReset(e);
-            } else {
-              alert(
-                "No fue posible realizar la reserva del turno. Verifique la informacion cargada y pruebe nuevamente. En caso de persistir el problema contactese con el administrador del sitio"
-              );
-            }
+        fetch(
+          `${process.env.VUE_APP_API_BASE}/centros/${centroId}/reserva`,
+          requestOptions
+        ).then((response) => {
+          if (response.status == 200) {
+            alert("El centro fue cargado con exito");
+            this.onReset(e);
+          } else {
+            alert(
+              "No fue posible realizar la reserva del turno. Verifique la informacion cargada y pruebe nuevamente. En caso de persistir el problema contactese con el administrador del sitio"
+            );
           }
-        );
+        }).catch(() => {
+          alert(
+            "No fue posible realizar la reserva del turno. Verifique la informacion cargada y pruebe nuevamente. En caso de persistir el problema contactese con el administrador del sitio"
+          );
+        });
       } else {
         alert("Es necesario validar captcha");
       }
     },
-    onReset(evt) {
-      evt.preventDefault();
+    onReset(e) {
+      e.preventDefault();
       // Reset our form values
       this.form.email = "";
       this.form.hora = "";
