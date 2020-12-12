@@ -18,11 +18,11 @@
       <form action="{{ url_for('user_create') }}" method="POST">
         <div class="form-group">
           <label>username</label></br>
-          <input name="username" placeholder="username" required="true"/>
+          <input name="username" value="{{ username }}" placeholder="username" required="true"/>
         </div>
         <div class="form-group">
           <label>Email</label></br>
-          <input name="email" type="email" placeholder="Correo" required="true"/>
+          <input name="email" value="{{ email }}" type="email" placeholder="Correo" required="true"/>
         </div>
         <div class="form-group">
           <label>Clave</label></br>
@@ -30,11 +30,11 @@
         </div>
         <div class="form-group">
           <label>Nombre</label></br>
-          <input name="first_name" placeholder="Nombre" required="true"/>
+          <input name="first_name" value="{{ first_name }}" placeholder="Nombre" required="true"/>
         </div>
         <div class="form-group">
           <label>Apellido</label></br>
-          <input name="last_name" placeholder="Apellido" required="true"/>
+          <input name="last_name" value="{{ last_name }}" placeholder="Apellido" required="true"/>
         </div>
         <div>
           <input type="submit" class="btn btn-success" value="Crear">

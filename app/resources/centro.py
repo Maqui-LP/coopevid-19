@@ -29,7 +29,9 @@ def new():
 
     municipios = getMunicipios()
 
-    return render_template("centro/new.html", municipios=municipios)
+    params = request.args.to_dict()
+    params.pop('csrf_token', None)
+    return render_template("centro/new.html", municipios=municipios, **params)
 
 def index():
 
@@ -71,24 +73,23 @@ def create():
     error = validateCentro(data)
     if error:
         flash(error)
-        return redirect(url_for("centro_new"))
-
-    data['status'] = False    
-    data['status_create'] = "ACEPTADO"
+        return redirect(url_for("centro_new", **data))
     
-    centro = Centro.getCentrobyName(data.get('name'))
+    centro = Centro.getCentroByName(data.get('name'))
     if(centro is not None):
         flash("Ya existe un centro con ese nombre")
-        return redirect(url_for("centro_new"))
+        return redirect(url_for("centro_new", **data))
 
     centro = Centro.getCentroByAddress(data.get('address'))
     if(centro is not None):
         flash("Ya existe un centro con esa direccion")
-        return redirect(url_for("centro_new"))
+        return redirect(url_for("centro_new", **data))
 
     archive.save(os.path.join('app/static/uploads/' , filename))
 
     data['file_name'] = filename
+    data['status'] = False    
+    data['status_create'] = "ACEPTADO"
 
     nuevoCentro = Centro(data)
 
@@ -123,9 +124,8 @@ def detalle():
 
     municipios = getMunicipios()
 
+    municipio = None
     for each in municipios:
-        print(type(each))
-        print(type(centro.municipio_id))
         if int(each) == centro.municipio_id:
             municipio = municipios[each] 
 
@@ -140,11 +140,15 @@ def edit():
     centro_id = request.args.get("centro_id")
     centro = Centro.getCentroById(centro_id)
 
+    # utilizamos valores definidos por el usuario para cargar el formulario por defecto
+    for key, val in request.args.items():
+        if hasattr(centro, key):
+            setattr(centro, key, val)
+
     municipios = getMunicipios()
 
+    municipio = None
     for each in municipios:
-        print(type(each))
-        print(type(centro.municipio_id))
         if int(each) == centro.municipio_id:
             municipio = municipios[each] 
 
@@ -174,18 +178,18 @@ def update():
     error = validateCentro(data)
     if error:
         flash(error)
-        return redirect(url_for("centro_index"))
+        return redirect(url_for("centro_edit", centro_id=centro_id, **data))
 
     centro2 = Centro.getCentroByAddress(data.get("address"))
 
-    if(centro2 is not None and centro2.id != centro_id):
+    if centro2 is not None and centro2.id != centro_id:
         flash("Ya existe un centro con esa direccion")
-        return redirect(url_for("centro_index"))
+        return redirect(url_for("centro_edit", centro_id=centro_id, **data))
 
-    centro2 = Centro.getCentrobyName(data.get("name"))
-    if(centro2 is not None and centro2.id != centro_id):
+    centro2 = Centro.getCentroByName(data.get("name"))
+    if centro2 is not None and centro2.id != centro_id:
         flash("Ya existe un centro con ese nombre")
-        return redirect(url_for("centro_index"))
+        return redirect(url_for("centro_edit", centro_id=centro_id, **data))
 
     Centro.updateCentro(centro_id, data)
     

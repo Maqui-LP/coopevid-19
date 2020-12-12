@@ -26,7 +26,9 @@ def new():
 
     centros= Centro.getAll()
 
-    return render_template("turno/new.html", centros=centros)
+    params = request.args.to_dict()
+    params.pop('csrf_token', None)
+    return render_template("turno/new.html", centros=centros, **params)
 
 def index():
     if not authenticated(session):
@@ -56,19 +58,19 @@ def create():
     user = User.getUserByEmail(data.get("mail"))
     if not user:
         flash("No existe un usuario con dicho email")
-        return redirect(url_for("turno_new"))
+        return redirect(url_for("turno_new", **request.form.to_dict()))
     data['userId'] = User.getUserByEmail(data['mail']).id
 
     centro = Centro.getCentroById(data.get("centroId"))
     if not centro:
         flash("No existe dicho centro")
-        return redirect(url_for("turno_new"))
+        return redirect(url_for("turno_new", **request.form.to_dict()))
     data['centroNombre'] = centro.name
 
     turno = Turno.getTurnoByHoraFechaCentro(data['hora'], data['fecha'], data['centroId'])
     if turno is not None:
         flash("El turno no está disponible")
-        return redirect(url_for("turno_new"))
+        return redirect(url_for("turno_new", **request.form.to_dict()))
 
     nuevoTurno = Turno(data)
 
@@ -100,19 +102,19 @@ def update():
     data = request.form.to_dict()
     data = escape_xss(data)
     
-    #TODO: generar un validateTurnoUpdate
+    # TODO: generar un validateTurnoUpdate
 
     turno_db = Turno.getTurnoById(turno_id)
-    if(turno_db is None):
+    if turno_db is None:
         flash("El turno no existe")
-        #TODO: redireccionar a turno_update
-        #TODO: en realidad evaluar este caso
+        # TODO: redireccionar a turno_update
+        # TODO: en realidad evaluar este caso
         return redirect(url_for("turno_index"))
     
     turno_horario_fecha_db = Turno.getTurnoByHoraFechaCentro(data['horaInicio'], data['dia'], turno_db.centroId)
     if turno_horario_fecha_db is not None:
         flash("El horario no se encuentra disponible, seleccione otro horario")
-        return render_template("turno/update.html", turno=turno_db)
+        return redirect(url_for("turno_edit", turno_id=turno_id, **request.form.to_dict()))
 
     Turno.updateTurno(turno_id, data)
 
@@ -128,6 +130,11 @@ def edit():
     
     turno_id = request.args.get("turno_id")
     turno = Turno.getTurnoById(turno_id)
+
+    # utilizamos valores definidos por el usuario para cargar el formulario por defecto
+    for key, val in request.args.items():
+        if hasattr(turno, key):
+            setattr(turno, key, val)
 
     return render_template("turno/update.html", turno=turno)
 

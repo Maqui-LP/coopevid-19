@@ -85,7 +85,7 @@ class Centro(db.Model):
         return Centro.query.filter(Centro.phone == phone).first()
 
     @staticmethod
-    def getCentrobyName(name):
+    def getCentroByName(name):
         return Centro.query.filter(Centro.name == name).first()
 
     @staticmethod
@@ -120,4 +120,3 @@ class Centro(db.Model):
     @staticmethod
     def getStatusAprobacion(centro_id):
         return Centro.query.filter(Centro.id == centro_id).first().status_create        
-
