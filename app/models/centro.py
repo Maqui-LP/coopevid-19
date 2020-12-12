@@ -85,7 +85,7 @@ class Centro(db.Model):
         return Centro.query.filter(Centro.phone == phone).first()
 
     @staticmethod
-    def getCentrobyName(name):
+    def getCentroByName(name):
         return Centro.query.filter(Centro.name == name).first()
 
     @staticmethod
@@ -106,3 +106,17 @@ class Centro(db.Model):
     def getStatusesList():
         return ['ACEPTADO', 'RECHAZADO', 'PENDIENTE']
 
+    @staticmethod
+    def toggleAprobacion(centro_id):
+        estado = Centro.query.filter(Centro.id == centro_id).first().status_create
+        if estado == "ACEPTADO":
+            nuevo_estado = "RECHAZADO"
+            Centro.query.filter(Centro.id == centro_id).update({'status_create': nuevo_estado})
+            Centro.query.filter(Centro.id == centro_id).update({'status': False})
+        else:
+            nuevo_estado = "ACEPTADO"
+            Centro.query.filter(Centro.id == centro_id).update({'status_create': nuevo_estado})
+    
+    @staticmethod
+    def getStatusAprobacion(centro_id):
+        return Centro.query.filter(Centro.id == centro_id).first().status_create        

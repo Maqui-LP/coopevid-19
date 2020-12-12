@@ -72,40 +72,52 @@
           </div> 
       </td>
       <td>
-        {% if centro.status_create == "PENDIENTE" %}
-          <div class="row">
-            <div class="col-4">
+        {% if centro.status_create == "ACEPTADO" %}
+          <form action="{{url_for('toggle_aprobacion')}}" method=POST>   
+          <input type="hidden" value="{{ centro.id }}" name="centro_id"/>   
+          <input class="btn btn-danger" type=submit value="Rechazar"/>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          </form> 
+        {% else %}
+          {% if centro.status_create == "RECHAZADO" %}  
+            <form action="{{url_for('toggle_aprobacion')}}" method=POST>   
+            <input type="hidden" value="{{ centro.id }}" name="centro_id"/>   
+            <input class="btn btn-success" type=submit value="Aceptar"/>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            </form>
+          {% else %}
+            {% if centro.status_create == "PENDIENTE" %}
               <form action="{{url_for('definir_status_create')}}" method=POST>   
                 <input type="hidden" value="{{ centro.id }}" name="centro_id"/>
                 <input type="hidden" value="ACEPTADO" name="status_create"/>
                 <input class="btn btn-success" type=submit value="Aprobar"/>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              </form>
-            </div>
-            <div class="col-auto">  
+              </form> 
               <form action="{{url_for('definir_status_create')}}" method=POST>   
                 <input type="hidden" value="{{ centro.id }}" name="centro_id"/>
                 <input type="hidden" value="RECHAZADO" name="status_create"/>  
                 <input class="btn btn-danger" type=submit value="Rechazar"/>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              </form>
-            </div>
-          </div>    
+              </form>  
+            {% endif %}
           {% endif %}
+        {% endif %}
       </td>
       <td>
-        {% if centro.status %}
-          <form action="{{url_for('toggle_publicacion')}}" method=POST>   
-          <input type="hidden" value="{{ centro.id }}" name="centro_id"/>   
-          <input class="btn btn-danger" type=submit value="Despublicar"/>
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-          </form>        
-        {% else %}  
+        {% if centro.status_create == "ACEPTADO" %}
+          {% if centro.status %}
             <form action="{{url_for('toggle_publicacion')}}" method=POST>   
             <input type="hidden" value="{{ centro.id }}" name="centro_id"/>   
-            <input class="btn btn-success" type=submit value="Publicar"/>
+            <input class="btn btn-danger" type=submit value="Despublicar"/>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            </form> 
+            </form>        
+          {% else %}  
+              <form action="{{url_for('toggle_publicacion')}}" method=POST>   
+              <input type="hidden" value="{{ centro.id }}" name="centro_id"/>   
+              <input class="btn btn-success" type=submit value="Publicar"/>
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              </form> 
+          {% endif %}
         {% endif %}
       </td>
     </tr>      

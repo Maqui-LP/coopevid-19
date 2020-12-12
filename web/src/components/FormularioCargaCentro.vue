@@ -69,9 +69,13 @@
                     <b-form-select
                         id="input-3"
                         v-model="form.type_id"
-                        :options="tipos"
                         required
-                    ></b-form-select>
+                    >
+                      <option v-for="each in tipos" v-bind:key="each.id" v-bind:value="each.id">
+                        {{ each.tipo }}
+                      </option>
+
+                    </b-form-select>
                 </b-form-group>
             </div>
 
@@ -80,9 +84,12 @@
                     <b-form-select
                         id="input-4"
                         v-model="form.municipio_id"
-                        :options="municipios"
                         required
-                    ></b-form-select>
+                    >
+                      <option v-for="each in municipios" v-bind:key="each.id" v-bind:value="each.id">
+                        {{ each.name }}
+                      </option>
+                    </b-form-select>
                 </b-form-group>            
             </div>
         </div>
@@ -117,6 +124,20 @@
       </div>
 
 
+              <!-- Web -->
+      <div class="form-row">
+            <div class="form-group col-md-12">
+                  <b-form-group id="input-group-11" label="Direccion web:" label-for="input-11">
+                    <b-form-input
+                      id="input-11"
+                      v-model="form.web"
+                      required
+                      type="url"
+                      placeholder="Ingresa la direccion web"
+                    ></b-form-input>
+                  </b-form-group>
+            </div>    
+      </div>
 
         <!-- Latitud y Longitud -->
       <div class="form-row">
@@ -146,32 +167,55 @@
             </div>
       </div>
 
-              <!-- Web -->
-      <div class="form-row">
-            <div class="form-group col-md-12">
-                  <b-form-group id="input-group-11" label="Direccion web:" label-for="input-11">
-                    <b-form-input
-                      id="input-11"
-                      v-model="form.web"
-                      required
-                      type="url"
-                      placeholder="Ingresa la direccion web"
-                    ></b-form-input>
-                  </b-form-group>
-            </div>    
+        <!-- Mapa -->
+      <div style="height: 550px;">
+        <l-map 
+          style="height: 90%; width: 100%"
+          :zoom="zoom"
+          :center="center"
+          @update:zoom="zoomUpdated"
+          @update:center="centerUpdated"
+          @click="setUbicacion"
+        >
+          <l-tile-layer :url="url" > </l-tile-layer>
+          
+          <l-marker :lat-lng="[form.lat,form.long ]" />
+        </l-map>
       </div>
-
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <!-- Vue captcha Component -->
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <vue-recaptcha
+            :sitekey="form.key"
+            :loadRecaptchaScript="true"
+            @verify="onVerify"
+            @expired="onExpired"
+            ref="recaptcha"
+          />
+        </div>
+      </div>
+      <b-button type="submit" variant="primary">Enviar Solicitud</b-button>
+      <b-button type="reset" variant="danger">Limpiar el Formulario</b-button>
     </b-form>
   </div>
 </template>
 
 <script>
+  import VueRecaptcha from "vue-recaptcha"
+  import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
   export default {
     name:'FormularioCargaCentro',
+    components: {
+      LMap,
+      LTileLayer,
+      LMarker, 
+      VueRecaptcha
+    },
     data() {
       return {
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        zoom: 14,
+        center: [-34.9187, -57.956],
         form: {
           name: '',
           mail: '',
@@ -182,18 +226,52 @@
           web:'',
           lat:'',
           long:'',
-          type_id:null,
-          municipio_id:null,
+          type_id:'',
+          municipio_id:'',
+          verified: false,
+          key: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
         },
-        municipios:['La Plata', 'Berisso', 'Ensenada'],
-        tipos:['Ropa', 'Comida','Muebles'],
+        municipios:[],
+        tipos:[{id: 1, tipo: "Ropa"},
+               {id: 2,tipo: "Comida"},
+               {id: 3, tipo: "Muebles"},
+               {id: 4, tipo: "Higiene Personal"},
+               {id: 5, tipo: "Higiene del Hogar"}
+        ],
         show: true
       }
     },
+  beforeCreate: function () {
+    fetch("https://api-referencias.proyecto2020.linti.unlp.edu.ar/municipios?page=1&per_page=135",{
+      "method": "GET",
+    })
+  .then(response => {
+    return response.json()
+    .then(body => this.municipios = body.data.Town)
+  });
+  },
     methods: {
       onSubmit(evt) {
         evt.preventDefault()
-        alert(JSON.stringify(this.form))
+        if (this.verified) {
+          const requestOptions = {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(this.form)
+          }; 
+          fetch("http://localhost:5000/api/centros", requestOptions)
+          .then(response => {
+          if(response.status == 200){
+            alert("El centro fue cargado con exito")
+            this.onReset(evt)
+          }else{
+            alert("No fue posible realizar la carga del centro. Verifique la informacion cargada y pruebe nuevamente. En caso de persistir el problema contactese con el administrador del sitio")
+          }
+          })
+        } else {
+          alert("Es necesario validar captcha");
+        }
+
       },
       onReset(evt) {
         evt.preventDefault()
@@ -209,11 +287,29 @@
         this.form.long = ''
         this.form.type_id = null
         this.form.municipio_id = null
+        this.verified = false;
+        this.$refs.recaptcha.reset();
         // Trick to reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
           this.show = true
         })
+      },
+      zoomUpdated(zoom) {
+        this.zoom = zoom
+      },
+      centerUpdated(center) {
+        this.center = center
+      },
+      setUbicacion(event){
+        this.form.lat = event.latlng.lat
+        this.form.long = event.latlng.lng
+      },
+      onVerify(response) {
+      this.verified = !!response;
+      },
+      onExpired() {
+        this.verified = false;
       }
     }
   }

@@ -18,12 +18,12 @@
     </div>
     
     <div > 
-      <form action="{{ url_for('turno_update', turno_id=turno.id) }}" method="POST" autocomplete="off".>
+      <form action="{{ url_for('turno_update', turno_id=turno.id) }}" method="POST" autocomplete="off">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <div class="form-group">
                   <label>Hora</label></br>
-                 <input type="text" class="timepicker form-control" name="horaInicio">
+                 <input type="text" value="{{ turno.horaInicio }}" class="timepicker form-control" name="horaInicio">
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                     <label>Fecha</label></br>
-                    <input type="date" class="form-control" name="dia" required="true"/>
+                    <input type="date" class="form-control" value="{{ turno.dia }}" name="dia" required="true"/>
                 </div>
             </div>
         
@@ -53,8 +53,8 @@
     interval: 30,
     minTime: '09:00',
     maxTime: '15:30',
-    defaultTime: '09:00',
-    startTime: '09:00',
+    defaultTime: '{{ turno.horaInicio }}',
+    startTime: '{{ turno.horaInicio }}',
     dynamic: false,
     dropdown: true,
     scrollbar: true

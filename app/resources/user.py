@@ -40,7 +40,9 @@ def new():
     if not granted("usuario_new"):
         abort(403)
 
-    return render_template("user/new.html")
+    params = request.args.to_dict()
+    params.pop('csrf_token', None)
+    return render_template("user/new.html", **params)
 
 def roles():
     if not authenticated(session):
@@ -71,7 +73,8 @@ def create():
     error = validateUser(data)
     if error:
         flash(error)
-        return redirect(url_for("user_new"))
+        data.pop('password')
+        return redirect(url_for("user_new", **data))
 
     hashed_pass = generate_password_hash(data['password'], method='sha256')
     data['password'] = hashed_pass
@@ -82,13 +85,15 @@ def create():
 
     if(user is not None):
         flash("Ya existe un usuario con ese username")
-        return redirect(url_for("user_new"))
+        data.pop('password')
+        return redirect(url_for("user_new", **data))
 
     #user = User.query.filter(User.email == data.get("email")).first()
     user = User.getUserByEmail(data.get("email"))
     if(user is not None):
         flash("Ya existe un usuario con ese email")
-        return redirect(url_for("user_new"))
+        data.pop('password')
+        return redirect(url_for("user_new", **data))
 
     new_user = User(data)
     
@@ -107,19 +112,19 @@ def update():
     error = validateUpdateUser(data)
     if error:
         flash(error)
-        return redirect(url_for("user_edit"))
+        return redirect(url_for("user_edit", user_id=user_id, **data))
 
     user2 = User.getUserByEmail(data.get("email"))
 
-    if(user2 is not None and user2.id != user_id):
+    if user2 is not None and user2.id != user_id:
         flash("Ya existe un usuario con ese email")
-        return redirect(url_for("user_edit"))
+        return redirect(url_for("user_edit", user_id=user_id, **data))
     
     #user2 = User.query.filter(User.username == data.get("username"), User.id != user_id).first()
     user2 = User.getUserByUsername(data.get("username"))
-    if(user2 is not None and user2.id != user_id):
+    if user2 is not None and user2.id != user_id:
         flash("Ya existe un usuario con ese username")
-        return redirect(url_for("user_edit"))
+        return redirect(url_for("user_edit", user_id=user_id, **data))
 
     data["updated_at"] = datetime.now()
     User.updateUser(user_id, data)
@@ -138,6 +143,11 @@ def edit():
     user_id = request.args.get("user_id")
     user = User.getUserById(user_id)
 
+    # utilizamos valores definidos por el usuario para cargar el formulario por defecto
+    for key, val in request.args.items():
+        if hasattr(user, key):
+            setattr(user, key, val)
+
     return render_template("user/update.html", user=user)
 
 
@@ -150,6 +160,9 @@ def delete():
     if(user is None):
         flash("El usuario no existe")
         return redirect(url_for("user_index"))
+    if user.id == session.get("user"):
+        flash("el usuario no puede auto eliminarse")
+        return redirect(url_for("user_index"))
 
     db.session.delete(user)
     db.session.commit()
@@ -161,6 +174,11 @@ def perfil():
     #data = {"email": session.get("user")}
 
     user = User.getUserById(session.get("user"))
+
+    # utilizamos valores definidos por el usuario para cargar el formulario por defecto
+    for key, val in request.args.items():
+        if hasattr(user, key):
+            setattr(user, key, val)
 
     return render_template("user/perfil.html", user=user)
 
@@ -175,19 +193,19 @@ def perfilUpdate():
     error = validateUpdateUser(data)
     if error:
         flash(error)
-        return redirect(url_for("user_perfil"))
+        return redirect(url_for("user_perfil", **data))
 
     user2 = User.getUserByEmail(data.get("email"))
 
-    if(user2 is not None and user2.id != user_id):
+    if user2 is not None and user2.id != user_id:
         flash("Ya existe un usuario con ese email")
-        return redirect(url_for("user_perfil"))
+        return redirect(url_for("user_perfil", **data))
     
     #user2 = User.query.filter(User.username == data.get("username"), User.id != user_id).first()
     user2 = User.getUserByUsername(data.get("username"))
-    if(user2 is not None and user2.id != user_id):
+    if user2 is not None and user2.id != user_id:
         flash("Ya existe un usuario con ese username")
-        return redirect(url_for("user_perfil"))
+        return redirect(url_for("user_perfil", **data))
 
     data["updated_at"] = datetime.now()
     User.updateUser(user_id, data)
@@ -203,6 +221,16 @@ def toogleUserActivity():
         abort(403)
     
     user_id = request.form.to_dict()
+    user = User.getUserById(user_id.get("user_id"))
+    if session.get("user") == user.id:
+        flash("No puede desactivarse a usted mismo")
+        return redirect(url_for("user_index"))
+    
+    for rol in user.roles:
+        if rol.nombre == 'Administrador':
+            flash("El administrador no puede ser desactivado")
+            return redirect(url_for("user_index"))
+        
     User.toogleUsrActivity(user_id["user_id"])
 
     db.session.commit()
