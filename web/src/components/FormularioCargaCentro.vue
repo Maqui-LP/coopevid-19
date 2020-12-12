@@ -259,7 +259,8 @@
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.form)
           }; 
-          fetch("http://localhost:5000/api/centros", requestOptions)
+          //fetch("http://localhost:5000/api/centros", requestOptions)
+          fetch(`${process.env.VUE_APP_API_BASE}/centros`, requestOptions)
           .then(response => {
           if(response.status == 200){
             alert("El centro fue cargado con exito")
