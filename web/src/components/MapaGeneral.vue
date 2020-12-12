@@ -18,7 +18,7 @@
         <h6>Dirección: {{selectedCenter.direccion}}</h6>
         <h6>Email: {{selectedCenter.email}}</h6>
         <h6>Hora de apertura: {{selectedCenter.hora_apertura}}</h6>
-        <h6>Hora de cierr: {{selectedCenter.hora_cierr}}</h6>
+        <h6>Hora de cierre: {{selectedCenter.hora_cierre}}</h6>
         <h6>Telefono: {{selectedCenter.telefono}}</h6>
       </div>
     </b-modal>
