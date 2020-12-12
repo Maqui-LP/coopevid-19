@@ -128,6 +128,9 @@ def reserva(id):
     data["centroNombre"] = centro.name
     
     user = User.getUserByEmail(email)
+    if user is None:
+        abort(400)
+
     data["mail"] = user.email
     data["userId"] = user.id
 
