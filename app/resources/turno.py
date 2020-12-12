@@ -102,19 +102,19 @@ def update():
     data = request.form.to_dict()
     data = escape_xss(data)
     
-    #TODO: generar un validateTurnoUpdate
+    # TODO: generar un validateTurnoUpdate
 
     turno_db = Turno.getTurnoById(turno_id)
-    if(turno_db is None):
+    if turno_db is None:
         flash("El turno no existe")
-        #TODO: redireccionar a turno_update
-        #TODO: en realidad evaluar este caso
+        # TODO: redireccionar a turno_update
+        # TODO: en realidad evaluar este caso
         return redirect(url_for("turno_index"))
     
     turno_horario_fecha_db = Turno.getTurnoByHoraFechaCentro(data['horaInicio'], data['dia'], turno_db.centroId)
     if turno_horario_fecha_db is not None:
         flash("El horario no se encuentra disponible, seleccione otro horario")
-        return render_template("turno/update.html", turno=turno_db)
+        return redirect(url_for("turno_edit", turno_id=turno_id, **request.form.to_dict()))
 
     Turno.updateTurno(turno_id, data)
 
@@ -130,6 +130,11 @@ def edit():
     
     turno_id = request.args.get("turno_id")
     turno = Turno.getTurnoById(turno_id)
+
+    # utilizamos valores definidos por el usuario para cargar el formulario por defecto
+    for key, val in request.args.items():
+        if hasattr(turno, key):
+            setattr(turno, key, val)
 
     return render_template("turno/update.html", turno=turno)
 
