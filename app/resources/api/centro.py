@@ -73,16 +73,7 @@ def create():
 
     data['status_create'] = "PENDIENTE"
     data['file_name'] = " "
-    print(data)
-    print("*********************************")
-    for each in data:
-        print(each)
-        print(type(each))
-    print("*********************************")
-    print("*********************************")
 
-    print(data["type_id"])
-    print(type(data["type_id"]))
     data["type_id"]=str(data["type_id"])
     data["lat"]=str(data["lat"])
     data["long"]=str(data["long"])
