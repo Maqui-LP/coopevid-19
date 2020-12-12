@@ -112,19 +112,19 @@ def update():
     error = validateUpdateUser(data)
     if error:
         flash(error)
-        return redirect(url_for("user_edit", **data))
+        return redirect(url_for("user_edit", user_id=user_id, **data))
 
     user2 = User.getUserByEmail(data.get("email"))
 
     if user2 is not None and user2.id != user_id:
         flash("Ya existe un usuario con ese email")
-        return redirect(url_for("user_edit", **data))
+        return redirect(url_for("user_edit", user_id=user_id, **data))
     
     #user2 = User.query.filter(User.username == data.get("username"), User.id != user_id).first()
     user2 = User.getUserByUsername(data.get("username"))
     if user2 is not None and user2.id != user_id:
         flash("Ya existe un usuario con ese username")
-        return redirect(url_for("user_edit", **data))
+        return redirect(url_for("user_edit", user_id=user_id, **data))
 
     data["updated_at"] = datetime.now()
     User.updateUser(user_id, data)
