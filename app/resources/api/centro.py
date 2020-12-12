@@ -72,11 +72,23 @@ def create():
         abort(400, "Ya existe un centro con esa direccion")
 
     data['status_create'] = "PENDIENTE"
-    data['file_name'] = ""
+    data['file_name'] = " "
+    print(data)
+    print("*********************************")
+    for each in data:
+        print(each)
+        print(type(each))
+    print("*********************************")
+    print("*********************************")
 
-    #error = validateCentro(data)
-    #if error:    
-    #    abort(400, "Informacion invalida")
+    print(data["type_id"])
+    print(type(data["type_id"]))
+    data["type_id"]=str(data["type_id"])
+    data["lat"]=str(data["lat"])
+    data["long"]=str(data["long"])
+    error = validateCentro(data)
+    if error:    
+        abort(400, "Informacion invalida")
 
     nuevoCentro = Centro(data)
 
