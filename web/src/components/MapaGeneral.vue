@@ -46,7 +46,8 @@ export default {
     }
   },
   beforeCreate: function () {
-    fetch("http://localhost:5000/api/centros/all",{
+    // fetch("http://localhost:5000/api/centros/all",{
+    fetch(`${process.env.VUE_APP_API_BASE}centros/all`,{
       "method": "GET",
     })
   .then(response => {
