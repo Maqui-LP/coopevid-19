@@ -124,7 +124,7 @@ export default {
           requestOptions
         ).then((response) => {
           if (response.status == 200) {
-            alert("El centro fue cargado con exito");
+            alert("El turno fue cargado con exito");
             this.onReset(e);
           } else {
             alert(
