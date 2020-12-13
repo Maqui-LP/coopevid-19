@@ -18,7 +18,7 @@
         <h6>Dirección: {{selectedCenter.direccion}}</h6>
         <h6>Email: {{selectedCenter.email}}</h6>
         <h6>Hora de apertura: {{selectedCenter.hora_apertura}}</h6>
-        <h6>Hora de cierr: {{selectedCenter.hora_cierr}}</h6>
+        <h6>Hora de cierre: {{selectedCenter.hora_cierre}}</h6>
         <h6>Telefono: {{selectedCenter.telefono}}</h6>
       </div>
     </b-modal>
@@ -47,7 +47,7 @@ export default {
   },
   beforeCreate: function () {
     // fetch("http://localhost:5000/api/centros/all",{
-    fetch(`${process.env.VUE_APP_API_BASE}centros/all`,{
+    fetch(`${process.env.VUE_APP_API_BASE}/centros/all`,{
       "method": "GET",
     })
   .then(response => {

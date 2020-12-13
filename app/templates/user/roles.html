@@ -16,14 +16,14 @@
                 </label>
             </div>
             {% endfor %}
-            <div>
-                <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Guardar Cambios</button>
+            <div class="mt-4">
+                <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
             </div>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         </form>
     </div>
-</div>
-<div>
-    <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+    <div class="mt-3">
+        <a href="{{ url_for('user_index') }}" class="btn btn-secondary m">Volver</a>
+    </div>
 </div>
 {% endblock %}

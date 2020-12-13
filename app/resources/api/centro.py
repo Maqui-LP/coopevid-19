@@ -72,11 +72,14 @@ def create():
         abort(400, "Ya existe un centro con esa direccion")
 
     data['status_create'] = "PENDIENTE"
-    data['file_name'] = ""
+    data['file_name'] = " "
 
-    #error = validateCentro(data)
-    #if error:    
-    #    abort(400, "Informacion invalida")
+    data["type_id"]=str(data["type_id"])
+    data["lat"]=str(data["lat"])
+    data["long"]=str(data["long"])
+    error = validateCentro(data)
+    if error:    
+        abort(400, "Informacion invalida")
 
     nuevoCentro = Centro(data)
 
@@ -125,6 +128,9 @@ def reserva(id):
     data["centroNombre"] = centro.name
     
     user = User.getUserByEmail(email)
+    if user is None:
+        abort(400)
+
     data["mail"] = user.email
     data["userId"] = user.id
 

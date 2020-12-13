@@ -5,10 +5,15 @@
         <!-- Nombre del centro y mail -->
       <div class="form-row">
             <div class="form-group col-md-6">
-                  <b-form-group id="input-group-2" label="Nombre del centro:" label-for="input-2">
+                  <b-form-group 
+                    id="input-group-2" 
+                    label="Nombre del centro:" 
+                    label-for="input-2"
+                  >
                     <b-form-input
                       id="input-2"
                       v-model="form.name"
+                      type="text"
                       required
                       placeholder="Ingresa el nombre del centro"
                     ></b-form-input>
@@ -19,12 +24,12 @@
                   id="input-group-1"
                   label="Mail:"
                   label-for="input-1"
-                  description="Nunca compartiremos tu direccion con terceras partes."
+                  description="*La direccion debe tener un formato de mail valido."
                 >
                   <b-form-input
                     id="input-1"
                     v-model="form.mail"
-                    type="mail"
+                    type="email"
                     required
                     placeholder="Ingresa un mail"
                   ></b-form-input>
@@ -49,13 +54,15 @@
                   id="input-group-6"
                   label="Telefono:"
                   label-for="input-6"
+                  description="*El numero de telefono debe tener el formato 123-456-7890"
                 >
                   <b-form-input
                     id="input-1"
                     v-model="form.phone"
-                    type="text"
                     required
                     placeholder="Ingresa un telefono"
+                    type="tel" 
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
                   ></b-form-input>
                 </b-form-group>
             </div>
@@ -65,7 +72,12 @@
         <!-- Municipio y Tipo de Centro -->      
         <div class="form-row">
             <div class="form-group col-md-6">
-                <b-form-group id="input-group-3" label="Tipo de centro:" label-for="input-3">
+                <b-form-group 
+                  id="input-group-3" 
+                  label="Tipo de centro:" 
+                  label-for="input-3"
+                  description="*Seleccione un ripo de centro de la lista."
+                  >
                     <b-form-select
                         id="input-3"
                         v-model="form.type_id"
@@ -80,7 +92,12 @@
             </div>
 
             <div class="form-group col-md-6">
-                <b-form-group id="input-group-4" label="Municipio:" label-for="input-4">
+                <b-form-group 
+                  id="input-group-4" 
+                  label="Municipio:" 
+                  label-for="input-4"
+                  description="Seleccione un municipio de la lista."
+                  >
                     <b-form-select
                         id="input-4"
                         v-model="form.municipio_id"
@@ -98,7 +115,12 @@
         <!-- Hora de inicio y de cierre -->
       <div class="form-row">
             <div class="form-group col-md-6">
-                  <b-form-group id="input-group-7" label="Hora de inicio:" label-for="input-7">
+                  <b-form-group 
+                    id="input-group-7" 
+                    label="Hora de inicio:" 
+                    label-for="input-7"
+                    description="Ingrese el horario de inicio de atencion del centro."
+                    >
                     <b-form-input
                       id="input-7"
                       v-model="form.openHour"
@@ -112,6 +134,7 @@
                   id="input-group-8"
                   label="Hora de cierre:"
                   label-for="input-8"
+                  description="Ingrese el horario de finalizacion de atencion del centro."
                 >
                   <b-form-input
                     id="input-8"
@@ -127,7 +150,12 @@
               <!-- Web -->
       <div class="form-row">
             <div class="form-group col-md-12">
-                  <b-form-group id="input-group-11" label="Direccion web:" label-for="input-11">
+                  <b-form-group 
+                    id="input-group-11" 
+                    label="Direccion web:" 
+                    label-for="input-11"
+                    description="*La direccion del sitio debe tener un formato valido."
+                    >
                     <b-form-input
                       id="input-11"
                       v-model="form.web"
@@ -229,7 +257,7 @@
           type_id:'',
           municipio_id:'',
           verified: false,
-          key: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          key: process.env.VUE_APP_GOOGLE_RECAPTCHA_SITE_KEY,
         },
         municipios:[],
         tipos:[{id: 1, tipo: "Ropa"},
@@ -259,7 +287,8 @@
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.form)
           }; 
-          fetch("http://localhost:5000/api/centros", requestOptions)
+          //fetch("http://localhost:5000/api/centros", requestOptions)
+          fetch(`${process.env.VUE_APP_API_BASE}/centros`, requestOptions)
           .then(response => {
           if(response.status == 200){
             alert("El centro fue cargado con exito")

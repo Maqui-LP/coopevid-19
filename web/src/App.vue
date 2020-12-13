@@ -1,13 +1,23 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/sacar_turno">Sacar Turno</router-link> |
-      <router-link to="/cargar_centro">Cargar Centro</router-link> |
-      <router-link to="/estadisticas">Estadisticas</router-link> |
-      <router-link to="/mapa">Mapa de centros</router-link> 
+    <div>
+      <b-navbar toggleable="lg" type="dark" variant="info">
+        <b-navbar-brand to="/">Coopevid</b-navbar-brand>
+
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav>
+            <b-nav-item to="/">Home</b-nav-item>
+            <b-nav-item to="/sacar_turno">Sacar Turno</b-nav-item>
+            <b-nav-item to="/cargar_centro">Cargar Centro</b-nav-item>
+            <b-nav-item to="/mapa">Mapa de centros</b-nav-item>
+            <b-nav-item to="/estadisticas">Estadisticas</b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
     </div>
-    <router-view/>
+  <router-view/>
   </div>
 </template>
 
