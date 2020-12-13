@@ -73,6 +73,10 @@ class Centro(db.Model):
         return Centro.query.filter(Centro.name.like(name))
 
     @staticmethod
+    def get_all_published_centers():
+        return Centro.query.filter(Centro.status == True)
+
+    @staticmethod
     def getCentroByEmail(email):
         return Centro.query.filter(Centro.email == email).first()
 
