@@ -95,7 +95,7 @@ export default {
         hora: "",
         fecha: "",
         centroId: null,
-        key: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+        key: process.env.VUE_APP_GOOGLE_RECAPTCHA_SITE_KEY,
       },
       centros: [],
       show: true,

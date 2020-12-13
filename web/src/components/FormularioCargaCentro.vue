@@ -257,7 +257,7 @@
           type_id:'',
           municipio_id:'',
           verified: false,
-          key: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          key: process.env.VUE_APP_GOOGLE_RECAPTCHA_SITE_KEY,
         },
         municipios:[],
         tipos:[{id: 1, tipo: "Ropa"},
