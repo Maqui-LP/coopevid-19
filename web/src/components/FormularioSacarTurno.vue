@@ -7,7 +7,7 @@
             <b-form-input
               id="input-1"
               v-model="form.email"
-              type="mail"
+              type="email"
               required
               placeholder="Ingresa un email"
             ></b-form-input>

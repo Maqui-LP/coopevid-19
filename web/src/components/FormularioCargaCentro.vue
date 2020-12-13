@@ -13,7 +13,7 @@
                     <b-form-input
                       id="input-2"
                       v-model="form.name"
-                      type="mail"
+                      type="email"
                       required
                       placeholder="Ingresa el nombre del centro"
                     ></b-form-input>
