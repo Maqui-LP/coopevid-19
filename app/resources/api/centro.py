@@ -181,7 +181,7 @@ def getTurnoByFecha(id):
 @csrf.exempt
 def get_all_not_paginated():
     
-    centros = Centro.getAll()
+    centros = Centro.get_all_published_centers()
     json = []
     for centro in centros:
         dic = {
