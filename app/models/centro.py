@@ -144,3 +144,7 @@ class Centro(db.Model):
     @staticmethod
     def get_all_higiene_personal():
         return Centro.query.filter(Centro.type_id == 4, Centro.status == True).count()
+
+    @staticmethod
+    def get_quantity_for_municipio_id(muni_id):
+        return Centro.query.filter(Centro.municipio_id == muni_id).count()
