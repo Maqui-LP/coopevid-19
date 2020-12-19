@@ -237,5 +237,4 @@ def get_estadisticas_centros_por_municipio():
 
         response.append({"municipio": city, "cant":count})
 
-    print(response)
     return jsonify(resp = response)
