@@ -13,16 +13,18 @@
       }
       return {
         chartData: {
-          columns: ['date', 'cost'],
-          rows: [
-            { 'date': 'Comida', 'cost': 20 },
-            { 'date': 'Ropa', 'cost': 10 },
-            { 'date': 'Higiene Personal', 'cost': 10 },
-            { 'date': 'Higiene del Hogar', 'cost': 30 },
-            { 'date': 'Muebles', 'cost': 30 },
-          ]
+          columns: ['tipo', 'cantidad'],
+          rows: [ ]
         }
       }
+    },
+    beforeCreate() {
+      fetch(`${process.env.VUE_APP_API_BASE}/centros/estadisticas/porTipos`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.response)
+          this.chartData.rows = data.response
+        })
     }
   }
 </script>

@@ -211,13 +211,13 @@ def get_estadisticas_tipo_centro():
     higiene_hogar = Centro.get_all_higiene_hogar()
     muebles = Centro.get_all_muebles()
 
-    response = {
-        "comida": comida,
-        "ropa": ropa,
-        "muebles": muebles,
-        "higiene_personal":higiene_personal,
-        "higiene_hogar": higiene_hogar
-    }
+    response = []
+
+    response.append({"tipo": "Comida", "cantidad": comida})
+    response.append({"tipo": "Ropa", "cantidad": ropa})
+    response.append({"tipo": "Hiegiene Personal", "cantidad": higiene_personal})
+    response.append({"tipo": "Higiene del Hogar", "cantidad": higiene_hogar})
+    response.append({"tipo": "Muebles", "cantidad": muebles})
 
     return jsonify(response = response)
 
