@@ -238,3 +238,16 @@ def get_estadisticas_centros_por_municipio():
         response.append({"municipio": city, "cant":count})
 
     return jsonify(resp = response)
+
+@csrf.exempt
+def get_estadisticas_turnos():
+    turnos_centros = []
+    centros = Centro.get_all_published_centers()
+    
+    for centro in centros:
+        cant_turnos = Turno.get_quantity_for_centro_id(centro.id)
+        turnos_centros.append({"centro": centro.name, "turnos":cant_turnos})
+    
+    
+    return jsonify(turnos_centros=turnos_centros)
+

@@ -5,6 +5,7 @@
     <div class="mt-4">
       <EstadisticasCentrosPorMuni/>
     </div>
+    <EstadisticasPorTurnosCentro />
   </div>
 </template>
 
@@ -12,11 +13,14 @@
 
 import EstadisticasPorTipoCentro from  '@/components/EstadisticasPorTipoCentro.vue'
 import EstadisticasCentrosPorMuni from '@/components/EstadisticasCentrosPorMuni.vue'
+import EstadisticasPorTurnosCentro from '@/components/EstadisticasPorTurnosCentro.vue'
 
 export default {
   name: 'Estadisticas',
   components:{
     EstadisticasPorTipoCentro, EstadisticasCentrosPorMuni,
+    EstadisticasPorTipoCentro,
+    EstadisticasPorTurnosCentro
   },
 }
 </script>
