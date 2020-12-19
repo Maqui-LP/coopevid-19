@@ -124,3 +124,23 @@ class Centro(db.Model):
     @staticmethod
     def getStatusAprobacion(centro_id):
         return Centro.query.filter(Centro.id == centro_id).first().status_create        
+
+    @staticmethod
+    def get_all_comida():
+        return 0
+
+    @staticmethod
+    def get_all_ropa():
+        return 0
+
+    @staticmethod
+    def get_all_muebles():
+        return 0
+
+    @staticmethod
+    def get_all_higiene_hogar():
+        return 0
+
+    @staticmethod
+    def get_all_higiene_personal():
+        return 0

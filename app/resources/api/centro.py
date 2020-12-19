@@ -199,3 +199,24 @@ def get_all_not_paginated():
         json.append(dic)
         
     return jsonify(centros=json)
+
+@csrf.exempt
+def get_estadisticas_tipo_centro():
+
+    
+
+    comida = Centro.get_all_comida()
+    ropa = Centro.get_all_ropa()
+    higiene_personal = Centro.get_all_higiene_personal()
+    higiene_hogar = Centro.get_all_higiene_hogar()
+    muebles = Centro.get_all_muebles()
+
+    response = {
+        "comida": comida,
+        "ropa": ropa,
+        "muebles": muebles,
+        "higiene_personal":higiene_personal,
+        "higiene_hogar": higiene_hogar
+    }
+
+    return jsonify(response = response)
