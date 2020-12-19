@@ -18,7 +18,7 @@ import EstadisticasPorTurnosCentro from '@/components/EstadisticasPorTurnosCentr
 export default {
   name: 'Estadisticas',
   components:{
-    EstadisticasPorTipoCentro, EstadisticasCentrosPorMuni,
+    EstadisticasCentrosPorMuni,
     EstadisticasPorTipoCentro,
     EstadisticasPorTurnosCentro
   },
