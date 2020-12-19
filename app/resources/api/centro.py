@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 from app.db_sqlalchemy import db_sqlalchemy
 from app.csrf import app_csrf
 import random
+import requests
 import os
 from datetime import date
 from app.models.configuracion import Configuracion
@@ -199,3 +200,54 @@ def get_all_not_paginated():
         json.append(dic)
         
     return jsonify(centros=json)
+
+@csrf.exempt
+def get_estadisticas_tipo_centro():
+
+    
+
+    comida = Centro.get_all_comida()
+    ropa = Centro.get_all_ropa()
+    higiene_personal = Centro.get_all_higiene_personal()
+    higiene_hogar = Centro.get_all_higiene_hogar()
+    muebles = Centro.get_all_muebles()
+
+    response = []
+
+    response.append({"tipo": "Comida", "cantidad": comida})
+    response.append({"tipo": "Ropa", "cantidad": ropa})
+    response.append({"tipo": "Hiegiene Personal", "cantidad": higiene_personal})
+    response.append({"tipo": "Higiene del Hogar", "cantidad": higiene_hogar})
+    response.append({"tipo": "Muebles", "cantidad": muebles})
+
+    return jsonify(response = response)
+
+@csrf.exempt
+def get_estadisticas_centros_por_municipio():
+
+    r = requests.get('https://api-referencias.proyecto2020.linti.unlp.edu.ar/municipios?page=1&per_page=135')
+    r = r.json()
+
+    municipios = r.get("data").get("Town")
+    response = []
+    
+    for municipio in municipios:
+        count = Centro.get_quantity_for_municipio_id(municipio)
+        city = municipios[municipio].get('name')
+
+        response.append({"municipio": city, "cant":count})
+
+    return jsonify(resp = response)
+
+@csrf.exempt
+def get_estadisticas_turnos():
+    turnos_centros = []
+    centros = Centro.get_all_published_centers()
+    
+    for centro in centros:
+        cant_turnos = Turno.get_quantity_for_centro_id(centro.id)
+        turnos_centros.append({"centro": centro.name, "turnos":cant_turnos})
+    
+    
+    return jsonify(turnos_centros=turnos_centros)
+

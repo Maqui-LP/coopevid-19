@@ -168,6 +168,12 @@ def create_app(environment="development"):
     app.add_url_rule("/api/centros/all", "centro_api_get_all_not_paginated", centroApi.get_all_not_paginated, methods=["GET"])
     ##turnos
     app.add_url_rule("/api/centros/<id>/turnos_disponibles", "centro_api_turnos", centroApi.getTurnoByFecha, methods=["GET"])
+    ##estadisticas
+    app.add_url_rule("/api/centros/estadisticas/porTipos", "centro_api_get_estadisticas_tipo_centro", centroApi.get_estadisticas_tipo_centro, methods=["GET"])
+
+    app.add_url_rule("/api/centros/estadisticas/por_municipio", "centro_api_get_estadisticas_por_municipio", centroApi.get_estadisticas_centros_por_municipio, methods=["GET"])
+
+    app.add_url_rule("/api/centros/estadisticas/turnos", "centro_api_get_estadisticas_turnos", centroApi.get_estadisticas_turnos, methods=["GET"])
 
     # Retornar la instancia de app configurada
     return app

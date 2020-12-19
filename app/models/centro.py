@@ -124,3 +124,27 @@ class Centro(db.Model):
     @staticmethod
     def getStatusAprobacion(centro_id):
         return Centro.query.filter(Centro.id == centro_id).first().status_create        
+
+    @staticmethod
+    def get_all_comida():
+        return Centro.query.filter(Centro.type_id == 2, Centro.status == True).count()
+
+    @staticmethod
+    def get_all_ropa():
+        return Centro.query.filter(Centro.type_id == 1, Centro.status == True).count()
+
+    @staticmethod
+    def get_all_muebles():
+        return Centro.query.filter(Centro.type_id == 3, Centro.status == True).count()
+
+    @staticmethod
+    def get_all_higiene_hogar():
+        return Centro.query.filter(Centro.type_id == 5, Centro.status == True).count()
+
+    @staticmethod
+    def get_all_higiene_personal():
+        return Centro.query.filter(Centro.type_id == 4, Centro.status == True).count()
+
+    @staticmethod
+    def get_quantity_for_municipio_id(muni_id):
+        return Centro.query.filter(Centro.municipio_id == muni_id).count()
