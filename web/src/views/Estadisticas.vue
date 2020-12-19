@@ -5,7 +5,9 @@
     <div class="mt-4">
       <EstadisticasCentrosPorMuni/>
     </div>
-    <EstadisticasPorTurnosCentro />
+    <div class="mt-4">
+      <EstadisticasPorTurnosCentro />
+    </div>
   </div>
 </template>
 

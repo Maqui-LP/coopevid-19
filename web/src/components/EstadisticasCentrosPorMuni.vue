@@ -1,6 +1,6 @@
 <template>
     <div class="container card">
-        <h3>Porcentaje de centros por municipio</h3>
+        <h3>Cantidad de centros por municipio</h3>
       <ve-bar :data="chartData" ></ve-bar>
     </div>
 </template>
