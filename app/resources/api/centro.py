@@ -223,14 +223,12 @@ def get_estadisticas_tipo_centro():
 
 @csrf.exempt
 def get_estadisticas_turnos():
-    turnos_centros = {}
+    turnos_centros = []
     centros = Centro.get_all_published_centers()
-    turnos_totales = 0
     
     for centro in centros:
         cant_turnos = Turno.get_quantity_for_centro_id(centro.id)
-        turnos_centros[str(centro.id)] = cant_turnos
-        turnos_totales += cant_turnos
+        turnos_centros.append({"centro": centro.name, "turnos":cant_turnos})
     
     
-    return jsonify(response={"turnos_centros":turnos_centros, "turnos_totales":turnos_totales})
+    return jsonify(turnos_centros=turnos_centros)
