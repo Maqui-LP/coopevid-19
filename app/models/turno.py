@@ -64,3 +64,8 @@ class Turno(db.Model):
     @staticmethod
     def getByFechaCentro(centro, fecha):
         return Turno.query.filter(Turno.centroId == centro, Turno.dia == fecha).all()
+
+    @staticmethod
+    def get_quantity_for_centro_id(centro_id):
+        return Turno.query.filter(Turno.centroId == centro_id).count()
+        #si no llega a andar, probar con scalar() pasandole una func.count()
