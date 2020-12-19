@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 from app.db_sqlalchemy import db_sqlalchemy
 from app.csrf import app_csrf
 import random
+import requests
 import os
 from datetime import date
 from app.models.configuracion import Configuracion
@@ -220,3 +221,21 @@ def get_estadisticas_tipo_centro():
     }
 
     return jsonify(response = response)
+
+@csrf.exempt
+def get_estadisticas_centros_por_municipio():
+
+    r = requests.get('https://api-referencias.proyecto2020.linti.unlp.edu.ar/municipios?page=1&per_page=135')
+    r = r.json()
+
+    municipios = r.get("data").get("Town")
+    response = []
+    
+    for municipio in municipios:
+        count = Centro.get_quantity_for_municipio_id(municipio)
+        city = municipios[municipio].get('name')
+
+        response.append({"municipio": city, "cant":count})
+
+    print(response)
+    return jsonify(resp = response)

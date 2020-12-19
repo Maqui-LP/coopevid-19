@@ -171,5 +171,6 @@ def create_app(environment="development"):
     ##estadisticas
     app.add_url_rule("/api/centros/estadisticas/porTipos", "centro_api_get_estadisticas_tipo_centro", centroApi.get_estadisticas_tipo_centro, methods=["GET"])
     
+    app.add_url_rule("/api/centros/estadisticas/por_municipio", "centro_api_get_estadisticas_por_municipio", centroApi.get_estadisticas_centros_por_municipio, methods=["GET"])
     # Retornar la instancia de app configurada
     return app
