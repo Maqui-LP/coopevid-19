@@ -1,8 +1,8 @@
- # Grupo 3
+ # Coopevid
 
-- Nicolas Rodriguez Boschi 16114/4
-- Lindo Poisson Macarena 16016/3
-- Guillermo Calderaro 16031/2
+- Nicolas Rodriguez Boschi
+- Lindo Poisson Macarena 
+- Guillermo Calderaro 
 
 ## Iniciar ambiente
 
@@ -45,5 +45,5 @@ $ docker-compose up
 
 - La aplicación flask está en `localhost:5000`
 - PHPMyAdmin está en `localhost:8081`
-- La información de la base de datos está en el directorio `data` en la raíz del proyecto. (Borrar **SÓLO EN CASO DE SER NECESARIO**)
+- La información de la base de datos está en el directorio `data` en la raíz del proyecto.
 - Es común que al volver a levantar el proyecto, pida borrar los directorios `data` y `flask_session` con permiso de sudo
