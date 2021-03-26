@@ -1,4 +1,8 @@
  # COOPEVID-19
+ 
+ Sistema de asistencia para la gestión de turnos de Centros de Ayuda de COVID-19
+ 
+ ## Desarrolladores
 
 - Nicolas Rodriguez Boschi
 - Lindo Poisson Macarena 
